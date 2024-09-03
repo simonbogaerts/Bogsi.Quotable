@@ -1,0 +1,38 @@
+@Bogsi.Quotable_HostAddress = http://localhost:8080
+
+### Default Request 
+### Only has the minimum required parameters for the request to work. 
+
+GET {{Bogsi.Quotable_HostAddress}}/api/quotes
+?PageNumber=1
+&PageSize=10
+
+Accept: application/json
+
+
+
+### Expensive Request Example
+### Contains every parameter and serves more as a showcase than an actual useable endpoint. 
+
+GET {{Bogsi.Quotable_HostAddress}}/api/quotes
+?PageNumber=1
+&PageSize=10
+&Origin=origintest
+&Tag=tagtest
+&SearchQuery=this-is-a-search
+&OrderBy=order-by-this
+&Fields=list
+
+Accept: application/json
+
+
+
+### Working Request
+### Use this request to test. the other two serve more as examples or guidelines.  
+
+GET {{Bogsi.Quotable_HostAddress}}/api/quotes
+?PageNumber=1
+&PageSize=10
+&OrderBy=order-by-this
+
+Accept: application/json
