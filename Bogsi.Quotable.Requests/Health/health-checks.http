@@ -1,0 +1,13 @@
+### Hello World 
+# @name hello-world
+
+GET {{host-name}} HTTP/1.1 
+Accept: application/json
+
+
+
+### Health Check
+# @name health-check
+
+GET {{host-name}}/healthz HTTP/1.1 
+Accept: application/json

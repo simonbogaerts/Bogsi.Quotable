@@ -1,0 +1,22 @@
+{
+    "files.exclude": {
+        "**/.vs": true,
+        "**/bin": true,
+        "**/obj": true,
+        "**/.github": true
+    },
+    "rest-client.environmentVariables": {
+
+        "$shared": {
+            
+        },
+        "development" : {
+            "host-name" : "http://localhost:7064",
+            "token" : ""
+        },
+        "docker" : {
+            "host-name" : "http://localhost:8080",
+            "token" : ""
+        }
+    }
+}
