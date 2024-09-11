@@ -11,7 +11,7 @@
             
         },
         "development" : {
-            "host-name" : "http://localhost:7064",
+            "host-name" : "https://localhost:7064",
             "token" : ""
         },
         "docker" : {

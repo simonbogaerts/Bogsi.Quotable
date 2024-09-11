@@ -1,7 +1,7 @@
 ### Hello World 
 # @name hello-world
 
-GET {{host-name}} HTTP/1.1 
+GET {{host-name}}/api/v1/utilities/hello-world HTTP/1.1 
 Accept: application/json
 
 
@@ -9,5 +9,5 @@ Accept: application/json
 ### Health Check
 # @name health-check
 
-GET {{host-name}}/healthz HTTP/1.1 
+GET {{host-name}}/api/v1/healthz HTTP/1.1 
 Accept: application/json
