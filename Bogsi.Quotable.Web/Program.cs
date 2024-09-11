@@ -1,21 +1,9 @@
+using Bogsi.Quotable.Web.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.ConfigureBuilder();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var application = builder.Build();
+application.ConfigureWebApplication();
 
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.MapGet("/", () =>
-{
-    return "Hello Quotable";
-});
-
-app.Run();
+application.Run();
