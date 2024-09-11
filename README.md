@@ -33,3 +33,8 @@ To stop Quotable use the following docker command.
 ```
 docker compose down
 ```
+
+
+# Additional
+
+* **Health checks**. https://www.youtube.com/watch?v=4abSfjdzqms
