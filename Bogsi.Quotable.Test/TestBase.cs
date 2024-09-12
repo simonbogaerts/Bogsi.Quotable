@@ -2,8 +2,7 @@
 
 namespace Bogsi.Quotable.Test;
 
-public abstract class TestBase<T>
-    where T : class
+public abstract class TestBase<T> where T : class
 {
     public TestBase()
     {
