@@ -27,7 +27,7 @@ internal static class SwaggerExtensions
                 }
             });
 
-            var securityRequirement = new OpenApiSecurityRequirement
+            OpenApiSecurityRequirement securityRequirement = new()
             {
                 {
                     new OpenApiSecurityScheme
