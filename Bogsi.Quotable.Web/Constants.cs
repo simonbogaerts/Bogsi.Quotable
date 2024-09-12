@@ -2,6 +2,7 @@
 
 public static class Constants
 {
+    public const string QuotableDb = nameof(QuotableDb);
     public const string Keycloak = nameof(Keycloak);
     public const string Bearer = nameof(Bearer);
 
