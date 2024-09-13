@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     image: bogsi-quotable-aspnet-backend:latest
     container_name: aspnet-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - quotable-network
     ports:

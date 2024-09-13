@@ -6,14 +6,14 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
 {
     #region Test Setup
 
-    private IRepository<Quote> _repository = null!;
+    private IReadonlyRepository<Quote> _repository = null!;
     private IMapper _mapper = null!;
     private CancellationToken _cancellationToken;
 
     protected override IGetQuotesHandler Construct()
     {
         _mapper = ConfigureMapper();
-        _repository = Substitute.For<IRepository<Quote>>();
+        _repository = Substitute.For<IReadonlyRepository<Quote>>();
         _cancellationToken = new CancellationToken();
 
         GetQuotesHandler sut = new(
@@ -26,7 +26,7 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
     #endregion
 
     [Fact]
-    public async Task GivenGetQuotesRequest_WhenParametersAreOfNoConcequence_ReturnAllQuotes()
+    public async Task GivenGetQuotesHandler_WhenParametersDontMatter_ReturnAllQuotesAsResponseModel()
     {
         // GIVEN
         GetQuotesHandlerRequest request = new();

@@ -4,7 +4,7 @@ using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
 
 namespace Bogsi.Quotable.Application.Mappings.Resolvers;
 
-internal class PageSizeResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
+internal sealed class PageSizeResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
 {
     public int Resolve(
         GetQuotesParameters source, 

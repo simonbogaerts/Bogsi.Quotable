@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
 
-public class GetQuotesEndpoint : IApiEndpoint
+public sealed class GetQuotesEndpoint : IApiEndpoint
 {
     public void MapRoute(IEndpointRouteBuilder endpoints)
     {

@@ -1,4 +1,5 @@
 ﻿using Bogsi.Quotable.Application;
+using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteByIdHandler;
 using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
@@ -28,5 +29,6 @@ internal static class ServiceCollectionExtensions
     private static void AddHandlers(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IGetQuotesHandler, GetQuotesHandler>();
+        builder.Services.AddScoped<IGetQuoteByIdHandler, GetQuoteByIdHandler>();
     }
 }

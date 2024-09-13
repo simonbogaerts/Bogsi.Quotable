@@ -2,5 +2,5 @@
 
 public sealed record GetQuotesResponse
 {
-    public required IEnumerable<QuoteResponseContract> Quotes { get; init; }
+    public required IEnumerable<QuoteResponseContract> Quotes { get; init; } = [];
 }

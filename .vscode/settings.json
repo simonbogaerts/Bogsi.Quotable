@@ -10,7 +10,7 @@
         "$shared": {
             
         },
-        "development" : {
+        "local" : {
             "host-name" : "https://localhost:7064",
             "token" : ""
         },

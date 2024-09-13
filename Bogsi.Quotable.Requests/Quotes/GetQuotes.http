@@ -2,7 +2,7 @@
 # Only has the minimum required parameters for the request to work. 
 # @name minimal-request
 
-GET {{host-name}}/api/v1/quotes
+GET {{host-name}}/api/v1/quotes HTTP/1.1
 
 Accept: application/json
 
@@ -12,7 +12,7 @@ Accept: application/json
 # Contains every parameter and serves more as a showcase than an actual useable endpoint. 
 # @name complete-request
 
-GET {{host-name}}/api/v1/quotes
+GET {{host-name}}/api/v1/quotes HTTP/1.1
 ?PageNumber=1
 &PageSize=10
 &Origin=origintest
@@ -29,7 +29,7 @@ Accept: application/json
 # Use this request to test. the other two serve more as examples or guidelines.  
 # @name test-request
 
-GET {{host-name}}/api/v1/quotes
+GET {{host-name}}/api/v1/quotes HTTP/1.1
 ?PageNumber=1
 &PageSize=10
 

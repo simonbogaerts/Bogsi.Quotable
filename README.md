@@ -54,3 +54,5 @@ docker compose down
 * **Health checks**. https://www.youtube.com/watch?v=4abSfjdzqms
 * fix appsettings in docker
 * I chose to unit test my mappers because without them I wouldn't know about the resolver (since you can only have a single FromMember for a member).
+
+* have base model for getall model that has less info (no dates, tags)

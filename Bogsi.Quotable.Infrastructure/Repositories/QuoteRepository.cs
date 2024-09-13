@@ -7,35 +7,40 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bogsi.Quotable.Infrastructure.Repositories;
 
-public sealed class QuoteRepository : IRepository<Quote>
+public sealed class QuoteRepository(
+    QuotableContext quotable,
+    IMapper mapper) : IRepository<Quote>
 {
-    private readonly QuotableContext _quotable;
-    private readonly IMapper _mapper;
-
-    public QuoteRepository(
-        QuotableContext quotable, 
-        IMapper mapper)
-    {
-        _quotable = quotable;
-        _mapper = mapper;
-    }
+    private readonly QuotableContext _quotable = quotable;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<List<Quote>> GetAsync(CancellationToken cancellationToken)
     {
-        var entities = await _quotable.Quotes.ToListAsync(cancellationToken: cancellationToken);
+        var entities = await _quotable
+            .Quotes
+            .ToListAsync(cancellationToken: cancellationToken);
 
         var result = entities
             .Select(_mapper.Map<QuoteEntity, Quote>)
             .ToList();
 
-        return result.Any()
-            ? result
-            : [];
+        return result;
     }
 
-    public Task<Quote?> GetByIdAsync(Guid publicId, CancellationToken cancellationToken)
+    public async Task<Quote?> GetByIdAsync(Guid publicId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var entity = await _quotable
+            .Quotes
+            .FirstOrDefaultAsync(x=> x.PublicId == publicId, cancellationToken: cancellationToken);
+
+        if (entity == null) 
+        {
+            return null;
+        }
+
+        var result = _mapper.Map<QuoteEntity, Quote>(entity);
+
+        return result;
     }
 
     public Task CreateAsync(Quote model, CancellationToken cancellationToken)
@@ -43,13 +48,22 @@ public sealed class QuoteRepository : IRepository<Quote>
         throw new NotImplementedException();
     }
 
-    public Task UpdateAsync(Quote model, CancellationToken cancellationToken)
+    public async Task UpdateAsync(Quote model, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        
     }
 
     public Task DeleteAsync(Quote model, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<bool> ExistsAsync(Guid publicId, CancellationToken cancellationToken)
+    {
+        var result = await _quotable
+            .Quotes
+            .AnyAsync(x => x.PublicId == publicId, cancellationToken: cancellationToken);
+
+        return result;
     }
 }

@@ -11,18 +11,12 @@ public interface IGetQuotesHandler
         CancellationToken cancellationToken);
 }
 
-public sealed class GetQuotesHandler : IGetQuotesHandler
+public sealed class GetQuotesHandler(
+    IReadonlyRepository<Quote> quoteRepository,
+    IMapper mapper) : IGetQuotesHandler
 {
-    private readonly IReadonlyRepository<Quote> _quoteRepository;
-    private readonly IMapper _mapper;
-
-    public GetQuotesHandler(
-        IReadonlyRepository<Quote> quoteRepository,
-        IMapper mapper)
-    {
-        _quoteRepository = quoteRepository;
-        _mapper = mapper;
-    }
+    private readonly IReadonlyRepository<Quote> _quoteRepository = quoteRepository;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<GetQuotesHandlerResponse> HandleAsync(
         GetQuotesHandlerRequest request, 
