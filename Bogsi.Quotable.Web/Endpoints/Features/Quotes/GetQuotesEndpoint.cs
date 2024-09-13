@@ -1,4 +1,5 @@
-﻿using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
+﻿using AutoMapper;
+using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
 using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,8 +21,15 @@ public class GetQuotesEndpoint : IApiEndpoint
     internal static async Task<IResult> GetQuotes(
         [AsParameters] GetQuotesParameters parameters,
         [FromServices] IGetQuotesHandler getQuotesHandler,
+        [FromServices] IMapper mapper,
         CancellationToken cancellationToken)
     {
-        return Results.Ok();
+        var request = mapper.Map<GetQuotesParameters, GetQuotesHandlerRequest>(parameters);
+
+        var handlerResult = await getQuotesHandler.HandleAsync(request, cancellationToken);
+
+        var result = mapper.Map<GetQuotesHandlerResponse, GetQuotesResponse>(handlerResult); 
+
+        return Results.Ok(result);
     }
 }

@@ -1,7 +1,4 @@
 ﻿using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
-using Bogsi.Quotable.Application.Interfaces.Repositories;
-using Bogsi.Quotable.Application.Models;
-using NSubstitute;
 
 namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes.GetQuotes;
 
@@ -10,15 +7,43 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
     #region Test Setup
 
     private IRepository<Quote> _repository = null!;
+    private IMapper _mapper = null!;
+    private CancellationToken _cancellationToken;
 
     protected override IGetQuotesHandler Construct()
     {
+        _mapper = ConfigureMapper();
         _repository = Substitute.For<IRepository<Quote>>();
+        _cancellationToken = new CancellationToken();
 
-        GetQuotesHandler sut = new(_repository);
+        GetQuotesHandler sut = new(
+            _repository, 
+            _mapper);
 
         return sut;
     }
 
     #endregion
+
+    [Fact]
+    public async Task GivenGetQuotesRequest_WhenParametersAreOfNoConcequence_ReturnAllQuotes()
+    {
+        // GIVEN
+        GetQuotesHandlerRequest request = new();
+
+        List<Quote> quotes = 
+            [
+                new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" },
+                new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" }
+            ];
+
+        _repository.GetAsync(Arg.Any<CancellationToken>()).Returns(quotes);
+
+        // WHEN 
+        var result = await Sut.HandleAsync(request, _cancellationToken);
+
+        //THEN 
+        result.Should().NotBeNull("Result should not be null.");
+        result.Quotes.Count().Should().Be(2, "Result should have 2 items.");
+    }
 }

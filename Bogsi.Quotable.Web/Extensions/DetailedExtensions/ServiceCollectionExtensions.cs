@@ -1,4 +1,5 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
+﻿using Bogsi.Quotable.Application;
+using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
 using Bogsi.Quotable.Infrastructure.Repositories;
@@ -10,6 +11,8 @@ internal static class ServiceCollectionExtensions
     internal static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks();
+        builder.Services.AddAutoMapper(typeof(IApplicationMarker).Assembly);
+
         builder.AddRepositories();
         builder.AddHandlers();
     }

@@ -1,4 +1,5 @@
-﻿using Bogsi.Quotable.Application.Interfaces.Repositories;
+﻿using AutoMapper;
+using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
 
 namespace Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
@@ -13,16 +14,26 @@ public interface IGetQuotesHandler
 public sealed class GetQuotesHandler : IGetQuotesHandler
 {
     private readonly IReadonlyRepository<Quote> _quoteRepository;
+    private readonly IMapper _mapper;
 
-    public GetQuotesHandler(IReadonlyRepository<Quote> quoteRepository)
+    public GetQuotesHandler(
+        IReadonlyRepository<Quote> quoteRepository,
+        IMapper mapper)
     {
         _quoteRepository = quoteRepository;
+        _mapper = mapper;
     }
 
-    public Task<GetQuotesHandlerResponse> HandleAsync(
+    public async Task<GetQuotesHandlerResponse> HandleAsync(
         GetQuotesHandlerRequest request, 
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var result = await _quoteRepository.GetAsync(cancellationToken);
+
+        var mappedResult = result.Select(_mapper.Map<Quote, QuoteResponseHandler>).ToList();
+
+        var response = new GetQuotesHandlerResponse { Quotes = mappedResult };
+
+        return response;
     }
 }

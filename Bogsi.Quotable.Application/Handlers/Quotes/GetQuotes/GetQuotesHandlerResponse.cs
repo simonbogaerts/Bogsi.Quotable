@@ -2,5 +2,5 @@
 
 public sealed record GetQuotesHandlerResponse
 {
-
+    public required IEnumerable<QuoteResponseHandler> Quotes { get; init; }
 }

@@ -2,6 +2,7 @@
 # @name hello-world
 
 GET {{host-name}}/api/v1/utilities/hello-world HTTP/1.1 
+
 Accept: application/json
 
 
@@ -10,4 +11,5 @@ Accept: application/json
 # @name health-check
 
 GET {{host-name}}/api/v1/healthz HTTP/1.1 
+
 Accept: application/json

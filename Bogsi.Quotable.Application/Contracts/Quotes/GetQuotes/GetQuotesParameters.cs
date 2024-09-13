@@ -8,25 +8,22 @@ public struct GetQuotesParameters
 {
     public GetQuotesParameters()
     {
-        PageNumber = 1;
-        PageSize = 10;
+        PageNumber = DefaultPageNumber;
+        PageSize = DefaultPageSize;
     }
 
     #region Pagination
 
-    private const int MaxPageSize = 20;
+    public const int MinimumValue = 1;
+    public const int DefaultPageNumber = 1;
+    public const int DefaultPageSize = 10;
+    public const int MaximumPageSize = 20;
 
-    [DefaultValue(1)]
-    public int PageNumber { get; init; }
+    [DefaultValue(DefaultPageNumber)]
+    public int? PageNumber { get; init; }
 
-    private int _pageSize = 10;
-
-    [DefaultValue(10)]
-    public int PageSize
-    {
-        readonly get => _pageSize;
-        set => _pageSize = value > MaxPageSize ? MaxPageSize : value;
-    }
+    [DefaultValue(DefaultPageSize)]
+    public int? PageSize { get; init; }
 
     #endregion
 
