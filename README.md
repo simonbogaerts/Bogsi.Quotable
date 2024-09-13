@@ -37,7 +37,7 @@ docker compose down
 
 ## Roadmap
 
-* Database Integration
+
 * Vertical Slice Get All, 
 * Get by id 
 * Create
@@ -52,3 +52,5 @@ docker compose down
 ## Additional
 
 * **Health checks**. https://www.youtube.com/watch?v=4abSfjdzqms
+* fix appsettings in docker
+* I chose to unit test my mappers because without them I wouldn't know about the resolver (since you can only have a single FromMember for a member).
