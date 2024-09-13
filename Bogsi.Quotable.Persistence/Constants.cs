@@ -13,4 +13,9 @@ internal sealed record Constants
     {
         public const string Quotes = nameof(Quotes);
     }
+
+    internal sealed record Functions
+    {
+        public const string GetDate = "NOW()";
+    }
 }

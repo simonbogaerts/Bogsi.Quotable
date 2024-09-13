@@ -33,13 +33,13 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
         builder
             .Property(x => x.Created)
             .ValueGeneratedOnAdd()
-            .HasDefaultValueSql("NOW()")
+            .HasDefaultValueSql(Constants.Functions.GetDate)
             .IsRequired();
 
         builder
             .Property(x => x.Updated)
             .ValueGeneratedOnAddOrUpdate()
-            .HasDefaultValueSql("NOW()")
+            .HasDefaultValueSql(Constants.Functions.GetDate)
             .IsRequired()
             .IsConcurrencyToken();
 
