@@ -18,6 +18,7 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status409Conflict)
             .MapToApiVersion(1)
             .WithOpenApi();
     }

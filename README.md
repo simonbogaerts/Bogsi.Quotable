@@ -37,10 +37,10 @@ docker compose down
 
 ## Roadmap
 
-* Create
 * Delete
 * Update 
 * Parameters GetAll 
+* concurrency 
 * Integration Test with Testcontainers
 * Cashing with Redis
 * Logging with SEQ
