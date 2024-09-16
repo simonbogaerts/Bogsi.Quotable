@@ -1,6 +1,6 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteByIdHandler;
+﻿using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
 
-namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes.GetQuotes;
+namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
 public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
 {
@@ -37,15 +37,15 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
             PublicId = publicId
         };
 
-        Quote quote = new() 
-        { 
+        Quote quote = new()
+        {
             PublicId = publicId,
             Created = DateTime.Now,
             Updated = DateTime.Now,
             Value = value
         };
 
-        _repository.GetByIdAsync(Arg.Is<Guid>(publicId), Arg.Any<CancellationToken>()).Returns(quote);
+        _repository.GetByIdAsync(Arg.Is(publicId), Arg.Any<CancellationToken>()).Returns(quote);
 
         // WHEN 
         var result = await Sut.HandleAsync(request, _cancellationToken);

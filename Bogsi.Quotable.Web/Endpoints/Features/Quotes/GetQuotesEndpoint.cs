@@ -11,7 +11,8 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
     {
         endpoints
             .MapGet("quotes", GetQuotes)
-            .WithTags("Quotes")
+            .WithTags(Constants.Endpoints.Quotes)
+            .WithName(Constants.Endpoints.QuoteEndpoints.GetQuotesEndpoint)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .MapToApiVersion(1)

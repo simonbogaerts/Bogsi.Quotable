@@ -50,8 +50,8 @@ docker compose down
 ## Additional
 
 * **Health checks**. https://www.youtube.com/watch?v=4abSfjdzqms
-* fix appsettings in docker
 * I chose to unit test my mappers because without them I wouldn't know about the resolver (since you can only have a single FromMember for a member).
 * I chose to use resolver instead of inline mapping because this makes the profile easier to read and profile doesn't need to know the specific of the resolve. 
 
 * have base model for getall model that has less info (no dates, tags)
+* endpoint handle returning status coded and calling the handler

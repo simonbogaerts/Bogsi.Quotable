@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Quotes.GetQuoteById;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteByIdHandler;
+using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
@@ -11,7 +11,8 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
     {
         endpoints
             .MapGet("quotes/{id:guid}", GetQuoteById)
-            .WithTags("Quotes")
+            .WithTags(Constants.Endpoints.Quotes)
+            .WithName(Constants.Endpoints.QuoteEndpoints.GetQuoteByIdEndpoint)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)

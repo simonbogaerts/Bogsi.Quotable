@@ -43,9 +43,13 @@ public sealed class QuoteRepository(
         return result;
     }
 
-    public Task CreateAsync(Quote model, CancellationToken cancellationToken)
+    public async Task CreateAsync(Quote model, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var entity = _mapper.Map<Quote, QuoteEntity>(model);
+
+        await _quotable
+            .Quotes
+            .AddAsync(entity, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateAsync(Quote model, CancellationToken cancellationToken)

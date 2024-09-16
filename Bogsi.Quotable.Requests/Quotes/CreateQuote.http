@@ -2,8 +2,13 @@
 ### An example of a working request. 
 # @name example-request
 
-GET {{host-name}}/api/v1/quotes/64a140bd-bdfa-46e8-8cbf-169703626004 HTTP/1.1
+POST {{host-name}}/api/v1/quotes HTTP/1.1
 Accept: application/json
+Content-Type: application/json
+
+{
+    "value" : "Quote value comes here."
+}
 
 
 
@@ -11,7 +16,8 @@ Accept: application/json
 ### Use this request to test. the other two serve more as examples or guidelines.
 # @name test-request
 
-@Public-Id = 64a140bd-bdfa-46e8-8cbf-169703626004
-
-GET {{host-name}}/api/v1/quotes/{{Public-Id}} HTTP/1.1
+POST {{host-name}}/api/v1/quotes HTTP/1.1
 Accept: application/json
+Content-Type: application/json
+
+< ./CreateQuote.json

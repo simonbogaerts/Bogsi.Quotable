@@ -1,9 +1,14 @@
 ﻿using Bogsi.Quotable.Application;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteByIdHandler;
+using Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
+using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
 using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
+using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
 using Bogsi.Quotable.Infrastructure.Repositories;
+using Bogsi.Quotable.Infrastructure.Utilities;
+
+using FluentValidation;
 
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
@@ -13,8 +18,10 @@ internal static class ServiceCollectionExtensions
     {
         builder.Services.AddHealthChecks();
         builder.Services.AddAutoMapper(typeof(IApplicationMarker).Assembly);
+        builder.Services.AddValidatorsFromAssembly(typeof(IApplicationMarker).Assembly);
 
         builder.AddRepositories();
+        builder.AddUtilities();
         builder.AddHandlers();
     }
 
@@ -30,5 +37,11 @@ internal static class ServiceCollectionExtensions
     {
         builder.Services.AddScoped<IGetQuotesHandler, GetQuotesHandler>();
         builder.Services.AddScoped<IGetQuoteByIdHandler, GetQuoteByIdHandler>();
+        builder.Services.AddScoped<ICreateQuoteHandler, CreateQuoteHandler>();
+    }
+
+    private static void AddUtilities(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

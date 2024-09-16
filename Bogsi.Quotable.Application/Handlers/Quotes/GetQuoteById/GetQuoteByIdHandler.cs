@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
 
-namespace Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteByIdHandler;
+namespace Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
 
 public interface IGetQuoteByIdHandler
 {
@@ -19,16 +20,16 @@ public sealed class GetQuoteByIdHandler(
     private readonly IMapper _mapper = mapper;
 
     public async Task<GetQuoteByIdHandlerResponse> HandleAsync(
-        GetQuoteByIdHandlerRequest request, 
+        GetQuoteByIdHandlerRequest request,
         CancellationToken cancellationToken)
     {
         var quote = await _quoteRepository.GetByIdAsync(request.PublicId, cancellationToken);
 
         var result = _mapper.Map<Quote, QuoteResponseHandler>(quote!);
 
-        GetQuoteByIdHandlerResponse response = new() 
-        { 
-            Quote = result 
+        GetQuoteByIdHandlerResponse response = new()
+        {
+            Quote = result
         };
 
         return response;

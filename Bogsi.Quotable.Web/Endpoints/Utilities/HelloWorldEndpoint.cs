@@ -6,7 +6,7 @@ internal class HelloWorldEndpoint : IApiEndpoint
     {
         endpoints
             .MapGet("utilities/hello-world", HelloWorld)
-            .WithTags("Utilities")
+            .WithTags(Constants.Endpoints.Utilities)
             .Produces(StatusCodes.Status200OK)
             .MapToApiVersion(1)
             .WithOpenApi();

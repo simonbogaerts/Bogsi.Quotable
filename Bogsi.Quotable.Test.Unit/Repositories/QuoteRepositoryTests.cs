@@ -111,18 +111,6 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
 
     #endregion
 
-    #region CreateAsync
-
-    #endregion
-
-    #region UpdateAsync
-
-    #endregion
-
-    #region DeleteAsync
-
-    #endregion
-
     #region ExistsAsync
 
     [Fact]

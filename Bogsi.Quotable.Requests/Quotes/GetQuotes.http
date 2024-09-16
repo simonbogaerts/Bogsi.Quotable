@@ -3,7 +3,6 @@
 # @name minimal-request
 
 GET {{host-name}}/api/v1/quotes HTTP/1.1
-
 Accept: application/json
 
 
@@ -20,7 +19,6 @@ GET {{host-name}}/api/v1/quotes HTTP/1.1
 &SearchQuery=this-is-a-search
 &OrderBy=order-by-this
 &Fields=list
-
 Accept: application/json
 
 
@@ -32,5 +30,4 @@ Accept: application/json
 GET {{host-name}}/api/v1/quotes HTTP/1.1
 ?PageNumber=1
 &PageSize=10
-
 Accept: application/json

@@ -1,4 +1,4 @@
-﻿namespace Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteByIdHandler;
+﻿namespace Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
 
 public sealed record GetQuoteByIdHandlerRequest
 {
