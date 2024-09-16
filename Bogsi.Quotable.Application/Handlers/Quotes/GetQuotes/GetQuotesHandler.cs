@@ -15,8 +15,8 @@ public sealed class GetQuotesHandler(
     IReadonlyRepository<Quote> quoteRepository,
     IMapper mapper) : IGetQuotesHandler
 {
-    private readonly IReadonlyRepository<Quote> _quoteRepository = quoteRepository;
-    private readonly IMapper _mapper = mapper;
+    private readonly IReadonlyRepository<Quote> _quoteRepository = quoteRepository ?? throw new ArgumentNullException(nameof(quoteRepository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     public async Task<GetQuotesHandlerResponse> HandleAsync(
         GetQuotesHandlerRequest request, 

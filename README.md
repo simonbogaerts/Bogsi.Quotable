@@ -39,8 +39,12 @@ docker compose down
 
 * Delete
 * Update 
+* turn into single files like delete + fix return types and filenames + add ?? argument exception everywhere
+* + order api methods 
+* result pattern
 * Parameters GetAll 
 * concurrency 
+* Add service between repo and handler. make repo use entities and service use models.
 * Integration Test with Testcontainers
 * Cashing with Redis
 * Logging with SEQ
@@ -55,3 +59,6 @@ docker compose down
 
 * have base model for getall model that has less info (no dates, tags)
 * endpoint handle returning status coded and calling the handler
+
+
+* swagger alternative: https://dev.to/eminvergil/an-alternative-to-swagger-in-dotnet-9-2jd6

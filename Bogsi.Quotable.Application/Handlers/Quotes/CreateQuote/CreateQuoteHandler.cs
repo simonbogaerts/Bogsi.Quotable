@@ -17,9 +17,9 @@ public sealed class CreateQuoteHandler(
     IMapper mapper,
     IUnitOfWork unitOfWork) : ICreateQuoteHandler
 {
-    private readonly IRepository<Quote> _quoteRepository = quoteRepository;
-    private readonly IMapper _mapper = mapper;
-    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IRepository<Quote> _quoteRepository = quoteRepository ?? throw new ArgumentNullException(nameof(quoteRepository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+    private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
     public async Task<CreateQuoteHandlerResponse> HandleAsync(
         CreateQuoteHandlerRequest request, 

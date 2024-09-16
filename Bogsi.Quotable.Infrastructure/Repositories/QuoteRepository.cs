@@ -11,8 +11,8 @@ public sealed class QuoteRepository(
     QuotableContext quotable,
     IMapper mapper) : IRepository<Quote>
 {
-    private readonly QuotableContext _quotable = quotable;
-    private readonly IMapper _mapper = mapper;
+    private readonly QuotableContext _quotable = quotable ?? throw new ArgumentNullException(nameof(quotable));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     public async Task<List<Quote>> GetAsync(CancellationToken cancellationToken)
     {
@@ -47,9 +47,7 @@ public sealed class QuoteRepository(
     {
         var entity = _mapper.Map<Quote, QuoteEntity>(model);
 
-        await _quotable
-            .Quotes
-            .AddAsync(entity, cancellationToken: cancellationToken);
+        await _quotable.Quotes.AddAsync(entity, cancellationToken: cancellationToken);
     }
 
     public async Task UpdateAsync(Quote model, CancellationToken cancellationToken)
@@ -57,9 +55,16 @@ public sealed class QuoteRepository(
         
     }
 
-    public Task DeleteAsync(Quote model, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Quote model, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var entity = await _quotable
+            .Quotes
+            .FirstOrDefaultAsync(x => x.PublicId == model.PublicId, cancellationToken: cancellationToken);
+
+        if (entity is not null)
+        {
+            _quotable.Quotes.Remove(entity);
+        }
     }
 
     public async Task<bool> ExistsAsync(Guid publicId, CancellationToken cancellationToken)

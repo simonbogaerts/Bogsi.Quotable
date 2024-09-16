@@ -24,7 +24,7 @@ Accept: application/json
 
 
 ### Working Request
-# Use this request to test. the other two serve more as examples or guidelines.  
+# Use this request to test. The other two serve more as examples or guidelines.  
 # @name test-request
 
 GET {{host-name}}/api/v1/quotes HTTP/1.1

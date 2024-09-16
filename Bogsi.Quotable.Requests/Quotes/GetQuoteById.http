@@ -8,7 +8,7 @@ Accept: application/json
 
 
 ### Working Request
-### Use this request to test. the other two serve more as examples or guidelines.
+### Use this request to test. 
 # @name test-request
 
 @Public-Id = 64a140bd-bdfa-46e8-8cbf-169703626004

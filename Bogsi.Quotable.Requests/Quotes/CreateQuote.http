@@ -29,11 +29,11 @@ Content-Type: application/json
 
 
 ### Working Request
-### Use this request to test. the other two serve more as examples or guidelines.
+### Use this request to test. The other two serve more as examples or guidelines.
 # @name test-request
 
 POST {{host-name}}/api/v1/quotes HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 
-< ./CreateQuote.json
+< ./request-bodies/CreateQuote.json

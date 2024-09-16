@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
 
@@ -16,8 +15,8 @@ public sealed class GetQuoteByIdHandler(
     IReadonlyRepository<Quote> quoteRepository,
     IMapper mapper) : IGetQuoteByIdHandler
 {
-    private readonly IReadonlyRepository<Quote> _quoteRepository = quoteRepository;
-    private readonly IMapper _mapper = mapper;
+    private readonly IReadonlyRepository<Quote> _quoteRepository = quoteRepository ?? throw new ArgumentNullException(nameof(quoteRepository));
+    private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
     public async Task<GetQuoteByIdHandlerResponse> HandleAsync(
         GetQuoteByIdHandlerRequest request,
