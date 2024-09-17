@@ -2,6 +2,7 @@
 using Bogsi.Quotable.Application.Contracts.Quotes.CreateQuote;
 using Bogsi.Quotable.Application.Contracts.Quotes.GetQuoteById;
 using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
+using Bogsi.Quotable.Application.Contracts.Quotes.UpdateQuote;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 using Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
 using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
@@ -155,6 +156,44 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
         result.Should().NotBeNull();
         result.Value.Should().Be(request.Value);
         result.PublicId.Should().NotBe(Guid.Empty);
+    }
+
+    [Fact]
+    public void GivenUpdateQuoteRequest_WhenMappingToUpdateQuoteHandlerRequest_MapsFieldsCorrectlyAndCopiesPublicId()
+    {
+        // GIVEN
+        var publicId = Guid.NewGuid();
+        UpdateQuoteRequest request = new()
+        {
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN
+        var result = Sut.Map<UpdateQuoteRequest, UpdateQuoteHandlerRequest>(request, opt => opt.Items["Id"] = publicId);
+
+        // THEN 
+        result.Should().NotBeNull();
+        result.Value.Should().Be(request.Value);
+        result.PublicId.Should().Be(publicId);
+    }
+
+    [Fact]
+    public void GivenUpdateQuoteHandlerRequest_WhenMappingToModel_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        UpdateQuoteHandlerRequest request = new()
+        {
+            PublicId = Guid.NewGuid(),
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN
+        var result = Sut.Map<UpdateQuoteHandlerRequest, Quote>(request);
+
+        // THEN 
+        result.Should().NotBeNull();
+        result.Value.Should().Be(request.Value);
+        result.PublicId.Should().Be(request.PublicId);
     }
 
     #endregion

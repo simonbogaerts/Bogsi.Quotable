@@ -36,11 +36,31 @@ public sealed class DeleteQuoteHandler(
 
         var model = await _quoteRepository.GetByIdAsync(request.PublicId, cancellationToken);
 
-        if (model is not null)
+        if (model is null)
+        {
+            return response;
+        }
+
+        bool isSaveSuccess = false; 
+
+        using var transaction = _unitOfWork.BeginTransaction();
+
+        try
         {
             await _quoteRepository.DeleteAsync(model, cancellationToken);
 
-            var isSaveSuccess = await _unitOfWork.SaveChangesAsync(cancellationToken);
+            isSaveSuccess = await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            transaction.Commit();
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+        }
+
+        if (!isSaveSuccess)
+        {
+            return response;
         }
 
         return response;

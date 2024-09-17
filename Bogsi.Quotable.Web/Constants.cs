@@ -25,6 +25,7 @@ public static class Constants
             public const string GetQuotesEndpoint = nameof(GetQuotesEndpoint);
             public const string GetQuoteByIdEndpoint = nameof(GetQuoteByIdEndpoint);
             public const string CreateQuoteEndpoint = nameof(CreateQuoteEndpoint);
+            public const string UpdateQuoteEndpoint = nameof(UpdateQuoteEndpoint);
             public const string DeleteQuoteEndpoint = nameof(DeleteQuoteEndpoint);
         }
     }

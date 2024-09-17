@@ -39,6 +39,7 @@ internal static class ServiceCollectionExtensions
         builder.Services.AddScoped<IGetQuotesHandler, GetQuotesHandler>();
         builder.Services.AddScoped<IGetQuoteByIdHandler, GetQuoteByIdHandler>();
         builder.Services.AddScoped<ICreateQuoteHandler, CreateQuoteHandler>();
+        builder.Services.AddScoped<IUpdateQuoteHandler, UpdateQuoteHandler>();
         builder.Services.AddScoped<IDeleteQuoteHandler, DeleteQuoteHandler>();
     }
 

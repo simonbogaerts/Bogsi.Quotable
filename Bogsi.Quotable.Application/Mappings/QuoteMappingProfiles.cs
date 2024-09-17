@@ -3,6 +3,7 @@ using Bogsi.Quotable.Application.Contracts.Quotes;
 using Bogsi.Quotable.Application.Contracts.Quotes.CreateQuote;
 using Bogsi.Quotable.Application.Contracts.Quotes.GetQuoteById;
 using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
+using Bogsi.Quotable.Application.Contracts.Quotes.UpdateQuote;
 using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 using Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
@@ -25,7 +26,9 @@ public sealed class QuoteMappingProfiles : Profile
     private void GeneralMapping()
     {
         CreateMap<QuoteEntity, Quote>();
-        CreateMap<Quote, QuoteEntity>();
+        CreateMap<Quote, QuoteEntity>()
+            .ForMember(dest => dest.Created, opt => opt.MapFrom<CreatedDateResolver>())
+            .ForMember(dest => dest.Updated, opt => opt.MapFrom<UpdatedDateResolver>());
     }
 
     private void RequestMapping()
@@ -36,6 +39,9 @@ public sealed class QuoteMappingProfiles : Profile
         CreateMap<CreateQuoteRequest, CreateQuoteHandlerRequest>();
         CreateMap<CreateQuoteHandlerRequest, Quote>()
             .ForMember(dest => dest.PublicId, opt => opt.MapFrom<PublicIdResolver>());
+        CreateMap<UpdateQuoteRequest, UpdateQuoteHandlerRequest>()
+            .ForMember(dest => dest.PublicId, opt => opt.MapFrom<PassPublicIdResolver>());
+        CreateMap<UpdateQuoteHandlerRequest, Quote>();
     }
 
     private void ResponseMapping()

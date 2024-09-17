@@ -11,7 +11,7 @@ Accept: application/json
 ### Use this request to test. 
 # @name test-request
 
-@Public-Id = b287dbdc-8c6a-4bc9-8f53-775e289324d1
+@Public-Id = edf37798-9dd8-4052-9727-b8d0c64dcb47
 
 DELETE {{host-name}}/api/v1/quotes/{{Public-Id}} HTTP/1.1
 Accept: application/json

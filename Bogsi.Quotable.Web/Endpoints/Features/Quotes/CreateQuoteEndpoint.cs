@@ -24,22 +24,22 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
     }
 
     internal static async Task<IResult> CreateQuote(
-        [FromBody] CreateQuoteRequest newQuote,
-        [FromServices] ICreateQuoteHandler createQuoteHandler,
+        [FromBody] CreateQuoteRequest request,
+        [FromServices] ICreateQuoteHandler handler,
         [FromServices] IValidator<CreateQuoteHandlerRequest> validator,
         [FromServices] IMapper mapper,
         CancellationToken cancellationToken)
     {
-        var request = mapper.Map<CreateQuoteRequest, CreateQuoteHandlerRequest>(newQuote);
+        var handlerRequest = mapper.Map<CreateQuoteRequest, CreateQuoteHandlerRequest>(request);
 
-        var isValidRequest = await validator.ValidateAsync(request, cancellationToken);
+        var isValidRequest = await validator.ValidateAsync(handlerRequest, cancellationToken);
 
         if (!isValidRequest.IsValid)
         {
             return Results.ValidationProblem(isValidRequest.ToDictionary());
         }
 
-        var result = await createQuoteHandler.HandleAsync(request, cancellationToken);
+        var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
         var response = mapper.Map<CreateQuoteHandlerResponse, QuoteResponseContract>(result);
         

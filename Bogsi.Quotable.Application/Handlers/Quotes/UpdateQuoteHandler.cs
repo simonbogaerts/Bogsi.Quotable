@@ -3,29 +3,45 @@ using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
 
-namespace Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
+namespace Bogsi.Quotable.Application.Handlers.Quotes;
 
-public interface ICreateQuoteHandler
+public interface IUpdateQuoteHandler
 {
-    Task<CreateQuoteHandlerResponse> HandleAsync(
-        CreateQuoteHandlerRequest request,
+    Task<UpdateQuoteHandlerResponse> HandleAsync(
+        UpdateQuoteHandlerRequest request,
         CancellationToken cancellationToken);
 }
 
-public sealed class CreateQuoteHandler(
-    IRepository<Quote> quoteRepository, 
+public sealed record UpdateQuoteHandlerRequest
+{
+    public const int MinimumLength = 5;
+    public const int MaximumLength = 1255;
+
+    public required Guid PublicId { get; init; }
+    public required string Value { get; init; }
+}
+
+public sealed record UpdateQuoteHandlerResponse
+{
+
+}
+
+public sealed class UpdateQuoteHandler(
+    IRepository<Quote> quoteRepository,
     IMapper mapper,
-    IUnitOfWork unitOfWork) : ICreateQuoteHandler
+    IUnitOfWork unitOfWork) : IUpdateQuoteHandler
 {
     private readonly IRepository<Quote> _quoteRepository = quoteRepository ?? throw new ArgumentNullException(nameof(quoteRepository));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
-    public async Task<CreateQuoteHandlerResponse> HandleAsync(
-        CreateQuoteHandlerRequest request, 
+    public async Task<UpdateQuoteHandlerResponse> HandleAsync(
+        UpdateQuoteHandlerRequest request, 
         CancellationToken cancellationToken)
     {
-        Quote model = _mapper.Map<CreateQuoteHandlerRequest, Quote>(request);
+        UpdateQuoteHandlerResponse response = new();
+
+        var quote = _mapper.Map<UpdateQuoteHandlerRequest, Quote>(request);
 
         bool isSaveSuccess = false;
 
@@ -33,7 +49,7 @@ public sealed class CreateQuoteHandler(
 
         try
         {
-            await _quoteRepository.CreateAsync(model, cancellationToken);
+            await _quoteRepository.UpdateAsync(quote, cancellationToken);
 
             isSaveSuccess = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -41,16 +57,16 @@ public sealed class CreateQuoteHandler(
         }
         catch (Exception)
         {
+            // Log
+
             transaction.Rollback();
         }
 
         if (!isSaveSuccess)
         {
-            // when impl result pattern return error here.
+            return response;
         }
 
-        var result = _mapper.Map<Quote, CreateQuoteHandlerResponse>(model);
-
-        return result;
+        return response;
     }
 }

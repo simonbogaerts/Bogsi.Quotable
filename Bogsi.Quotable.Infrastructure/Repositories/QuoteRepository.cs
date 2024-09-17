@@ -33,7 +33,7 @@ public sealed class QuoteRepository(
             .Quotes
             .FirstOrDefaultAsync(x=> x.PublicId == publicId, cancellationToken: cancellationToken);
 
-        if (entity == null) 
+        if (entity is null) 
         {
             return null;
         }
@@ -52,7 +52,16 @@ public sealed class QuoteRepository(
 
     public async Task UpdateAsync(Quote model, CancellationToken cancellationToken)
     {
-        
+        var entity = await _quotable
+            .Quotes
+            .FirstOrDefaultAsync(x => x.PublicId == model.PublicId, cancellationToken: cancellationToken);
+
+        _mapper.Map(model, entity);
+
+        if (entity is not null)
+        {
+            _quotable.Quotes.Update(entity);
+        }
     }
 
     public async Task DeleteAsync(Quote model, CancellationToken cancellationToken)

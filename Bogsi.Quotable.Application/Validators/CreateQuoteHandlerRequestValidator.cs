@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Bogsi.Quotable.Application.Validators;
 
-public sealed class CreateQuoteRequestValidator : AbstractValidator<CreateQuoteHandlerRequest>
+public sealed class CreateQuoteHandlerRequestValidator : AbstractValidator<CreateQuoteHandlerRequest>
 {
-    public CreateQuoteRequestValidator()
+    public CreateQuoteHandlerRequestValidator()
     {
         RuleFor(x => x.Value)
             .NotNull()

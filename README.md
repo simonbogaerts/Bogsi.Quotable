@@ -37,10 +37,8 @@ docker compose down
 
 ## Roadmap
 
-* Delete
-* Update 
 * turn into single files like delete + fix return types and filenames + add ?? argument exception everywhere
-* + order api methods 
+* + order api methods + add message to unit tests
 * result pattern
 * Parameters GetAll 
 * concurrency 
@@ -49,6 +47,7 @@ docker compose down
 * Cashing with Redis
 * Logging with SEQ
 * code quality with sonarcube
+* Add additional pocos like author and tags
 
 
 ## Additional
