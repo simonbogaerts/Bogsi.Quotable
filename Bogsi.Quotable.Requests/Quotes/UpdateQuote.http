@@ -16,7 +16,7 @@ Content-Type: application/json
 ### Use this request to test.
 # @name test-request
 
-@Public-Id = ef57e67e-e462-4a19-ab62-27a35d784cb3
+@Public-Id = cd76182f-ab35-4b5c-9081-9ec4b0660cfb
 
 PUT {{host-name}}/api/v1/quotes/{{Public-Id}} HTTP/1.1
 Accept: application/json

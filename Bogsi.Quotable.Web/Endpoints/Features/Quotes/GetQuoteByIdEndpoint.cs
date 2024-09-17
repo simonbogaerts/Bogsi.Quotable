@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Bogsi.Quotable.Application.Contracts.Quotes.GetQuoteById;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
+using Bogsi.Quotable.Application.Contracts.Quotes;
+using Bogsi.Quotable.Application.Handlers.Quotes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
@@ -22,24 +22,24 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
 
     internal static async Task<IResult> GetQuoteById(
         [FromRoute] Guid id,
-        [FromServices] IGetQuoteByIdHandler getQuoteByIdHandler,
+        [FromServices] IGetQuoteByIdHandler handler,
         [FromServices] IMapper mapper,
         CancellationToken cancellationToken)
     {
-        GetQuoteByIdHandlerRequest request = new()
+        GetQuoteByIdHandlerRequest handlerRequest = new()
         {
             PublicId = id
         };
 
-        var quote = await getQuoteByIdHandler.HandleAsync(request, cancellationToken);
+        var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
-        if (quote.Quote is null)
+        if (result is null)
         {
             return Results.NotFound();
         }
 
-        var result = mapper.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(quote);
+        var response = mapper.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(result);
 
-        return Results.Ok(result);
+        return Results.Ok(response);
     }
 }

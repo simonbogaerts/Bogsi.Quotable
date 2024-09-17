@@ -1,4 +1,4 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
+﻿using Bogsi.Quotable.Application.Handlers.Quotes;
 
 namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
@@ -43,7 +43,7 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
         var result = await Sut.HandleAsync(request, _cancellationToken);
 
         //THEN 
-        result.Should().NotBeNull("Result should not be null.");
-        result.Quotes.Count().Should().Be(2, "Result should have 2 items.");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.Count().Should().Be(2, "Result should contain 2 items");
     }
 }

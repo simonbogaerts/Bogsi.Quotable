@@ -1,6 +1,4 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
-
-namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
 public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
 {
@@ -30,35 +28,33 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
     {
         // GIVEN
         var publicId = Guid.NewGuid();
-        string value = "VALUE";
 
         GetQuoteByIdHandlerRequest request = new()
         {
             PublicId = publicId
         };
 
-        Quote quote = new()
+        Quote model = new()
         {
             PublicId = publicId,
             Created = DateTime.Now,
             Updated = DateTime.Now,
-            Value = value
+            Value = "VALUE-FOR-TEST"
         };
 
-        _repository.GetByIdAsync(Arg.Is(publicId), Arg.Any<CancellationToken>()).Returns(quote);
+        _repository.GetByIdAsync(Arg.Is(publicId), Arg.Any<CancellationToken>()).Returns(model);
 
         // WHEN 
         var result = await Sut.HandleAsync(request, _cancellationToken);
 
         // THEN 
-        result.Should().NotBeNull();
-        result.Quote.Should().NotBeNull();
-        result.Quote!.PublicId.Should().Be(publicId);
-        result.Quote!.Value.Should().Be(value);
+        result.Should().NotBeNull("Result should not be NULL");
+        result!.PublicId.Should().Be(publicId, "PublicId should match the request");
+        result!.Value.Should().Be(model.Value, "Value should match the model");
     }
 
     [Fact]
-    public async Task GivenGetQuoteByIdHandler_WhenPublicIdDoesNotMatchAny_ThenReturnNullInResponseModel()
+    public async Task GivenGetQuoteByIdHandler_WhenPublicIdDoesNotMatchAny_ThenReturnNull()
     {
         // GIVEN
         GetQuoteByIdHandlerRequest request = new()
@@ -70,7 +66,6 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
         var result = await Sut.HandleAsync(request, _cancellationToken);
 
         // THEN 
-        result.Should().NotBeNull();
-        result.Quote.Should().BeNull();
+        result.Should().BeNull("Result should not be NULL");
     }
 }

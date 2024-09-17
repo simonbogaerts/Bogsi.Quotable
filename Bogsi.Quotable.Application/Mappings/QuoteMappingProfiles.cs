@@ -1,14 +1,7 @@
 ﻿using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Quotes;
-using Bogsi.Quotable.Application.Contracts.Quotes.CreateQuote;
-using Bogsi.Quotable.Application.Contracts.Quotes.GetQuoteById;
-using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
-using Bogsi.Quotable.Application.Contracts.Quotes.UpdateQuote;
 using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Handlers.Quotes;
-using Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
 using Bogsi.Quotable.Application.Mappings.Resolvers;
 using Bogsi.Quotable.Application.Models;
 
@@ -18,6 +11,8 @@ public sealed class QuoteMappingProfiles : Profile
 {
     public QuoteMappingProfiles()
     {
+        AllowNullCollections = true;
+
         GeneralMapping();
         RequestMapping();
         ResponseMapping();
@@ -33,12 +28,17 @@ public sealed class QuoteMappingProfiles : Profile
 
     private void RequestMapping()
     {
+        // Get Quotes
         CreateMap<GetQuotesParameters, GetQuotesHandlerRequest>()
             .ForMember(dest => dest.PageNumber, opt => opt.MapFrom<PageNumberResolver>())
             .ForMember(dest => dest.PageSize, opt => opt.MapFrom<PageSizeResolver>());
+
+        // Create Quote
         CreateMap<CreateQuoteRequest, CreateQuoteHandlerRequest>();
         CreateMap<CreateQuoteHandlerRequest, Quote>()
-            .ForMember(dest => dest.PublicId, opt => opt.MapFrom<PublicIdResolver>());
+            .ForMember(dest => dest.PublicId, opt => opt.MapFrom<NewPublicIdResolver>());
+
+        // Update Quote
         CreateMap<UpdateQuoteRequest, UpdateQuoteHandlerRequest>()
             .ForMember(dest => dest.PublicId, opt => opt.MapFrom<PassPublicIdResolver>());
         CreateMap<UpdateQuoteHandlerRequest, Quote>();
@@ -46,11 +46,16 @@ public sealed class QuoteMappingProfiles : Profile
 
     private void ResponseMapping()
     {
-        CreateMap<Quote, QuoteResponseHandler>();
-        CreateMap<QuoteResponseHandler, QuoteResponseContract>();
-        CreateMap<GetQuotesHandlerResponse, GetQuotesResponse>();
+        // Get Quotes
+        CreateMap<Quote, GetQuotesSingleQuoteHandlerResponse>();
+        CreateMap<GetQuotesSingleQuoteHandlerResponse, GetQuotesSingleQuoteResponse>();
+
+        // Get Quote By Id 
+        CreateMap<Quote, GetQuoteByIdHandlerResponse>();
         CreateMap<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>();
+
+        // Create Quote 
         CreateMap<Quote, CreateQuoteHandlerResponse>();
-        CreateMap<CreateQuoteHandlerResponse, QuoteResponseContract>();
+        CreateMap<CreateQuoteHandlerResponse, CreateQuoteResponse>();
     }
 }

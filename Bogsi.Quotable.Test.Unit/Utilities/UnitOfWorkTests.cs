@@ -39,10 +39,10 @@ public sealed class UnitOfWorkTests : TestBase<IUnitOfWork>
         var result = await Sut.SaveChangesAsync(_cancellationToken);
 
         // THEN 
-        result.Should().BeTrue("Result should be true when an entity is saved.");
+        result.Should().BeTrue("Result should be true when an entity is saved");
 
         var newlyAddedQuote = _quotable.Quotes.FirstOrDefault();
-        newlyAddedQuote!.PublicId.Should().Be(model.PublicId);
-        newlyAddedQuote!.Value.Should().Be(model.Value);
+        newlyAddedQuote!.PublicId.Should().Be(model.PublicId, "PublicId should match model");
+        newlyAddedQuote!.Value.Should().Be(model.Value, "Value should match model");
     }
 }

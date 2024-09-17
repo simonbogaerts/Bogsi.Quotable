@@ -1,8 +1,5 @@
 ﻿using Bogsi.Quotable.Application;
 using Bogsi.Quotable.Application.Handlers.Quotes;
-using Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuoteById;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;

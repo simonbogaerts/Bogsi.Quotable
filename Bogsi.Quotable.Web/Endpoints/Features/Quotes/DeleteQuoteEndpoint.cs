@@ -20,7 +20,7 @@ public sealed class DeleteQuoteEndpoint : IApiEndpoint
 
     internal static async Task<IResult> DeleteQuote(
         [FromRoute] Guid id,
-        [FromServices] IDeleteQuoteHandler deleteQuoteHandler,
+        [FromServices] IDeleteQuoteHandler handler,
         CancellationToken cancellationToken)
     {
         DeleteQuoteHandlerRequest request = new() 
@@ -28,7 +28,7 @@ public sealed class DeleteQuoteEndpoint : IApiEndpoint
             PublicId = id 
         };
 
-        var result = await deleteQuoteHandler.HandleAsync(request, cancellationToken);
+        var result = await handler.HandleAsync(request, cancellationToken);
 
         // return notfound or nocontent based upon error when migrating to result pattern.
         return Results.NoContent();

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Bogsi.Quotable.Application.Contracts.Quotes.UpdateQuote;
+using Bogsi.Quotable.Application.Contracts.Quotes;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;

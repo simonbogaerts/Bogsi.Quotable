@@ -28,7 +28,7 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
         builder
             .Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(ValueMaxLength);
+            .HasMaxLength(Application.Constants.QuoteProperties.Value.MaximumLength);
 
         builder
             .Property(x => x.Created)
@@ -49,8 +49,6 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
     #endregion
 
     #region Configuration Values
-
-    private const int ValueMaxLength = 1255;
 
     private static IEnumerable<QuoteEntity> Seed =>
     [

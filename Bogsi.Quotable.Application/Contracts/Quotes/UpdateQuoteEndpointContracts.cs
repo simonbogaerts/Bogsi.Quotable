@@ -1,4 +1,4 @@
-﻿namespace Bogsi.Quotable.Application.Contracts.Quotes.UpdateQuote;
+﻿namespace Bogsi.Quotable.Application.Contracts.Quotes;
 
 public sealed record UpdateQuoteRequest
 {

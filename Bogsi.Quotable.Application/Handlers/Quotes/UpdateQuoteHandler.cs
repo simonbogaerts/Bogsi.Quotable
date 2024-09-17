@@ -14,9 +14,6 @@ public interface IUpdateQuoteHandler
 
 public sealed record UpdateQuoteHandlerRequest
 {
-    public const int MinimumLength = 5;
-    public const int MaximumLength = 1255;
-
     public required Guid PublicId { get; init; }
     public required string Value { get; init; }
 }
@@ -57,8 +54,6 @@ public sealed class UpdateQuoteHandler(
         }
         catch (Exception)
         {
-            // Log
-
             transaction.Rollback();
         }
 

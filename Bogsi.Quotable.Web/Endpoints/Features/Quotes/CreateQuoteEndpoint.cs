@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Quotes;
-using Bogsi.Quotable.Application.Contracts.Quotes.CreateQuote;
-using Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
+using Bogsi.Quotable.Application.Handlers.Quotes;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +40,7 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
 
         var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
-        var response = mapper.Map<CreateQuoteHandlerResponse, QuoteResponseContract>(result);
+        var response = mapper.Map<CreateQuoteHandlerResponse, CreateQuoteResponse>(result);
         
         return Results.CreatedAtRoute(
             Constants.Endpoints.QuoteEndpoints.GetQuoteByIdEndpoint,

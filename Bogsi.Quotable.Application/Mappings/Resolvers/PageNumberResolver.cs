@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
+using Bogsi.Quotable.Application.Contracts.Quotes;
+using Bogsi.Quotable.Application.Handlers.Quotes;
 
 namespace Bogsi.Quotable.Application.Mappings.Resolvers;
 
@@ -12,9 +12,9 @@ internal sealed class PageNumberResolver : IValueResolver<GetQuotesParameters, G
         int destMember, 
         ResolutionContext context)
     {
-        if (source.PageNumber == null || source.PageNumber < GetQuotesParameters.MinimumValue)
+        if (source.PageNumber == null || source.PageNumber < Constants.PageNumber.Minimum)
         {
-            return GetQuotesParameters.DefaultPageNumber;
+            return Constants.PageNumber.Default;
         }
 
         return source.PageNumber!.Value;

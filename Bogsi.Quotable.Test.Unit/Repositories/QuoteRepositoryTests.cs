@@ -44,8 +44,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.GetAsync(_cancellationToken);
 
         // THEN 
-        result.Should().NotBeNull("Result should not be null.");
-        result.Count.Should().Be(2, "Result should have 2 items.");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.Count.Should().Be(2, "Result should contain 2 items");
     }
 
     [Fact]
@@ -56,8 +56,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.GetAsync(_cancellationToken);
 
         // THEN 
-        result.Should().NotBeNull("Result should not be null.");
-        result.Count.Should().Be(0, "Result should have 0 items.");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.Count.Should().Be(0, "Result should contain 0 items");
     }
 
     #endregion
@@ -83,9 +83,9 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.GetByIdAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().NotBeNull("Result should not be null.");
-        result!.PublicId.Should().Be(publicId);
-        result!.Value.Should().Be(value);
+        result.Should().NotBeNull("Result should not be NULL");
+        result!.PublicId.Should().Be(publicId, "PublicId should match entity");
+        result!.Value.Should().Be(value, "Value should match entity");
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.GetByIdAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().BeNull("Result should be null.");
+        result.Should().BeNull("Result should be NULL");
     }
 
     #endregion
@@ -131,7 +131,7 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.ExistsAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().BeTrue("Result should be true.");
+        result.Should().BeTrue("Result should be true");
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.ExistsAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().BeFalse("Result should be false.");
+        result.Should().BeFalse("Result should be false");
     }
 
     #endregion

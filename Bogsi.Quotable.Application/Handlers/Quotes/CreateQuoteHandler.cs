@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Bogsi.Quotable.Application.Contracts.Abstract;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
 
-namespace Bogsi.Quotable.Application.Handlers.Quotes.CreateQuote;
+namespace Bogsi.Quotable.Application.Handlers.Quotes;
 
 public interface ICreateQuoteHandler
 {
@@ -12,8 +13,19 @@ public interface ICreateQuoteHandler
         CancellationToken cancellationToken);
 }
 
+public sealed record CreateQuoteHandlerRequest
+{
+    public required string Value { get; init; }
+}
+
+public sealed record CreateQuoteHandlerResponse : AbstractQuoteResponse
+{
+    public DateTime Created { get; init; }
+    public DateTime Updated { get; init; }
+}
+
 public sealed class CreateQuoteHandler(
-    IRepository<Quote> quoteRepository, 
+    IRepository<Quote> quoteRepository,
     IMapper mapper,
     IUnitOfWork unitOfWork) : ICreateQuoteHandler
 {
@@ -22,7 +34,7 @@ public sealed class CreateQuoteHandler(
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
     public async Task<CreateQuoteHandlerResponse> HandleAsync(
-        CreateQuoteHandlerRequest request, 
+        CreateQuoteHandlerRequest request,
         CancellationToken cancellationToken)
     {
         Quote model = _mapper.Map<CreateQuoteHandlerRequest, Quote>(request);

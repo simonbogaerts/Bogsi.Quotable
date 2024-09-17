@@ -11,7 +11,7 @@ Accept: application/json
 ### Use this request to test. 
 # @name test-request
 
-@Public-Id = 64a140bd-bdfa-46e8-8cbf-169703626004
+@Public-Id = 3414eee0-355b-4cda-acb6-567212236bce
 
 GET {{host-name}}/api/v1/quotes/{{Public-Id}} HTTP/1.1
 Accept: application/json

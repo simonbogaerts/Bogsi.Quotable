@@ -2,7 +2,7 @@
 
 namespace Bogsi.Quotable.Application.Mappings.Resolvers;
 
-internal sealed class PublicIdResolver : IValueResolver<object, object, Guid>
+internal sealed class NewPublicIdResolver : IValueResolver<object, object, Guid>
 {
     public Guid Resolve(object source, object destination, Guid destMember, ResolutionContext context)
     {

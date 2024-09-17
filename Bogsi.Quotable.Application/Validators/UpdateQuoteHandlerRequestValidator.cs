@@ -19,11 +19,11 @@ public sealed class UpdateQuoteHandlerRequestValidator : AbstractValidator<Updat
             .WithMessage("Value should not be null or empty.");
 
         RuleFor(x => x.Value)
-            .MinimumLength(UpdateQuoteHandlerRequest.MinimumLength)
-            .WithMessage($"Value should be at least {UpdateQuoteHandlerRequest.MinimumLength} characters long.");
+            .MinimumLength(Constants.QuoteProperties.Value.MinimumLength)
+            .WithMessage($"Value should be at least {Constants.QuoteProperties.Value.MinimumLength} characters long.");
 
         RuleFor(x => x.Value)
-            .MaximumLength(UpdateQuoteHandlerRequest.MaximumLength)
-            .WithMessage($"Value should not be longer than {UpdateQuoteHandlerRequest.MaximumLength} characters.");
+            .MaximumLength(Constants.QuoteProperties.Value.MaximumLength)
+            .WithMessage($"Value should not be longer than {Constants.QuoteProperties.Value.MaximumLength} characters.");
     }
 }

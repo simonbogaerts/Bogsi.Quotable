@@ -24,7 +24,9 @@ public sealed class QuoteRepository(
             .Select(_mapper.Map<QuoteEntity, Quote>)
             .ToList();
 
-        return result;
+        return result.Any() 
+            ? result
+            : [];
     }
 
     public async Task<Quote?> GetByIdAsync(Guid publicId, CancellationToken cancellationToken)
@@ -56,10 +58,10 @@ public sealed class QuoteRepository(
             .Quotes
             .FirstOrDefaultAsync(x => x.PublicId == model.PublicId, cancellationToken: cancellationToken);
 
-        _mapper.Map(model, entity);
-
         if (entity is not null)
         {
+            _mapper.Map(model, entity);
+
             _quotable.Quotes.Update(entity);
         }
     }

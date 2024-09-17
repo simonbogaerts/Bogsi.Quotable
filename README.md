@@ -37,9 +37,7 @@ docker compose down
 
 ## Roadmap
 
-* turn into single files like delete + fix return types and filenames + add ?? argument exception everywhere
-* + order api methods + add message to unit tests
-* result pattern
+* result pattern (make nullable > non-nullable again)
 * Parameters GetAll 
 * concurrency 
 * Add service between repo and handler. make repo use entities and service use models.
@@ -47,12 +45,15 @@ docker compose down
 * Cashing with Redis
 * Logging with SEQ
 * code quality with sonarcube
+* add documentation
 * Add additional pocos like author and tags
+* Add indexes 
 
 
 ## Additional
 
 * **Health checks**. https://www.youtube.com/watch?v=4abSfjdzqms
+* **Cursor pagination vs SkipTake Pagination**. https://www.youtube.com/watch?v=gfRJBoOuNUA
 * I chose to unit test my mappers because without them I wouldn't know about the resolver (since you can only have a single FromMember for a member).
 * I chose to use resolver instead of inline mapping because this makes the profile easier to read and profile doesn't need to know the specific of the resolve. 
 
