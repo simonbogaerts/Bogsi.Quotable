@@ -37,6 +37,9 @@ docker compose down
 
 ## Roadmap
 
+use error objects in results?
+
+
 * result pattern (make nullable > non-nullable again)
 * Parameters GetAll 
 * concurrency 

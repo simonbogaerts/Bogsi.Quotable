@@ -19,10 +19,10 @@ public sealed class CreateQuoteByIdEndpoint : IApiEndpoint
         [FromServices] IReadonlyRepository<Quote> repository,
         CancellationToken cancellationToken)
     {
-        bool exists = await repository.ExistsAsync(id, cancellationToken);
+        var result = await repository.ExistsAsync(id, cancellationToken);
 
-        return exists 
-            ? Results.Conflict() 
-            : Results.NotFound();
+        return result.IsFailure
+            ? Results.NotFound()
+            : Results.Conflict();
     }
 }

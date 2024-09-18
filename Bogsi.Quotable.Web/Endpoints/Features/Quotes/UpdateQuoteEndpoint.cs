@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Quotes;
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,14 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
         }
 
         var result = await handler.HandleAsync(handlerRequest, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            if (result.Error == QuotableErrors.InternalError)
+            {
+                return Results.Problem(statusCode: 500);
+            }
+        }
 
         return Results.NoContent();
     }

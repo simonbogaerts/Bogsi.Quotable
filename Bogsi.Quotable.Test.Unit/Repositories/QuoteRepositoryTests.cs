@@ -1,4 +1,5 @@
-﻿using Bogsi.Quotable.Infrastructure.Repositories;
+using Bogsi.Quotable.Application.Errors;
+using Bogsi.Quotable.Infrastructure.Repositories;
 using Bogsi.Quotable.Persistence;
 using Bogsi.Quotable.Test.Builders.Entities;
 
@@ -46,7 +47,10 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result.Count.Should().Be(2, "Result should contain 2 items");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Should().NotBeNull("Result should contain success value");
+        result.Value.Count.Should().Be(2, "Result should contain 2 items");
     }
 
     [Fact]
@@ -58,7 +62,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result.Count.Should().Be(0, "Result should contain 0 items");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
     }
 
     #endregion
@@ -85,8 +90,11 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result!.PublicId.Should().Be(publicId, "PublicId should match entity");
-        result!.Value.Should().Be(value, "Value should match entity");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Should().NotBeNull("Result should not be NULL");
+        result.Value.PublicId.Should().Be(publicId, "PublicId should match entity");
+        result.Value.Value.Should().Be(value, "Value should match entity");
     }
 
     [Fact]
@@ -107,7 +115,10 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.GetByIdAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().BeNull("Result should be NULL");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.IsSuccess.Should().BeFalse("Result should be failure");
+        result.IsFailure.Should().BeTrue("Result should be failure");
+        result.Error.Should().Be(QuotableErrors.NotFound, "Error should be NotFound");
     }
 
     #endregion
@@ -132,7 +143,10 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.ExistsAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().BeTrue("Result should be true");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Should().BeTrue("Result should be true");
     }
 
     [Fact]
@@ -153,7 +167,10 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.ExistsAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().BeFalse("Result should be false");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Should().BeFalse("Result should be false");
     }
 
     #endregion

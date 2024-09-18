@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Bogsi.Quotable.Application.Entities;
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
 using Bogsi.Quotable.Persistence;
+using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bogsi.Quotable.Infrastructure.Repositories;
@@ -14,7 +16,7 @@ public sealed class QuoteRepository(
     private readonly QuotableContext _quotable = quotable ?? throw new ArgumentNullException(nameof(quotable));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-    public async Task<List<Quote>> GetAsync(CancellationToken cancellationToken)
+    public async Task<Result<List<Quote>, QuotableError>> GetAsync(CancellationToken cancellationToken)
     {
         var entities = await _quotable
             .Quotes
@@ -29,7 +31,7 @@ public sealed class QuoteRepository(
             : [];
     }
 
-    public async Task<Quote?> GetByIdAsync(Guid publicId, CancellationToken cancellationToken)
+    public async Task<Result<Quote, QuotableError>> GetByIdAsync(Guid publicId, CancellationToken cancellationToken)
     {
         var entity = await _quotable
             .Quotes
@@ -37,7 +39,7 @@ public sealed class QuoteRepository(
 
         if (entity is null) 
         {
-            return null;
+            return QuotableErrors.NotFound;
         }
 
         var result = _mapper.Map<QuoteEntity, Quote>(entity);
@@ -45,40 +47,50 @@ public sealed class QuoteRepository(
         return result;
     }
 
-    public async Task CreateAsync(Quote model, CancellationToken cancellationToken)
+    public async Task<Result<Unit, QuotableError>> CreateAsync(Quote model, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Quote, QuoteEntity>(model);
 
         await _quotable.Quotes.AddAsync(entity, cancellationToken: cancellationToken);
+
+        return Unit.Instance;
     }
 
-    public async Task UpdateAsync(Quote model, CancellationToken cancellationToken)
+    public async Task<Result<Unit, QuotableError>> UpdateAsync(Quote model, CancellationToken cancellationToken)
     {
         var entity = await _quotable
             .Quotes
             .FirstOrDefaultAsync(x => x.PublicId == model.PublicId, cancellationToken: cancellationToken);
 
-        if (entity is not null)
+        if (entity is null)
         {
-            _mapper.Map(model, entity);
-
-            _quotable.Quotes.Update(entity);
+            return QuotableErrors.NotFound;
         }
+
+        _mapper.Map(model, entity);
+
+        _quotable.Quotes.Update(entity);
+
+        return Unit.Instance;
     }
 
-    public async Task DeleteAsync(Quote model, CancellationToken cancellationToken)
+    public async Task<Result<Unit, QuotableError>> DeleteAsync(Quote model, CancellationToken cancellationToken)
     {
         var entity = await _quotable
             .Quotes
             .FirstOrDefaultAsync(x => x.PublicId == model.PublicId, cancellationToken: cancellationToken);
 
-        if (entity is not null)
+        if (entity is null)
         {
-            _quotable.Quotes.Remove(entity);
+            return QuotableErrors.NotFound;
         }
+
+        _quotable.Quotes.Remove(entity);
+
+        return Unit.Instance;
     }
 
-    public async Task<bool> ExistsAsync(Guid publicId, CancellationToken cancellationToken)
+    public async Task<Result<bool, QuotableError>> ExistsAsync(Guid publicId, CancellationToken cancellationToken)
     {
         var result = await _quotable
             .Quotes

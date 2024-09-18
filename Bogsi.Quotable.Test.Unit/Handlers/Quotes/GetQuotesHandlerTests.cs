@@ -1,6 +1,4 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes;
-
-namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
 public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
 {
@@ -44,6 +42,9 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
 
         //THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result.Count().Should().Be(2, "Result should contain 2 items");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Should().NotBeNull("Result should contain success value");
+        result.Value.Count().Should().Be(2, "Result should contain 2 items");
     }
 }

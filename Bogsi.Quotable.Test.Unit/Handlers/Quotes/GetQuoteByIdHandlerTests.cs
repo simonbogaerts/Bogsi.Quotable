@@ -1,4 +1,6 @@
-﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+﻿using Bogsi.Quotable.Application.Errors;
+
+namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
 public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
 {
@@ -42,19 +44,24 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
             Value = "VALUE-FOR-TEST"
         };
 
-        _repository.GetByIdAsync(Arg.Is(publicId), Arg.Any<CancellationToken>()).Returns(model);
+        _repository
+            .GetByIdAsync(Arg.Is(publicId), Arg.Any<CancellationToken>())
+            .Returns(model);
 
         // WHEN 
         var result = await Sut.HandleAsync(request, _cancellationToken);
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result!.PublicId.Should().Be(publicId, "PublicId should match the request");
-        result!.Value.Should().Be(model.Value, "Value should match the model");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Should().NotBeNull("Result should contain success value");
+        result.Value.PublicId.Should().Be(publicId, "PublicId should match the request");
+        result.Value.Value.Should().Be(model.Value, "Value should match the model");
     }
 
     [Fact]
-    public async Task GivenGetQuoteByIdHandler_WhenPublicIdDoesNotMatchAny_ThenReturnNull()
+    public async Task GivenGetQuoteByIdHandler_WhenPublicIdDoesNotMatchAny_ThenReturnFailureResult()
     {
         // GIVEN
         GetQuoteByIdHandlerRequest request = new()
@@ -62,10 +69,16 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
             PublicId = Guid.NewGuid()
         };
 
+        _repository
+            .GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
+            .Returns(QuotableErrors.NotFound);
+
         // WHEN 
         var result = await Sut.HandleAsync(request, _cancellationToken);
 
         // THEN 
-        result.Should().BeNull("Result should not be NULL");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.IsSuccess.Should().BeFalse("Result should be failure");
+        result.IsFailure.Should().BeTrue("Result should be failure");
     }
 }
