@@ -39,7 +39,6 @@ docker compose down
 
 * Parameters GetAll and specification pattern 
 * concurrency 
-* Add service between repo and handler. make repo use entities and service use models.
 * Integration Test with Testcontainers
 * Cashing with Redis
 * Logging with SEQ
