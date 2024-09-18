@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
+using Bogsi.Quotable.Application.Contracts.Abstract;
 
-namespace Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
+namespace Bogsi.Quotable.Application.Contracts.Quotes;
+
 
 // struct is more performant than record
 // defaults don't work as AsParameters supersedes these. Currently using mandatory defaults as fix.
@@ -8,21 +10,16 @@ public struct GetQuotesParameters
 {
     public GetQuotesParameters()
     {
-        PageNumber = DefaultPageNumber;
-        PageSize = DefaultPageSize;
+        PageNumber = Constants.PageNumber.Default;
+        PageSize = Constants.PageSize.Default;
     }
 
     #region Pagination
 
-    public const int MinimumValue = 1;
-    public const int DefaultPageNumber = 1;
-    public const int DefaultPageSize = 10;
-    public const int MaximumPageSize = 20;
-
-    [DefaultValue(DefaultPageNumber)]
+    [DefaultValue(Constants.PageNumber.Default)]
     public int? PageNumber { get; init; }
 
-    [DefaultValue(DefaultPageSize)]
+    [DefaultValue(Constants.PageSize.Default)]
     public int? PageSize { get; init; }
 
     #endregion
@@ -43,4 +40,14 @@ public struct GetQuotesParameters
     public string? Fields { get; init; }
 
     #endregion
+}
+
+public sealed record GetQuotesSingleQuoteResponse : AbstractQuoteResponse
+{
+
+}
+
+public sealed class GetQuotesResponse : List<GetQuotesSingleQuoteResponse>
+{
+
 }

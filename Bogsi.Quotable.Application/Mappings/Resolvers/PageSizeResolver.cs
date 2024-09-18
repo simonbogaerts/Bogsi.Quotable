@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
+using Bogsi.Quotable.Application.Contracts.Quotes;
+using Bogsi.Quotable.Application.Handlers.Quotes;
 
 namespace Bogsi.Quotable.Application.Mappings.Resolvers;
 
-internal class PageSizeResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
+internal sealed class PageSizeResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
 {
     public int Resolve(
         GetQuotesParameters source, 
@@ -12,14 +12,14 @@ internal class PageSizeResolver : IValueResolver<GetQuotesParameters, GetQuotesH
         int destMember, 
         ResolutionContext context)
     {
-        if (source.PageSize == null || source.PageSize < GetQuotesParameters.MinimumValue) 
+        if (source.PageSize == null || source.PageSize < Constants.PageSize.Minimum) 
         {
-            return GetQuotesParameters.DefaultPageSize;
+            return Constants.PageSize.Default;
         }
 
-        if (source.PageSize != null && source.PageSize > GetQuotesParameters.MaximumPageSize)
+        if (source.PageSize != null && source.PageSize > Constants.PageSize.Maximum)
         {
-            return GetQuotesParameters.MaximumPageSize;
+            return Constants.PageSize.Maximum;
         }
 
         return source.PageSize!.Value;

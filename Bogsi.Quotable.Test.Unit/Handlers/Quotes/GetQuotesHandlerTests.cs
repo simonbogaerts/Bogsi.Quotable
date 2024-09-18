@@ -1,23 +1,23 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
+﻿using Bogsi.Quotable.Application.Handlers.Quotes;
 
-namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes.GetQuotes;
+namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
 public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
 {
     #region Test Setup
 
-    private IRepository<Quote> _repository = null!;
+    private IReadonlyRepository<Quote> _repository = null!;
     private IMapper _mapper = null!;
     private CancellationToken _cancellationToken;
 
     protected override IGetQuotesHandler Construct()
     {
         _mapper = ConfigureMapper();
-        _repository = Substitute.For<IRepository<Quote>>();
+        _repository = Substitute.For<IReadonlyRepository<Quote>>();
         _cancellationToken = new CancellationToken();
 
         GetQuotesHandler sut = new(
-            _repository, 
+            _repository,
             _mapper);
 
         return sut;
@@ -26,12 +26,12 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
     #endregion
 
     [Fact]
-    public async Task GivenGetQuotesRequest_WhenParametersAreOfNoConcequence_ReturnAllQuotes()
+    public async Task GivenGetQuotesHandler_WhenParametersDontMatter_ReturnAllQuotesAsResponseModel()
     {
         // GIVEN
         GetQuotesHandlerRequest request = new();
 
-        List<Quote> quotes = 
+        List<Quote> quotes =
             [
                 new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" },
                 new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" }
@@ -43,7 +43,7 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
         var result = await Sut.HandleAsync(request, _cancellationToken);
 
         //THEN 
-        result.Should().NotBeNull("Result should not be null.");
-        result.Quotes.Count().Should().Be(2, "Result should have 2 items.");
+        result.Should().NotBeNull("Result should not be NULL");
+        result.Count().Should().Be(2, "Result should contain 2 items");
     }
 }

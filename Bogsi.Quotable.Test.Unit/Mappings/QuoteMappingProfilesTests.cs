@@ -1,8 +1,6 @@
-﻿using Bogsi.Quotable.Application.Contracts.Quotes;
-using Bogsi.Quotable.Application.Contracts.Quotes.GetQuotes;
-using Bogsi.Quotable.Application.Handlers.Quotes;
-using Bogsi.Quotable.Application.Handlers.Quotes.GetQuotes;
-using Bogsi.Quotable.Application.Mappings;
+﻿using Bogsi.Quotable.Application;
+
+using static Bogsi.Quotable.Application.Constants;
 
 namespace Bogsi.Quotable.Test.Unit.Mappings;
 
@@ -19,10 +17,12 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
 
     #endregion
 
+    #region General Mapping
+
     [Fact]
     public void GivenQuoteEntity_WhenMappingToModel_MapsFieldsCorrectly()
     {
-        // Given
+        // GIVEN
         QuoteEntity entity = new()
         {
             Id = 1,
@@ -36,98 +36,53 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
         var result = Sut.Map<QuoteEntity, Quote>(entity);
 
         // THEN 
-        result.Should().NotBeNull();
-        result.PublicId.Should().Be(entity.PublicId);
-        result.Created.Should().Be(entity.Created);
-        result.Updated.Should().Be(entity.Updated);
-        result.Value.Should().Be(entity.Value);
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(entity.PublicId, "PublicId should match entity");
+        result.Value.Should().Be(entity.Value, "Value should match entity");
     }
 
     [Fact]
-    public void GivenQuoteModel_WhenMappingToHandlerResponse_MapsFieldsCorrectly()
-    {
-        // Given
-        Quote model = new()
-        {
-            PublicId = Guid.NewGuid(),
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
-
-        // WHEN 
-        var result = Sut.Map<Quote, QuoteResponseHandler>(model);
-
-        // THEN 
-        result.Should().NotBeNull();
-        result.PublicId.Should().Be(model.PublicId);
-        result.Created.Should().Be(model.Created);
-        result.Updated.Should().Be(model.Updated);
-        result.Value.Should().Be(model.Value);
-    }
-
-    [Fact]
-    public void GivenQuoteResponseHandler_WhenMappingToContractResponse_MapsFieldsCorrectly()
-    {
-        // Given
-        QuoteResponseHandler response = new()
-        {
-            PublicId = Guid.NewGuid(),
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
-
-        // WHEN 
-        var result = Sut.Map<QuoteResponseHandler, QuoteResponseContract>(response);
-
-        // THEN 
-        result.Should().NotBeNull();
-        result.PublicId.Should().Be(response.PublicId);
-        result.Created.Should().Be(response.Created);
-        result.Updated.Should().Be(response.Updated);
-        result.Value.Should().Be(response.Value);
-    }
-
-    [Fact]
-    public void GivenGetQuoteHandlerResponse_WhenMappingToGetQuotesResponse_MapsFieldsCorrectly()
-    {
-        // Given
-        GetQuotesHandlerResponse response = new()
-        {
-            Quotes = [
-                new()
-                {
-                    PublicId = Guid.NewGuid(),
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now,
-                    Value = "VALUE-FOR-TEST"
-                },
-                new()
-                {
-                    PublicId = Guid.NewGuid(),
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now,
-                    Value = "VALUE-FOR-TEST"
-                }
-            ]
-        };
-
-        // WHEN 
-        var result = Sut.Map<GetQuotesHandlerResponse, GetQuotesResponse>(response);
-
-        // THEN 
-        result.Should().NotBeNull();
-        result.Quotes.Should().NotBeNullOrEmpty();
-        result.Quotes.Count().Should().Be(2);
-    }
-
-    [Fact]
-    public void GivenGetQuotesParameters_WhenAllPropertiesHaveAValue_ThenAllPropertiesAreMapped()
+    public void GivenQuoteModel_WhenMappingToQuoteEntityForUpdate_MapsFieldsCorrectlyAndRetainsEntityDateValues()
     {
         // GIVEN
-        GetQuotesParameters parameters = new() 
-        { 
+        Guid publicId = Guid.NewGuid();
+
+        QuoteEntity entity = new()
+        {
+            Id = 1,
+            PublicId = publicId,
+            Created = DateTime.Now,
+            Updated = DateTime.Now,
+            Value = "VALUE-FOR-TEST"
+        };
+
+        Quote model = new()
+        {
+            PublicId = publicId,
+            Value = "UPDATED-VALUE-FOR-TEST"
+        };
+
+        // WHEN
+        var result = Sut.Map(model, entity);
+
+        // THEN
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(model.PublicId, "PublicId should match model");
+        result.Created.Should().Be(entity.Created, "Created should match entity");
+        result.Updated.Should().Be(entity.Updated, "Updated should match entity");
+        result.Value.Should().Be(model.Value, "Value should match model");
+    }
+
+    #endregion
+
+    #region Request Mapping
+
+    [Fact]
+    public void GivenGetQuotesParameters_WhenMappingToGetQuotesHandlerRequest_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        GetQuotesParameters parameters = new()
+        {
             PageNumber = 1,
             PageSize = 10,
             Origin = "ORIGIN",
@@ -141,14 +96,14 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
         var result = Sut.Map<GetQuotesParameters, GetQuotesHandlerRequest>(parameters);
 
         // THEN 
-        result.Should().NotBeNull();
-        result.PageNumber.Should().Be(parameters.PageNumber);
-        result.PageSize.Should().Be(parameters.PageSize);
-        result.Origin.Should().Be(parameters.Origin);
-        result.Tag.Should().Be(parameters.Tag);
-        result.OrderBy.Should().Be(parameters.OrderBy);
-        result.SearchQuery.Should().Be(parameters.SearchQuery);
-        result.Fields.Should().Be(parameters.Fields);
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PageNumber.Should().Be(parameters.PageNumber, "PageNumer should match parameters");
+        result.PageSize.Should().Be(parameters.PageSize, "PageSize should match parameters");
+        result.Origin.Should().Be(parameters.Origin, "Origin should match parameters");
+        result.Tag.Should().Be(parameters.Tag, "Tag should match parameters");
+        result.OrderBy.Should().Be(parameters.OrderBy, "OrderBy should match parameters");
+        result.SearchQuery.Should().Be(parameters.SearchQuery, "SearchQuery should match parameters");
+        result.Fields.Should().Be(parameters.Fields, "Fields should match parameters");
     }
 
     [Theory]
@@ -157,8 +112,8 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
     public void GivenGetQuotesParameters_WhenPageNumberOrPageSizeIsNullOrZero_ThenDefaultValuesAreProvided(int? pageNumber, int? pageSize)
     {
         // GIVEN
-        GetQuotesParameters parameters = new() 
-        { 
+        GetQuotesParameters parameters = new()
+        {
             PageNumber = pageNumber,
             PageSize = pageSize
         };
@@ -167,16 +122,16 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
         var result = Sut.Map<GetQuotesParameters, GetQuotesHandlerRequest>(parameters);
 
         // THAN 
-        result.Should().NotBeNull();
-        result.PageNumber.Should().Be(GetQuotesParameters.DefaultPageNumber);
-        result.PageSize.Should().Be(GetQuotesParameters.DefaultPageSize);
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PageNumber.Should().Be(PageNumber.Default, "PageNumber should match constant");
+        result.PageSize.Should().Be(PageSize.Default, "PageSize should match constant");
     }
 
     [Fact]
     public void GivenGetQuotesParameters_WhenPageSizeIsMoreThanMaximum_ThenMaximumValueIsProvided()
     {
         // GIVEN
-        var wrongPageSize = GetQuotesParameters.MaximumPageSize +1;
+        int wrongPageSize = PageSize.Maximum + 1;
 
         GetQuotesParameters parameters = new()
         {
@@ -187,7 +142,248 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
         var result = Sut.Map<GetQuotesParameters, GetQuotesHandlerRequest>(parameters);
 
         // THEN
-        result.Should().NotBeNull();
-        result.PageSize.Should().Be(GetQuotesParameters.MaximumPageSize);
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PageSize.Should().Be(PageSize.Maximum, "PageSize should match constant");
     }
+
+    [Fact]
+    public void GivenCreateQuoteRequest_WhenMappingToHandlerRequest_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        CreateQuoteRequest request = new() 
+        { 
+            Value = "VALUE-FOR-TEST" 
+        };
+
+        // WHEN
+        var result = Sut.Map<CreateQuoteRequest, CreateQuoteHandlerRequest>(request);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.Value.Should().Be(request.Value, "Value should match request");
+    }
+
+    [Fact]
+    public void GivenCreateQuoteHandlerRequest_WhenMappingToQuoteModel_MapsFieldsCorrectlyAndFillsInPublicId()
+    {
+        // GIVEN
+        CreateQuoteHandlerRequest request = new()
+        {
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN
+        var result = Sut.Map<CreateQuoteHandlerRequest, Quote>(request);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().NotBe(Guid.Empty, "PublicId should not be NULL");
+        result.Value.Should().Be(request.Value, "Value should match request");
+    }
+
+    [Fact]
+    public void GivenUpdateQuoteRequest_WhenMappingToUpdateQuoteHandlerRequest_MapsFieldsCorrectlyAndCopiesPublicId()
+    {
+        // GIVEN
+        Guid publicId = Guid.NewGuid();
+
+        UpdateQuoteRequest request = new()
+        {
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN
+        var result = Sut.Map<UpdateQuoteRequest, UpdateQuoteHandlerRequest>(request, opt => opt.Items["Id"] = publicId);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(publicId, "PublicId should match request");
+        result.Value.Should().Be(request.Value, "Value should match request");
+    }
+
+    [Fact]
+    public void GivenUpdateQuoteHandlerRequest_WhenMappingToModel_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        UpdateQuoteHandlerRequest request = new()
+        {
+            PublicId = Guid.NewGuid(),
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN
+        var result = Sut.Map<UpdateQuoteHandlerRequest, Quote>(request);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(request.PublicId, "PublicId should match request");
+        result.Value.Should().Be(request.Value, "Value should match request");
+    }
+
+    #endregion
+
+    #region Response Mapping
+
+    [Fact]
+    public void GivenQuoteModel_WhenMappingToGetQuotesSingleQuoteHandlerResponse_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        Quote model = new()
+        {
+            PublicId = Guid.NewGuid(),
+            Created = DateTime.Now,
+            Updated = DateTime.Now,
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN 
+        var result = Sut.Map<Quote, GetQuotesSingleQuoteHandlerResponse>(model);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(model.PublicId, "PublicId should match model");
+        result.Value.Should().Be(model.Value, "Value should match model");
+    }
+
+    [Fact]
+    public void GivenGetQuotesSingleQuoteHandlerResponse_WhenMappingToGetQuotesSingleQuoteResponse_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        GetQuotesSingleQuoteHandlerResponse response = new()
+        {
+            PublicId = Guid.NewGuid(),
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN
+        var result = Sut.Map<GetQuotesSingleQuoteHandlerResponse, GetQuotesSingleQuoteResponse>(response);
+
+        // THEN
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(response.PublicId, "PublicId should match response"); 
+        result.Value.Should().Be(response.Value, "Value should match response");
+    }
+
+    [Fact]
+    public void GivenGetQuotesHandlerResponse_WhenMappingToGetQuotesResponse_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        GetQuotesHandlerResponse response =
+        [
+            new()
+            {
+                PublicId = Guid.NewGuid(),
+                Value = "VALUE-FOR-TEST"
+            },
+            new()
+            {
+                PublicId = Guid.NewGuid(),
+                Value = "VALUE-FOR-TEST"
+            }
+        ];
+
+        // WHEN 
+        var result = Sut.Map<GetQuotesHandlerResponse, GetQuotesResponse>(response);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.Should().NotBeNullOrEmpty("Result should not be empty");
+        result.Count().Should().Be(2, "Result should contain 2 items");
+    }
+
+
+    [Fact]
+    public void GivenQuoteModel_WhenMappingToGetQuoteByIdHandlerResponse_MapsFieldsCorrectly()
+    {
+        // GIVEN
+        Quote model = new()
+        {
+            PublicId = Guid.NewGuid(),
+            Created = DateTime.Now,
+            Updated = DateTime.Now,
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN 
+        var result = Sut.Map<Quote, GetQuoteByIdHandlerResponse>(model);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(model.PublicId, "PublicId should match model");
+        result.Created.Should().Be(model.Created, "Created should match model");
+        result.Updated.Should().Be(model.Updated, "Updated should match model");
+        result.Value.Should().Be(model.Value, "Value should match model");
+    }
+
+    [Fact]
+    public void GivenGetQuoteByIdHandlerResponse_WhenMappingToGetQuoteByIdResponse_MapsFieldsCorrectly()
+    {
+        // GIVEN 
+
+        GetQuoteByIdHandlerResponse response = new()
+        {
+            PublicId= Guid.NewGuid(),
+            Created = DateTime.Now,
+            Updated = DateTime.Now,
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN 
+        var result = Sut.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(response);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(response.PublicId, "PublicId should match response");
+        result.Created.Should().Be(response.Created, "Created should match model");
+        result.Updated.Should().Be(response.Updated, "Updated should match model");
+        result.Value.Should().Be(response.Value, "Value should match response");
+    }
+
+    [Fact]
+    public void GivenQuoteModel_WhenMappingToCreateQuoteHandlerResponse_MapsFieldsCorrectly()
+    {
+        // GIVEN 
+        Quote model = new()
+        {
+            PublicId = Guid.NewGuid(),
+            Created = DateTime.Now,
+            Updated = DateTime.Now,
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN 
+        var result = Sut.Map<Quote, CreateQuoteHandlerResponse>(model);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(model.PublicId, "PublicId should match model");
+        result.Created.Should().Be(model.Created, "Created should match model");
+        result.Updated.Should().Be(model.Updated, "Updated should match model");
+        result.Value.Should().Be(model.Value, "Value should match model");
+    }
+
+    [Fact]
+    public void GivenCreateQuoteHandlerResponse_WhenMappingToCreateQuoteResponse_MapsFieldsCorrectly()
+    {
+        // GIVEN 
+        CreateQuoteHandlerResponse model = new()
+        {
+            PublicId = Guid.NewGuid(),
+            Created = DateTime.Now,
+            Updated = DateTime.Now,
+            Value = "VALUE-FOR-TEST"
+        };
+
+        // WHEN 
+        var result = Sut.Map<CreateQuoteHandlerResponse, CreateQuoteResponse>(model);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.PublicId.Should().Be(model.PublicId, "PublicId should match model");
+        result.Created.Should().Be(model.Created, "Created should match model");
+        result.Updated.Should().Be(model.Updated, "Updated should match model");
+        result.Value.Should().Be(model.Value, "Value should match model");
+    }
+
+    #endregion
 }

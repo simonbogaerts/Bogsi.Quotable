@@ -37,20 +37,28 @@ docker compose down
 
 ## Roadmap
 
-
-* Vertical Slice Get All, 
-* Get by id 
-* Create
-* Delete
-* Update 
+* result pattern (make nullable > non-nullable again)
 * Parameters GetAll 
+* concurrency 
+* Add service between repo and handler. make repo use entities and service use models.
 * Integration Test with Testcontainers
 * Cashing with Redis
 * Logging with SEQ
+* code quality with sonarcube
+* add documentation
+* Add additional pocos like author and tags
+* Add indexes 
 
 
 ## Additional
 
 * **Health checks**. https://www.youtube.com/watch?v=4abSfjdzqms
-* fix appsettings in docker
+* **Cursor pagination vs SkipTake Pagination**. https://www.youtube.com/watch?v=gfRJBoOuNUA
 * I chose to unit test my mappers because without them I wouldn't know about the resolver (since you can only have a single FromMember for a member).
+* I chose to use resolver instead of inline mapping because this makes the profile easier to read and profile doesn't need to know the specific of the resolve. 
+
+* have base model for getall model that has less info (no dates, tags)
+* endpoint handle returning status coded and calling the handler
+
+
+* swagger alternative: https://dev.to/eminvergil/an-alternative-to-swagger-in-dotnet-9-2jd6

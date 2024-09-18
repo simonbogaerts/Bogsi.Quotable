@@ -5,31 +5,40 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
 
-public sealed class GetQuotesEndpoint : IApiEndpoint
+public sealed class GetQuoteByIdEndpoint : IApiEndpoint
 {
     public void MapRoute(IEndpointRouteBuilder endpoints)
     {
         endpoints
-            .MapGet("quotes", GetQuotes)
+            .MapGet("quotes/{id:guid}", GetQuoteById)
             .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.GetQuotesEndpoint)
+            .WithName(Constants.Endpoints.QuoteEndpoints.GetQuoteByIdEndpoint)
             .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)
             .MapToApiVersion(1)
             .WithOpenApi();
     }
 
-    internal static async Task<IResult> GetQuotes(
-        [AsParameters] GetQuotesParameters parameters,
-        [FromServices] IGetQuotesHandler handler,
+    internal static async Task<IResult> GetQuoteById(
+        [FromRoute] Guid id,
+        [FromServices] IGetQuoteByIdHandler handler,
         [FromServices] IMapper mapper,
         CancellationToken cancellationToken)
     {
-        var handlerRequest = mapper.Map<GetQuotesParameters, GetQuotesHandlerRequest>(parameters);
+        GetQuoteByIdHandlerRequest handlerRequest = new()
+        {
+            PublicId = id
+        };
 
         var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
-        var response = mapper.Map<GetQuotesHandlerResponse?, GetQuotesResponse>(result); 
+        if (result is null)
+        {
+            return Results.NotFound();
+        }
+
+        var response = mapper.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(result);
 
         return Results.Ok(response);
     }

@@ -1,0 +1,39 @@
+### Default Request 
+### An example of a working request. 
+# @name example-request
+
+POST {{host-name}}/api/v1/quotes HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "value" : "Quote value comes here."
+}
+
+
+
+### Blocked Create 
+### Sending post to an Id is blocked. 
+# @name blocked-request
+
+@Public-Id = 64a140bd-bdfa-46e8-8cbf-169703626004
+
+POST {{host-name}}/api/v1/quotes/{{Public-Id}} HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "value" : "Doesn't matter. Conflict."
+}
+
+
+
+### Working Request
+### Use this request to test. The other two serve more as examples or guidelines.
+# @name test-request
+
+POST {{host-name}}/api/v1/quotes HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+< ./request-bodies/CreateQuote.json

@@ -28,18 +28,18 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
         builder
             .Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(ValueMaxLength);
+            .HasMaxLength(Application.Constants.QuoteProperties.Value.MaximumLength);
 
         builder
             .Property(x => x.Created)
-            .ValueGeneratedOnAdd()
-            .HasDefaultValueSql("NOW()")
+            //.ValueGeneratedOnAdd()
+            .HasDefaultValueSql(Constants.Functions.GetDate)
             .IsRequired();
 
         builder
             .Property(x => x.Updated)
-            .ValueGeneratedOnAddOrUpdate()
-            .HasDefaultValueSql("NOW()")
+            //.ValueGeneratedOnAddOrUpdate()
+            .HasDefaultValueSql(Constants.Functions.GetDate)
             .IsRequired()
             .IsConcurrencyToken();
 
@@ -49,8 +49,6 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
     #endregion
 
     #region Configuration Values
-
-    private const int ValueMaxLength = 1255;
 
     private static IEnumerable<QuoteEntity> Seed =>
     [

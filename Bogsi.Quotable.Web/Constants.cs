@@ -14,4 +14,19 @@ public static class Constants
         public const string ValidIssuer = "Authentication:ValidIssuer";
         public const string AuthorizationUrl = "Keycloak:AuthorizationUrl";
     }
+
+    public static class Endpoints
+    {
+        public const string Quotes = nameof(Quotes);
+        public const string Utilities = nameof(Utilities);
+
+        public static class QuoteEndpoints
+        {
+            public const string GetQuotesEndpoint = nameof(GetQuotesEndpoint);
+            public const string GetQuoteByIdEndpoint = nameof(GetQuoteByIdEndpoint);
+            public const string CreateQuoteEndpoint = nameof(CreateQuoteEndpoint);
+            public const string UpdateQuoteEndpoint = nameof(UpdateQuoteEndpoint);
+            public const string DeleteQuoteEndpoint = nameof(DeleteQuoteEndpoint);
+        }
+    }
 }

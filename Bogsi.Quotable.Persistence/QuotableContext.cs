@@ -18,7 +18,7 @@ public sealed class QuotableContext(DbContextOptions<QuotableContext> options)
     {
         modelBuilder.HasDefaultSchema(Constants.Schemas.Quotable);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(QuotableContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IPersistenceMarker).Assembly);
     }
 
     #endregion
