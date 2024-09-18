@@ -1,6 +1,5 @@
-﻿using Bogsi.Quotable.Application;
-
-using static Bogsi.Quotable.Application.Constants;
+﻿using Bogsi.Quotable.Test.Builders.Entities;
+using Bogsi.Quotable.Test.Builders.Models;
 
 namespace Bogsi.Quotable.Test.Unit.Mappings;
 
@@ -23,14 +22,7 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
     public void GivenQuoteEntity_WhenMappingToModel_MapsFieldsCorrectly()
     {
         // GIVEN
-        QuoteEntity entity = new()
-        {
-            Id = 1,
-            PublicId = Guid.NewGuid(),
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
+        QuoteEntity entity = new QuoteEntityBuilder().Build();
 
         // WHEN 
         var result = Sut.Map<QuoteEntity, Quote>(entity);
@@ -46,21 +38,8 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
     {
         // GIVEN
         Guid publicId = Guid.NewGuid();
-
-        QuoteEntity entity = new()
-        {
-            Id = 1,
-            PublicId = publicId,
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
-
-        Quote model = new()
-        {
-            PublicId = publicId,
-            Value = "UPDATED-VALUE-FOR-TEST"
-        };
+        QuoteEntity entity = new QuoteEntityBuilder().WithPublicId(publicId).Build();
+        Quote model = new QuoteBuilder().WithPublicId(publicId).WithValue("UPDATED-VALUE").Build();
 
         // WHEN
         var result = Sut.Map(model, entity);
@@ -228,13 +207,7 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
     public void GivenQuoteModel_WhenMappingToGetQuotesSingleQuoteHandlerResponse_MapsFieldsCorrectly()
     {
         // GIVEN
-        Quote model = new()
-        {
-            PublicId = Guid.NewGuid(),
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
+        Quote model = new QuoteBuilder().Build();
 
         // WHEN 
         var result = Sut.Map<Quote, GetQuotesSingleQuoteHandlerResponse>(model);
@@ -296,13 +269,7 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
     public void GivenQuoteModel_WhenMappingToGetQuoteByIdHandlerResponse_MapsFieldsCorrectly()
     {
         // GIVEN
-        Quote model = new()
-        {
-            PublicId = Guid.NewGuid(),
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
+        Quote model = new QuoteBuilder().Build();
 
         // WHEN 
         var result = Sut.Map<Quote, GetQuoteByIdHandlerResponse>(model);
@@ -343,13 +310,7 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
     public void GivenQuoteModel_WhenMappingToCreateQuoteHandlerResponse_MapsFieldsCorrectly()
     {
         // GIVEN 
-        Quote model = new()
-        {
-            PublicId = Guid.NewGuid(),
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
+        Quote model = new QuoteBuilder().Build();
 
         // WHEN 
         var result = Sut.Map<Quote, CreateQuoteHandlerResponse>(model);

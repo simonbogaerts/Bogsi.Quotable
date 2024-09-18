@@ -1,5 +1,6 @@
 ﻿using Bogsi.Quotable.Infrastructure.Repositories;
 using Bogsi.Quotable.Persistence;
+using Bogsi.Quotable.Test.Builders.Entities;
 
 namespace Bogsi.Quotable.Test.Unit.Repositories;
 
@@ -33,8 +34,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
     {
         // GIVEN
         List<QuoteEntity> quoteEntities = [
-            new QuoteEntity { Id = 1, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now },
-            new QuoteEntity { Id = 2, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now }
+            new QuoteEntityBuilder().Build(),
+            new QuoteEntityBuilder().Build()
         ];
 
         _quotable.Quotes.AddRange(quoteEntities);
@@ -72,8 +73,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var value = "ENTITY-VALUE";
 
         List<QuoteEntity> quoteEntities = [
-            new QuoteEntity { Id = 1, PublicId = publicId, Value = value, Created = DateTime.Now, Updated = DateTime.Now },
-            new QuoteEntity { Id = 2, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now }
+            new QuoteEntityBuilder().WithPublicId(publicId).WithValue(value).Build(),
+            new QuoteEntityBuilder().Build()
         ];
 
         _quotable.Quotes.AddRange(quoteEntities);
@@ -95,8 +96,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var publicId = Guid.NewGuid();
 
         List<QuoteEntity> quoteEntities = [
-            new QuoteEntity { Id = 1, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now },
-            new QuoteEntity { Id = 2, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now }
+            new QuoteEntityBuilder().Build(),
+            new QuoteEntityBuilder().Build()
         ];
 
         _quotable.Quotes.AddRange(quoteEntities);
@@ -120,8 +121,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var publicId = Guid.NewGuid();
 
         List<QuoteEntity> quoteEntities = [
-            new QuoteEntity { Id = 1, PublicId = publicId, Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now },
-            new QuoteEntity { Id = 2, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now }
+            new QuoteEntityBuilder().WithPublicId(publicId).Build(),
+            new QuoteEntityBuilder().Build()
         ];
 
         _quotable.Quotes.AddRange(quoteEntities);
@@ -141,8 +142,8 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var publicId = Guid.NewGuid();
 
         List<QuoteEntity> quoteEntities = [
-            new QuoteEntity { Id = 1, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now },
-            new QuoteEntity { Id = 2, PublicId = Guid.NewGuid(), Value = "VALUE", Created = DateTime.Now, Updated = DateTime.Now }
+            new QuoteEntityBuilder().Build(),
+            new QuoteEntityBuilder().Build()
         ];
 
         _quotable.Quotes.AddRange(quoteEntities);
