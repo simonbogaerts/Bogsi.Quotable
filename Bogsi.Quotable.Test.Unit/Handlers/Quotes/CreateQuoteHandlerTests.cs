@@ -1,4 +1,6 @@
-﻿using Bogsi.Quotable.Application.Interfaces.Utilities;
+﻿using Bogsi.Quotable.Application.Errors;
+using Bogsi.Quotable.Application.Interfaces.Utilities;
+using Bogsi.Quotable.Test.Builders.Requests;
 
 namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
@@ -16,7 +18,7 @@ public class CreateQuoteHandlerTests : TestBase<CreateQuoteHandler>
         _mapper = ConfigureMapper();
         _repository = Substitute.For<IRepository<Quote>>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
-        _cancellationToken = new CancellationToken();
+        _cancellationToken = new();
 
         CreateQuoteHandler sut = new(
             _repository,
@@ -32,10 +34,7 @@ public class CreateQuoteHandlerTests : TestBase<CreateQuoteHandler>
     public async Task GivenCreateQuoteHandler_WhenValidRequestIsProvided_ThenNewQuoteIsCreatedAndReturned()
     {
         // GIVEN
-        CreateQuoteHandlerRequest request = new()
-        {
-            Value = "VALUE-FOR-TEST"
-        };
+        CreateQuoteHandlerRequest request = new CreateQuoteHandlerRequestBuilder().Build();
 
         _unitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(true);
 
@@ -49,5 +48,23 @@ public class CreateQuoteHandlerTests : TestBase<CreateQuoteHandler>
         result.Value.Should().NotBeNull("Result should contain success value");
         result.Value.Value.Should().Be(request.Value, "Value should match the request");
         result.Value.PublicId.Should().NotBe(Guid.Empty, "PublicId should not be Guid.Empty");
+    }
+
+    [Fact]
+    public async Task GivenCreateQuoteHandler_WhenSavingContextFails_ThenReturnQuotableError()
+    {
+        // GIVEN
+        CreateQuoteHandlerRequest request = new CreateQuoteHandlerRequestBuilder().Build();
+
+        _unitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(false);
+
+        // WHEN
+        var result = await Sut.HandleAsync(request, _cancellationToken);
+
+        // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.IsSuccess.Should().BeFalse("Result should be failure");
+        result.IsFailure.Should().BeTrue("Result should be failure");
+        result.Error.Should().Be(QuotableErrors.InternalError, "Error should be InternalError");
     }
 }

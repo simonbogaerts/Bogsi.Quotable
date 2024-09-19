@@ -16,7 +16,7 @@ public sealed class QuoteEntityBuilder : BuilderBase<QuoteEntity>
             PublicId = Guid.NewGuid(),
             Created = now,
             Updated = now,
-            Value = "Default-value"
+            Value = "DEFAULT-VALUE"
         };
     }
 

@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+
 using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
 using Bogsi.Quotable.Persistence;
+
 using CSharpFunctionalExtensions;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Bogsi.Quotable.Infrastructure.Repositories;

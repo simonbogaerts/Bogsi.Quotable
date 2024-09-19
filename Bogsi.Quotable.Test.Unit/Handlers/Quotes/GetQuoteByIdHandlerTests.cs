@@ -1,4 +1,6 @@
 ﻿using Bogsi.Quotable.Application.Errors;
+using Bogsi.Quotable.Test.Builders.Models;
+using Bogsi.Quotable.Test.Builders.Requests;
 
 namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
@@ -14,7 +16,7 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
     {
         _mapper = ConfigureMapper();
         _repository = Substitute.For<IReadonlyRepository<Quote>>();
-        _cancellationToken = new CancellationToken();
+        _cancellationToken = new();
 
         GetQuoteByIdHandler sut = new(
             _repository,
@@ -31,18 +33,9 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
         // GIVEN
         var publicId = Guid.NewGuid();
 
-        GetQuoteByIdHandlerRequest request = new()
-        {
-            PublicId = publicId
-        };
-
-        Quote model = new()
-        {
-            PublicId = publicId,
-            Created = DateTime.Now,
-            Updated = DateTime.Now,
-            Value = "VALUE-FOR-TEST"
-        };
+        GetQuoteByIdHandlerRequest request = new GetQuoteByIdHandlerRequestBuilder().WithPublicId(publicId).Build();
+        
+        Quote model = new QuoteBuilder().WithPublicId(publicId).Build();
 
         _repository
             .GetByIdAsync(Arg.Is(publicId), Arg.Any<CancellationToken>())
@@ -64,10 +57,7 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
     public async Task GivenGetQuoteByIdHandler_WhenPublicIdDoesNotMatchAny_ThenReturnFailureResult()
     {
         // GIVEN
-        GetQuoteByIdHandlerRequest request = new()
-        {
-            PublicId = Guid.NewGuid()
-        };
+        GetQuoteByIdHandlerRequest request = new GetQuoteByIdHandlerRequestBuilder().Build();
 
         _repository
             .GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>())
@@ -80,5 +70,6 @@ public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
         result.Should().NotBeNull("Result should not be NULL");
         result.IsSuccess.Should().BeFalse("Result should be failure");
         result.IsFailure.Should().BeTrue("Result should be failure");
+        result.Error.Should().Be(QuotableErrors.NotFound, "Error should be NotFound");
     }
 }

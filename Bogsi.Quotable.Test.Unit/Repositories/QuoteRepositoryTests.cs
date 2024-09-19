@@ -2,6 +2,7 @@ using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Infrastructure.Repositories;
 using Bogsi.Quotable.Persistence;
 using Bogsi.Quotable.Test.Builders.Entities;
+using Bogsi.Quotable.Test.Builders.Models;
 
 namespace Bogsi.Quotable.Test.Unit.Repositories;
 
@@ -17,7 +18,7 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
     {
         _quotable = ConfigureDatabase();
         _mapper = ConfigureMapper();
-        _cancellationToken = new CancellationToken();
+        _cancellationToken = new();
 
         QuoteRepository sut = new(
             _quotable,
@@ -98,7 +99,7 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
     }
 
     [Fact]
-    public async Task GivenGetByIdAsync_WhenPublicIdDoesNotMatchAny_ThenReturnNull()
+    public async Task GivenGetByIdAsync_WhenPublicIdDoesNotMatchAny_ThenReturnQuotableError()
     {
         // GIVEN
         var publicId = Guid.NewGuid();
@@ -115,6 +116,46 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.GetByIdAsync(publicId, _cancellationToken);
 
         // THEN 
+        result.Should().NotBeNull("Result should not be NULL");
+        result.IsSuccess.Should().BeFalse("Result should be failure");
+        result.IsFailure.Should().BeTrue("Result should be failure");
+        result.Error.Should().Be(QuotableErrors.NotFound, "Error should be NotFound");
+    }
+
+    #endregion
+
+    #region UpdateAsync
+
+    [Fact]
+    public async Task GivenUpdateAsync_WhenEntityIsNotFound_ThenReturnQuotableError()
+    {
+        // GIVEN
+        Quote model = new QuoteBuilder().Build();
+
+        // WHEN
+        var result = await Sut.UpdateAsync(model, _cancellationToken);
+
+        // THEN
+        result.Should().NotBeNull("Result should not be NULL");
+        result.IsSuccess.Should().BeFalse("Result should be failure");
+        result.IsFailure.Should().BeTrue("Result should be failure");
+        result.Error.Should().Be(QuotableErrors.NotFound, "Error should be NotFound");
+    }
+
+    #endregion
+
+    #region DeleteAsync
+
+    [Fact]
+    public async Task GivenDeleteAsync_WhenEntityIsNotFound_ThenReturnQuotableError()
+    {
+        // GIVEN
+        Quote model = new QuoteBuilder().Build();
+
+        // WHEN
+        var result = await Sut.DeleteAsync(model, _cancellationToken);
+
+        // THEN
         result.Should().NotBeNull("Result should not be NULL");
         result.IsSuccess.Should().BeFalse("Result should be failure");
         result.IsFailure.Should().BeTrue("Result should be failure");

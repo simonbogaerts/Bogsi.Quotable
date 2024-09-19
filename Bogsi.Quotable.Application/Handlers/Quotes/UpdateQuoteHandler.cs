@@ -38,8 +38,6 @@ public sealed class UpdateQuoteHandler(
         UpdateQuoteHandlerRequest request, 
         CancellationToken cancellationToken)
     {
-        UpdateQuoteHandlerResponse response = new();
-
         var quote = _mapper.Map<UpdateQuoteHandlerRequest, Quote>(request);
 
         bool isSaveSuccess = false;
@@ -69,6 +67,6 @@ public sealed class UpdateQuoteHandler(
             return QuotableErrors.InternalError;
         }
 
-        return response;
+        return new();
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+﻿using Bogsi.Quotable.Test.Builders.Models;
+using Bogsi.Quotable.Test.Builders.Requests;
+
+namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
 public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
 {
@@ -12,7 +15,7 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
     {
         _mapper = ConfigureMapper();
         _repository = Substitute.For<IReadonlyRepository<Quote>>();
-        _cancellationToken = new CancellationToken();
+        _cancellationToken = new();
 
         GetQuotesHandler sut = new(
             _repository,
@@ -27,12 +30,12 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
     public async Task GivenGetQuotesHandler_WhenParametersDontMatter_ReturnAllQuotesAsResponseModel()
     {
         // GIVEN
-        GetQuotesHandlerRequest request = new();
+        GetQuotesHandlerRequest request = new GetQuotesHandlerRequestBuilder().Build();
 
         List<Quote> quotes =
             [
-                new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" },
-                new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" }
+                new QuoteBuilder().Build(),
+                new QuoteBuilder().Build()
             ];
 
         _repository.GetAsync(Arg.Any<CancellationToken>()).Returns(quotes);

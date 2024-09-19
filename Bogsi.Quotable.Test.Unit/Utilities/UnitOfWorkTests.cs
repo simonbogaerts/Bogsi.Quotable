@@ -15,7 +15,7 @@ public sealed class UnitOfWorkTests : TestBase<IUnitOfWork>
     protected override IUnitOfWork Construct()
     {
         _quotable = ConfigureDatabase();
-        _cancellationToken = new CancellationToken();
+        _cancellationToken = new();
 
         UnitOfWork sut = new(_quotable);
 

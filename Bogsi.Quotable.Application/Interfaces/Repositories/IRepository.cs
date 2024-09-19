@@ -1,6 +1,6 @@
-﻿using Bogsi.Quotable.Application.Entities;
-using Bogsi.Quotable.Application.Errors;
+﻿using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Models;
+
 using CSharpFunctionalExtensions;
 
 namespace Bogsi.Quotable.Application.Interfaces.Repositories;
