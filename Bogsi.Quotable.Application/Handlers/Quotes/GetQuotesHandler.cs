@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Abstract;
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
+using CSharpFunctionalExtensions;
 
 namespace Bogsi.Quotable.Application.Handlers.Quotes;
 
 public interface IGetQuotesHandler
 {
-    Task<GetQuotesHandlerResponse> HandleAsync(
+    Task<Result<GetQuotesHandlerResponse, QuotableError>> HandleAsync(
         GetQuotesHandlerRequest request,
         CancellationToken cancellationToken);
 }
@@ -40,13 +42,18 @@ public sealed class GetQuotesHandler(
     private readonly IReadonlyRepository<Quote> _quoteRepository = quoteRepository ?? throw new ArgumentNullException(nameof(quoteRepository));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-    public async Task<GetQuotesHandlerResponse> HandleAsync(
+    public async Task<Result<GetQuotesHandlerResponse, QuotableError>> HandleAsync(
         GetQuotesHandlerRequest request,
         CancellationToken cancellationToken)
     {
         var result = await _quoteRepository.GetAsync(cancellationToken);
 
-        var response = _mapper.Map<List<Quote>?, GetQuotesHandlerResponse>(result);
+        if (result.IsFailure)
+        {
+            return result.Error;
+        }
+
+        var response = _mapper.Map<List<Quote>?, GetQuotesHandlerResponse>(result.Value);
 
         return response;
     }

@@ -37,17 +37,23 @@ docker compose down
 
 ## Roadmap
 
-* result pattern (make nullable > non-nullable again)
-* Parameters GetAll 
+* Parameters GetAll and specification pattern 
 * concurrency 
-* Add service between repo and handler. make repo use entities and service use models.
 * Integration Test with Testcontainers
 * Cashing with Redis
 * Logging with SEQ
 * code quality with sonarcube
+* head and options endpoints 
 * add documentation
 * Add additional pocos like author and tags
 * Add indexes 
+
+
+
+## Considerations
+
+* Add service between repo and handler. make repo use entities and service use models?
+
 
 
 ## Additional

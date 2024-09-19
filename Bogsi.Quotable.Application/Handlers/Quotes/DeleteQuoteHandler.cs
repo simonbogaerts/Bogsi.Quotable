@@ -1,12 +1,14 @@
-﻿using Bogsi.Quotable.Application.Interfaces.Repositories;
+using Bogsi.Quotable.Application.Errors;
+using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
+using CSharpFunctionalExtensions;
 
 namespace Bogsi.Quotable.Application.Handlers.Quotes;
 
 public interface IDeleteQuoteHandler
 {
-    Task<DeleteQuoteHandlerResponse> HandleAsync(
+    Task<Result<DeleteQuoteHandlerResponse, QuotableError>> HandleAsync(
         DeleteQuoteHandlerRequest request,
         CancellationToken cancellationToken);
 }
@@ -28,17 +30,15 @@ public sealed class DeleteQuoteHandler(
     private readonly IRepository<Quote> _quoteRepository = quoteRepository ?? throw new ArgumentNullException(nameof(quoteRepository));
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
-    public async Task<DeleteQuoteHandlerResponse> HandleAsync(
+    public async Task<Result<DeleteQuoteHandlerResponse, QuotableError>> HandleAsync(
         DeleteQuoteHandlerRequest request, 
         CancellationToken cancellationToken)
     {
-        DeleteQuoteHandlerResponse response = new();
-
         var model = await _quoteRepository.GetByIdAsync(request.PublicId, cancellationToken);
 
-        if (model is null)
+        if (model.IsFailure) 
         {
-            return response;
+            return model.Error;
         }
 
         bool isSaveSuccess = false; 
@@ -47,7 +47,7 @@ public sealed class DeleteQuoteHandler(
 
         try
         {
-            await _quoteRepository.DeleteAsync(model, cancellationToken);
+            await _quoteRepository.DeleteAsync(model.Value, cancellationToken);
 
             isSaveSuccess = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -60,9 +60,9 @@ public sealed class DeleteQuoteHandler(
 
         if (!isSaveSuccess)
         {
-            return response;
+            return QuotableErrors.InternalError;
         }
 
-        return response;
+        return new();
     }
 }

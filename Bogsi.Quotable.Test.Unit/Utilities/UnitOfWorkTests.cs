@@ -1,6 +1,7 @@
 ﻿using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Infrastructure.Utilities;
 using Bogsi.Quotable.Persistence;
+using Bogsi.Quotable.Test.Builders.Entities;
 
 namespace Bogsi.Quotable.Test.Unit.Utilities;
 
@@ -14,7 +15,7 @@ public sealed class UnitOfWorkTests : TestBase<IUnitOfWork>
     protected override IUnitOfWork Construct()
     {
         _quotable = ConfigureDatabase();
-        _cancellationToken = new CancellationToken();
+        _cancellationToken = new();
 
         UnitOfWork sut = new(_quotable);
 
@@ -27,11 +28,7 @@ public sealed class UnitOfWorkTests : TestBase<IUnitOfWork>
     public async Task GivenUnitOfWork_WhenItemIsAddedToContext_ThenSaveChangesAsyncReturnsTrue()
     {
         // GIVEN
-        QuoteEntity model = new()
-        {
-            PublicId = Guid.NewGuid(),
-            Value = "VALUE-FOR-TEST"
-        };
+        QuoteEntity model = new QuoteEntityBuilder().Build();
 
         _quotable.Quotes.Add(model);
 

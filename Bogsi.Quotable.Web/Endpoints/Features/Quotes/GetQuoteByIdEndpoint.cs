@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Quotes;
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,12 +34,15 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
 
         var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
-        if (result is null)
+        if (result.IsFailure)
         {
-            return Results.NotFound();
+            if (result.Error == QuotableErrors.NotFound)
+            {
+                return Results.NotFound();
+            }
         }
 
-        var response = mapper.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(result);
+        var response = mapper.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(result.Value);
 
         return Results.Ok(response);
     }

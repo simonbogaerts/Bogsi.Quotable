@@ -1,13 +1,15 @@
-﻿using AutoMapper;
+using AutoMapper;
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
+using CSharpFunctionalExtensions;
 
 namespace Bogsi.Quotable.Application.Handlers.Quotes;
 
 public interface IUpdateQuoteHandler
 {
-    Task<UpdateQuoteHandlerResponse> HandleAsync(
+    Task<Result<UpdateQuoteHandlerResponse, QuotableError>> HandleAsync(
         UpdateQuoteHandlerRequest request,
         CancellationToken cancellationToken);
 }
@@ -32,12 +34,10 @@ public sealed class UpdateQuoteHandler(
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
-    public async Task<UpdateQuoteHandlerResponse> HandleAsync(
+    public async Task<Result<UpdateQuoteHandlerResponse, QuotableError>> HandleAsync(
         UpdateQuoteHandlerRequest request, 
         CancellationToken cancellationToken)
     {
-        UpdateQuoteHandlerResponse response = new();
-
         var quote = _mapper.Map<UpdateQuoteHandlerRequest, Quote>(request);
 
         bool isSaveSuccess = false;
@@ -46,7 +46,12 @@ public sealed class UpdateQuoteHandler(
 
         try
         {
-            await _quoteRepository.UpdateAsync(quote, cancellationToken);
+            var result = await _quoteRepository.UpdateAsync(quote, cancellationToken);
+
+            if (result.IsFailure) 
+            {
+                return result.Error;
+            }
 
             isSaveSuccess = await _unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -59,9 +64,9 @@ public sealed class UpdateQuoteHandler(
 
         if (!isSaveSuccess)
         {
-            return response;
+            return QuotableErrors.InternalError;
         }
 
-        return response;
+        return new();
     }
 }

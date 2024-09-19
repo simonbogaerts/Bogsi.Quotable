@@ -1,4 +1,5 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes;
+﻿using Bogsi.Quotable.Test.Builders.Models;
+using Bogsi.Quotable.Test.Builders.Requests;
 
 namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
@@ -14,7 +15,7 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
     {
         _mapper = ConfigureMapper();
         _repository = Substitute.For<IReadonlyRepository<Quote>>();
-        _cancellationToken = new CancellationToken();
+        _cancellationToken = new();
 
         GetQuotesHandler sut = new(
             _repository,
@@ -29,12 +30,12 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
     public async Task GivenGetQuotesHandler_WhenParametersDontMatter_ReturnAllQuotesAsResponseModel()
     {
         // GIVEN
-        GetQuotesHandlerRequest request = new();
+        GetQuotesHandlerRequest request = new GetQuotesHandlerRequestBuilder().Build();
 
         List<Quote> quotes =
             [
-                new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" },
-                new (){ PublicId = Guid.NewGuid(), Created = DateTime.Now, Updated = DateTime.Now, Value = "VALUE" }
+                new QuoteBuilder().Build(),
+                new QuoteBuilder().Build()
             ];
 
         _repository.GetAsync(Arg.Any<CancellationToken>()).Returns(quotes);
@@ -44,6 +45,9 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
 
         //THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result.Count().Should().Be(2, "Result should contain 2 items");
+        result.IsSuccess.Should().BeTrue("Result should be success");
+        result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Should().NotBeNull("Result should contain success value");
+        result.Value.Count().Should().Be(2, "Result should contain 2 items");
     }
 }

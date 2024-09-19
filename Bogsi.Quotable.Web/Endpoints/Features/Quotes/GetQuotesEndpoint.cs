@@ -29,7 +29,12 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
 
         var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
-        var response = mapper.Map<GetQuotesHandlerResponse?, GetQuotesResponse>(result); 
+        if (result.IsFailure)
+        {
+            // Becomes applicable when doing something with the parameters.
+        }
+
+        var response = mapper.Map<GetQuotesHandlerResponse?, GetQuotesResponse>(result.Value); 
 
         return Results.Ok(response);
     }

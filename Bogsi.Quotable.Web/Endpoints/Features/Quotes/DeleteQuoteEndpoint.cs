@@ -1,4 +1,5 @@
-﻿using Bogsi.Quotable.Application.Handlers.Quotes;
+﻿using Bogsi.Quotable.Application.Errors;
+using Bogsi.Quotable.Application.Handlers.Quotes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
@@ -30,7 +31,19 @@ public sealed class DeleteQuoteEndpoint : IApiEndpoint
 
         var result = await handler.HandleAsync(request, cancellationToken);
 
-        // return notfound or nocontent based upon error when migrating to result pattern.
+        if (result.IsFailure)
+        {
+            if (result.Error == QuotableErrors.NotFound)
+            {
+                return Results.NotFound();
+            }
+
+            if (result.Error == QuotableErrors.InternalError)
+            {
+                return Results.Problem(statusCode: 500);
+            }
+        }
+
         return Results.NoContent();
     }
 }
