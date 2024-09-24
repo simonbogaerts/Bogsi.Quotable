@@ -45,7 +45,7 @@ public sealed class GetQuotesHandler(
         GetQuotesHandlerRequest request,
         CancellationToken cancellationToken)
     {
-        var result = await _quoteRepository.GetAsync(request.PageNumber, request.PageSize, cancellationToken);
+        var result = await _quoteRepository.GetAsync(request, cancellationToken);
 
         if (result.IsFailure)
         {

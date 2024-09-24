@@ -40,7 +40,7 @@ docker compose down
 PagedList/CursorList first before adding specifications
 
 
-* Parameters GetAll and specification pattern 
+* Parameters GetAll
 * concurrency 
 * Integration Test with Testcontainers
 * Cashing with Redis
