@@ -1,4 +1,5 @@
-﻿using Bogsi.Quotable.Application.Validators;
+﻿using Bogsi.Quotable.Application;
+using Bogsi.Quotable.Application.Validators;
 using Bogsi.Quotable.Test.Builders.Requests;
 using Bogsi.Quotable.Test.Utilities;
 using FluentValidation;
@@ -67,7 +68,7 @@ public class UpdateQuoteHandlerRequestValidatorTests : TestBase<IValidator<Updat
     public void GivenUpdateQuoteHandlerRequest_WhenValueIsLongerTenMaximum_ThenReturnIsValidFalse()
     {
         // GIVEN
-        var toLong = QuoteProperties.Value.MaximumLength + 1;
+        var toLong = Constants.Quote.Properties.Value.MaximumLength + 1;
         var toLongValue = RandomStringGenerator.GenerateRandomString(toLong);
 
         var request = new UpdateQuoteHandlerRequestBuilder().WithValue(toLongValue).Build();

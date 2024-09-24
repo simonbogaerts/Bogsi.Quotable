@@ -34,7 +34,7 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
             // Becomes applicable when doing something with the parameters.
         }
 
-        var response = mapper.Map<GetQuotesHandlerResponse?, GetQuotesResponse>(result.Value); 
+        var response = mapper.Map<GetQuotesHandlerResponse?, GetQuotesResponse>(result.Value);
 
         return Results.Ok(response);
     }

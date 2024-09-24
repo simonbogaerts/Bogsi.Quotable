@@ -1,5 +1,6 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Bogsi.Quotable.Application.Contracts.Abstract;
+using Bogsi.Quotable.Application.Utilities;
 
 namespace Bogsi.Quotable.Application.Contracts.Quotes;
 
@@ -10,34 +11,25 @@ public struct GetQuotesParameters
 {
     public GetQuotesParameters()
     {
-        PageNumber = Constants.PageNumber.Default;
-        PageSize = Constants.PageSize.Default;
+        Cursor = Constants.Cursor.Default;
+        Size = Constants.Size.Default;
     }
 
     #region Pagination
 
-    [DefaultValue(Constants.PageNumber.Default)]
-    public int? PageNumber { get; init; }
+    [DefaultValue(Constants.Cursor.Default)]
+    public int? Cursor { get; init; }
 
-    [DefaultValue(Constants.PageSize.Default)]
-    public int? PageSize { get; init; }
+    [DefaultValue(Constants.Size.Default)]
+    public int? Size { get; init; }
 
     #endregion
 
     #region Additional
 
-    // Filters 
     public string? Origin { get; init; }
     public string? Tag { get; init; }
-
-    // Searching
     public string? SearchQuery { get; init; }
-
-    // Ordering
-    public string? OrderBy { get; init; }
-
-    // Datashaping
-    public string? Fields { get; init; }
 
     #endregion
 }
@@ -47,7 +39,7 @@ public sealed record GetQuotesSingleQuoteResponse : AbstractQuoteResponse
 
 }
 
-public sealed class GetQuotesResponse : List<GetQuotesSingleQuoteResponse>
+public sealed record GetQuotesResponse : CursorResponse<List<GetQuotesSingleQuoteResponse>>
 {
 
 }

@@ -1,5 +1,8 @@
-﻿using Bogsi.Quotable.Test.Builders.Entities;
+﻿using Bogsi.Quotable.Application;
+using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Builders.Models;
+
+using Quote = Bogsi.Quotable.Application.Models.Quote;
 
 namespace Bogsi.Quotable.Test.Unit.Mappings;
 
@@ -62,13 +65,11 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
         // GIVEN
         GetQuotesParameters parameters = new()
         {
-            PageNumber = 1,
-            PageSize = 10,
+            Cursor = 1,
+            Size = 10,
             Origin = "ORIGIN",
             Tag = "TAG",
-            OrderBy = "ORDERBY",
-            SearchQuery = "SEARCHQUERY",
-            Fields = "FIELDS"
+            SearchQuery = "SEARCHQUERY"
         };
 
         // WHEN 
@@ -76,25 +77,23 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result.PageNumber.Should().Be(parameters.PageNumber, "PageNumer should match parameters");
-        result.PageSize.Should().Be(parameters.PageSize, "PageSize should match parameters");
+        result.Cursor.Should().Be(parameters.Cursor, "PageNumer should match parameters");
+        result.Size.Should().Be(parameters.Size, "PageSize should match parameters");
         result.Origin.Should().Be(parameters.Origin, "Origin should match parameters");
         result.Tag.Should().Be(parameters.Tag, "Tag should match parameters");
-        result.OrderBy.Should().Be(parameters.OrderBy, "OrderBy should match parameters");
         result.SearchQuery.Should().Be(parameters.SearchQuery, "SearchQuery should match parameters");
-        result.Fields.Should().Be(parameters.Fields, "Fields should match parameters");
     }
 
     [Theory]
     [InlineData(null, null)]
     [InlineData(0, 0)]
-    public void GivenGetQuotesParameters_WhenPageNumberOrPageSizeIsNullOrZero_ThenDefaultValuesAreProvided(int? pageNumber, int? pageSize)
+    public void GivenGetQuotesParameters_WhenPageNumberOrPageSizeIsNullOrZero_ThenDefaultValuesAreProvided(int? cursor, int? size)
     {
         // GIVEN
         GetQuotesParameters parameters = new()
         {
-            PageNumber = pageNumber,
-            PageSize = pageSize
+            Cursor = cursor,
+            Size = size
         };
 
         // WHEN
@@ -102,19 +101,19 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
 
         // THAN 
         result.Should().NotBeNull("Result should not be NULL");
-        result.PageNumber.Should().Be(PageNumber.Default, "PageNumber should match constant");
-        result.PageSize.Should().Be(PageSize.Default, "PageSize should match constant");
+        result.Cursor.Should().Be(Cursor.Default, "PageNumber should match constant");
+        result.Size.Should().Be(Size.Default, "PageSize should match constant");
     }
 
     [Fact]
     public void GivenGetQuotesParameters_WhenPageSizeIsMoreThanMaximum_ThenMaximumValueIsProvided()
     {
         // GIVEN
-        int wrongPageSize = PageSize.Maximum + 1;
+        int wrongPageSize = Size.Maximum + 1;
 
         GetQuotesParameters parameters = new()
         {
-            PageSize = wrongPageSize
+            Size = wrongPageSize
         };
 
         // WHEN
@@ -122,7 +121,7 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
 
         // THEN
         result.Should().NotBeNull("Result should not be NULL");
-        result.PageSize.Should().Be(PageSize.Maximum, "PageSize should match constant");
+        result.Size.Should().Be(Size.Maximum, "PageSize should match constant");
     }
 
     [Fact]
@@ -241,7 +240,7 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
     public void GivenGetQuotesHandlerResponse_WhenMappingToGetQuotesResponse_MapsFieldsCorrectly()
     {
         // GIVEN
-        GetQuotesHandlerResponse response =
+        List<GetQuotesSingleQuoteHandlerResponse> data =
         [
             new()
             {
@@ -255,13 +254,24 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
             }
         ];
 
+        GetQuotesHandlerResponse response = new()
+        {
+            Cursor = Cursor.Default + Cursor.Offset,
+            Size = Size.Default,
+            Total = data.Count,
+            Data = data
+        };
+
         // WHEN 
         var result = Sut.Map<GetQuotesHandlerResponse, GetQuotesResponse>(response);
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
-        result.Should().NotBeNullOrEmpty("Result should not be empty");
-        result.Count().Should().Be(2, "Result should contain 2 items");
+        result.Data.Should().NotBeNullOrEmpty("Result should not be empty");
+        result.Data.Count().Should().Be(2, "Result should contain 2 items");
+        result.Cursor.Should().Be(Cursor.Default + Cursor.Offset, $"Cursor should be {Cursor.Default + Cursor.Offset}");
+        result.Size.Should().Be(Size.Default, $"Size should be {Size.Default}");
+        result.HasNext.Should().BeFalse("HasNext should be false");
     }
 
 

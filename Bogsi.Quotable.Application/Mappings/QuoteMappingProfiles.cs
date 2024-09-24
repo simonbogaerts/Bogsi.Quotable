@@ -4,6 +4,7 @@ using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 using Bogsi.Quotable.Application.Mappings.Resolvers;
 using Bogsi.Quotable.Application.Models;
+using Bogsi.Quotable.Application.Utilities;
 
 namespace Bogsi.Quotable.Application.Mappings;
 
@@ -30,8 +31,8 @@ public sealed class QuoteMappingProfiles : Profile
     {
         // Get Quotes
         CreateMap<GetQuotesParameters, GetQuotesHandlerRequest>()
-            .ForMember(dest => dest.PageNumber, opt => opt.MapFrom<PageNumberResolver>())
-            .ForMember(dest => dest.PageSize, opt => opt.MapFrom<PageSizeResolver>());
+            .ForMember(dest => dest.Cursor, opt => opt.MapFrom<CursorResolver>())
+            .ForMember(dest => dest.Size, opt => opt.MapFrom<SizeResolver>());
 
         // Create Quote
         CreateMap<CreateQuoteRequest, CreateQuoteHandlerRequest>();
@@ -49,6 +50,8 @@ public sealed class QuoteMappingProfiles : Profile
         // Get Quotes
         CreateMap<Quote, GetQuotesSingleQuoteHandlerResponse>();
         CreateMap<GetQuotesSingleQuoteHandlerResponse, GetQuotesSingleQuoteResponse>();
+        CreateMap<CursorResponse<List<Quote>>, GetQuotesHandlerResponse>();
+        CreateMap<GetQuotesHandlerResponse, GetQuotesResponse>();
 
         // Get Quote By Id 
         CreateMap<Quote, GetQuoteByIdHandlerResponse>();

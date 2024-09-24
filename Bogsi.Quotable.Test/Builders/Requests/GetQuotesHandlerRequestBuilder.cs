@@ -10,21 +10,21 @@ public sealed class GetQuotesHandlerRequestBuilder : BuilderBase<GetQuotesHandle
     {
         Instance = new GetQuotesHandlerRequest()
         {
-            PageNumber = Application.Constants.PageNumber.Default,
-            PageSize = Application.Constants.PageSize.Default
+            Cursor = Application.Constants.Cursor.Default,
+            Size = Application.Constants.Size.Default
         };
     }
 
-    public GetQuotesHandlerRequestBuilder WithPageNumber(int pageNumber)
+    public GetQuotesHandlerRequestBuilder WithCursor(int cursor)
     {
-        Instance = Instance with { PageNumber = pageNumber };
+        Instance = Instance with { Cursor = cursor };
 
         return this;
     }
 
-    public GetQuotesHandlerRequestBuilder WithPageSize(int pageSize)
+    public GetQuotesHandlerRequestBuilder WithSize(int size)
     {
-        Instance = Instance with { PageSize = pageSize };
+        Instance = Instance with { Size = size };
 
         return this;
     }
@@ -46,20 +46,6 @@ public sealed class GetQuotesHandlerRequestBuilder : BuilderBase<GetQuotesHandle
     public GetQuotesHandlerRequestBuilder WithSearchQuery(string searchQuery)
     {
         Instance = Instance with { SearchQuery = searchQuery };
-
-        return this;
-    }
-
-    public GetQuotesHandlerRequestBuilder WithOrderBy(string orderBy)
-    {
-        Instance = Instance with { OrderBy = orderBy };
-
-        return this;
-    }
-
-    public GetQuotesHandlerRequestBuilder WithFields(string fields)
-    {
-        Instance = Instance with { Fields = fields };
 
         return this;
     }

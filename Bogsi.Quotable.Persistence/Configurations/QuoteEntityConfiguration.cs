@@ -28,7 +28,7 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
         builder
             .Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(Application.Constants.QuoteProperties.Value.MaximumLength);
+            .HasMaxLength(Application.Constants.Quote.Properties.Value.MaximumLength);
 
         builder
             .Property(x => x.Created)

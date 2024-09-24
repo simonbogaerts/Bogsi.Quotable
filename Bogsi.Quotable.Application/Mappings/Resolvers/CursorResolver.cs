@@ -4,7 +4,7 @@ using Bogsi.Quotable.Application.Handlers.Quotes;
 
 namespace Bogsi.Quotable.Application.Mappings.Resolvers;
 
-internal sealed class PageNumberResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
+internal sealed class CursorResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
 {
     public int Resolve(
         GetQuotesParameters source, 
@@ -12,11 +12,11 @@ internal sealed class PageNumberResolver : IValueResolver<GetQuotesParameters, G
         int destMember, 
         ResolutionContext context)
     {
-        if (source.PageNumber == null || source.PageNumber < Constants.PageNumber.Minimum)
+        if (source.Cursor == null || source.Cursor < Constants.Cursor.Minimum)
         {
-            return Constants.PageNumber.Default;
+            return Constants.Cursor.Default;
         }
 
-        return source.PageNumber!.Value;
+        return source.Cursor!.Value;
     }
 }

@@ -17,8 +17,6 @@ GET {{host-name}}/api/v1/quotes HTTP/1.1
 &Origin=origintest
 &Tag=tagtest
 &SearchQuery=this-is-a-search
-&OrderBy=order-by-this
-&Fields=list
 Accept: application/json
 
 
@@ -27,7 +25,8 @@ Accept: application/json
 # Use this request to test. The other two serve more as examples or guidelines.  
 # @name test-request
 
-GET {{host-name}}/api/v1/quotes HTTP/1.1
+GET {{host-name}}/api/v1/quotes 
 ?PageNumber=1
 &PageSize=10
+&SearchQuery=dead HTTP/1.1
 Accept: application/json
