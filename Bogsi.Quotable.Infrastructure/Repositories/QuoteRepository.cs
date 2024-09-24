@@ -1,13 +1,13 @@
-﻿using AutoMapper;
+using AutoMapper;
 
+using Bogsi.Quotable.Application;
 using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
+using Bogsi.Quotable.Application.Utilities;
 using Bogsi.Quotable.Persistence;
-
 using CSharpFunctionalExtensions;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Bogsi.Quotable.Infrastructure.Repositories;
@@ -19,19 +19,31 @@ public sealed class QuoteRepository(
     private readonly QuotableContext _quotable = quotable ?? throw new ArgumentNullException(nameof(quotable));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-    public async Task<Result<List<Quote>, QuotableError>> GetAsync(CancellationToken cancellationToken)
+    public async Task<Result<CursorResponse<List<Quote>>, QuotableError>> GetAsync(int cursor, int pageSize, CancellationToken cancellationToken)
     {
-        var entities = await _quotable
+        var source = _quotable
             .Quotes
+            .AsQueryable();
+
+        var entities = await source
+            .Where(x => x.Id >= request.Cursor)
+            .Take(request.Size + Constants.Cursor.Offset)
+            .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken: cancellationToken);
+
+        int newCursor = entities.Last().Id;
 
         var result = entities
             .Select(_mapper.Map<QuoteEntity, Quote>)
             .ToList();
 
-        return result.Any() 
-            ? result
-            : [];
+        return new CursorResponse<List<Quote>>()
+        {
+            Cursor = newCursor,
+            Data = result,
+            Size = request.Size,
+            Total = source.Count()
+        };
     }
 
     public async Task<Result<Quote, QuotableError>> GetByIdAsync(Guid publicId, CancellationToken cancellationToken)

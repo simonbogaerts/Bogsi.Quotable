@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Abstract;
 using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
+using Bogsi.Quotable.Application.Utilities;
 using CSharpFunctionalExtensions;
 
 namespace Bogsi.Quotable.Application.Handlers.Quotes;
@@ -16,13 +17,11 @@ public interface IGetQuotesHandler
 
 public sealed record GetQuotesHandlerRequest
 {
-    public int PageNumber { get; init; }
-    public int PageSize { get; init; }
+    public int Cursor { get; init; }
+    public int Size { get; init; }
     public string? Origin { get; init; }
     public string? Tag { get; init; }
     public string? SearchQuery { get; init; }
-    public string? OrderBy { get; init; }
-    public string? Fields { get; init; }
 }
 
 public sealed record GetQuotesSingleQuoteHandlerResponse : AbstractQuoteResponse
@@ -30,9 +29,9 @@ public sealed record GetQuotesSingleQuoteHandlerResponse : AbstractQuoteResponse
 
 }
 
-public sealed class GetQuotesHandlerResponse : List<GetQuotesSingleQuoteHandlerResponse>
+public sealed record GetQuotesHandlerResponse : CursorResponse<List<GetQuotesSingleQuoteHandlerResponse>>
 {
-    
+
 }
 
 public sealed class GetQuotesHandler(
@@ -46,14 +45,14 @@ public sealed class GetQuotesHandler(
         GetQuotesHandlerRequest request,
         CancellationToken cancellationToken)
     {
-        var result = await _quoteRepository.GetAsync(cancellationToken);
+        var result = await _quoteRepository.GetAsync(request.PageNumber, request.PageSize, cancellationToken);
 
         if (result.IsFailure)
         {
             return result.Error;
         }
 
-        var response = _mapper.Map<List<Quote>?, GetQuotesHandlerResponse>(result.Value);
+        var response = _mapper.Map<CursorResponse<List<Quote>>, GetQuotesHandlerResponse>(result.Value);
 
         return response;
     }

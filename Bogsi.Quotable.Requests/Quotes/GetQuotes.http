@@ -17,8 +17,6 @@ GET {{host-name}}/api/v1/quotes HTTP/1.1
 &Origin=origintest
 &Tag=tagtest
 &SearchQuery=this-is-a-search
-&OrderBy=order-by-this
-&Fields=list
 Accept: application/json
 
 

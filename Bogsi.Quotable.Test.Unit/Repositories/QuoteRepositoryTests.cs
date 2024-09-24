@@ -44,7 +44,7 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         _quotable.SaveChanges();
 
         // WHEN
-        var result = await Sut.GetAsync(_cancellationToken);
+        var result = await Sut.GetAsync(1, 20, _cancellationToken);
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
@@ -59,7 +59,7 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
     {
         // GIVEN
         // WHEN
-        var result = await Sut.GetAsync(_cancellationToken);
+        var result = await Sut.GetAsync(1, 20, _cancellationToken);
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");

@@ -2,25 +2,29 @@
 
 public sealed record Constants
 {
-    public sealed record PageNumber
+    public sealed record Cursor
     {
         public const int Minimum = 1;
         public const int Default = 1;
+        public const int Offset = 1;
     }
 
-    public sealed record PageSize
+    public sealed record Size
     {
         public const int Minimum = 1;
         public const int Maximum = 20;
         public const int Default = 10;
     }
 
-    public sealed record QuoteProperties
+    public sealed record Quote
     {
-        public sealed record Value
+        public sealed record Properties
         {
-            public const int MinimumLength = 5;
-            public const int MaximumLength = 1255;
+            public sealed record Value
+            {
+                public const int MinimumLength = 5;
+                public const int MaximumLength = 1255;
+            }
         }
     }
 }
