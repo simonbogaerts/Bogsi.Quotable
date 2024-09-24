@@ -37,16 +37,13 @@ docker compose down
 
 ## Roadmap
 
-PagedList/CursorList first before adding specifications
 
-
-* Parameters GetAll
-* concurrency 
 * Integration Test with Testcontainers
 * Cashing with Redis
 * Logging with SEQ
 * code quality with sonarcube
 * head and options endpoints 
+* concurrency 
 * add documentation
 * Add additional pocos like author and tags
 * Add indexes 
@@ -56,6 +53,8 @@ PagedList/CursorList first before adding specifications
 ## Considerations
 
 * Add service between repo and handler. make repo use entities and service use models?
+* fluentassertion because args not doing what they supposed to do. 
+    * see GivenGetAsync_WhenPaginationIsProvidedAndIsDefault_ThenReturnCorrectCollectionAndCursorInfo for correct useage.
 
 
 

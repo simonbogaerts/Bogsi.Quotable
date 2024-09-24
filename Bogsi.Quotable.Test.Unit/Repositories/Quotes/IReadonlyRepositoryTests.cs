@@ -1,12 +1,13 @@
-using Bogsi.Quotable.Application.Errors;
+﻿using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Infrastructure.Repositories;
 using Bogsi.Quotable.Persistence;
 using Bogsi.Quotable.Test.Builders.Entities;
-using Bogsi.Quotable.Test.Builders.Models;
+using Bogsi.Quotable.Test.Builders.Requests;
+using Quote = Bogsi.Quotable.Application.Models.Quote;
 
-namespace Bogsi.Quotable.Test.Unit.Repositories;
+namespace Bogsi.Quotable.Test.Unit.Repositories.Quotes;
 
-public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
+public sealed class IReadonlyRepositoryTests : TestBase<IReadonlyRepository<Quote>>
 {
     #region Test Setup
 
@@ -43,28 +44,34 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         _quotable.Quotes.AddRange(quoteEntities);
         _quotable.SaveChanges();
 
+        GetQuotesHandlerRequest request = new GetQuotesHandlerRequestBuilder().Build();
+
         // WHEN
-        var result = await Sut.GetAsync(1, 20, _cancellationToken);
+        var result = await Sut.GetAsync(request, _cancellationToken);
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
         result.IsSuccess.Should().BeTrue("Result should be success");
         result.IsFailure.Should().BeFalse("Result should be success");
         result.Value.Should().NotBeNull("Result should contain success value");
-        result.Value.Count.Should().Be(2, "Result should contain 2 items");
+        result.Value.Data.Count.Should().Be(2, "Result should contain 2 items");
     }
 
     [Fact]
     public async Task GivenGetAsync_WhenNoQuotesInDatabase_ThenReturnsEmptyCollection()
     {
         // GIVEN
+        GetQuotesHandlerRequest request = new GetQuotesHandlerRequestBuilder().Build();
+
         // WHEN
-        var result = await Sut.GetAsync(1, 20, _cancellationToken);
+        var result = await Sut.GetAsync(request, _cancellationToken);
 
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
         result.IsSuccess.Should().BeTrue("Result should be success");
         result.IsFailure.Should().BeFalse("Result should be success");
+        result.Value.Data.Should().NotBeNull("Result should have an initialized collection");
+        result.Value.Data.Count.Should().Be(0, "Result should have an empty collection");
     }
 
     #endregion
@@ -116,46 +123,6 @@ public class QuoteRepositoryTests : TestBase<IRepository<Quote>>
         var result = await Sut.GetByIdAsync(publicId, _cancellationToken);
 
         // THEN 
-        result.Should().NotBeNull("Result should not be NULL");
-        result.IsSuccess.Should().BeFalse("Result should be failure");
-        result.IsFailure.Should().BeTrue("Result should be failure");
-        result.Error.Should().Be(QuotableErrors.NotFound, "Error should be NotFound");
-    }
-
-    #endregion
-
-    #region UpdateAsync
-
-    [Fact]
-    public async Task GivenUpdateAsync_WhenEntityIsNotFound_ThenReturnQuotableError()
-    {
-        // GIVEN
-        Quote model = new QuoteBuilder().Build();
-
-        // WHEN
-        var result = await Sut.UpdateAsync(model, _cancellationToken);
-
-        // THEN
-        result.Should().NotBeNull("Result should not be NULL");
-        result.IsSuccess.Should().BeFalse("Result should be failure");
-        result.IsFailure.Should().BeTrue("Result should be failure");
-        result.Error.Should().Be(QuotableErrors.NotFound, "Error should be NotFound");
-    }
-
-    #endregion
-
-    #region DeleteAsync
-
-    [Fact]
-    public async Task GivenDeleteAsync_WhenEntityIsNotFound_ThenReturnQuotableError()
-    {
-        // GIVEN
-        Quote model = new QuoteBuilder().Build();
-
-        // WHEN
-        var result = await Sut.DeleteAsync(model, _cancellationToken);
-
-        // THEN
         result.Should().NotBeNull("Result should not be NULL");
         result.IsSuccess.Should().BeFalse("Result should be failure");
         result.IsFailure.Should().BeTrue("Result should be failure");

@@ -1,5 +1,4 @@
 using AutoMapper;
-
 using Bogsi.Quotable.Application;
 using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Errors;
@@ -48,15 +47,18 @@ public sealed class QuoteRepository(
         }
 
         // pagination
+        int total = source.Count();
+
         var entities = await source
             .Where(x => x.Id >= request.Cursor)
-            .Take(request.Size + Constants.Cursor.Offset)
             .OrderBy(x => x.Id)
+            .Take(request.Size + Constants.Cursor.Offset)
             .ToListAsync(cancellationToken: cancellationToken);
 
-        int newCursor = entities.Last().Id;
+        int newCursor = entities.LastOrDefault()?.Id ?? Constants.Cursor.None;
 
         var result = entities
+            .Take(request.Size)
             .Select(_mapper.Map<QuoteEntity, Quote>)
             .ToList();
 
@@ -65,7 +67,7 @@ public sealed class QuoteRepository(
             Cursor = newCursor,
             Data = result,
             Size = request.Size,
-            Total = source.Count()
+            Total = total
         };
     }
 

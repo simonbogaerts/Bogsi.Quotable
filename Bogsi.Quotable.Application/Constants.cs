@@ -4,6 +4,7 @@ public sealed record Constants
 {
     public sealed record Cursor
     {
+        public const int None = 0;
         public const int Minimum = 1;
         public const int Default = 1;
         public const int Offset = 1;
