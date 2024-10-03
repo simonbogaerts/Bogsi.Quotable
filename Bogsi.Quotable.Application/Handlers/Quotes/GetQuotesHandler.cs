@@ -29,7 +29,7 @@ public sealed record GetQuotesSingleQuoteHandlerResponse : AbstractQuoteResponse
 
 }
 
-public sealed record GetQuotesHandlerResponse : CursorResponse<List<GetQuotesSingleQuoteHandlerResponse>>
+public sealed record GetQuotesHandlerResponse : CursorResponse<GetQuotesSingleQuoteHandlerResponse>
 {
 
 }
@@ -52,7 +52,7 @@ public sealed class GetQuotesHandler(
             return result.Error;
         }
 
-        var response = _mapper.Map<CursorResponse<List<Quote>>, GetQuotesHandlerResponse>(result.Value);
+        var response = _mapper.Map<CursorResponse<Quote>, GetQuotesHandlerResponse>(result.Value);
 
         return response;
     }

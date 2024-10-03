@@ -21,7 +21,7 @@ public sealed class CreateQuoteByIdEndpoint : IApiEndpoint
     {
         var result = await repository.ExistsAsync(id, cancellationToken);
 
-        return result.IsFailure
+        return !result.Value
             ? Results.NotFound()
             : Results.Conflict();
     }

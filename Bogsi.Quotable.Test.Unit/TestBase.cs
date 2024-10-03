@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using Bogsi.Quotable.Application;
+﻿using Bogsi.Quotable.Application;
 using Bogsi.Quotable.Persistence;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Bogsi.Quotable.Test;
+namespace Bogsi.Quotable.Test.Unit;
 
 public abstract class TestBase<T> where T : class
 {

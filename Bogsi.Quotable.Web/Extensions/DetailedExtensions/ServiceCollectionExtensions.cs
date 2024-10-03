@@ -17,6 +17,7 @@ internal static class ServiceCollectionExtensions
         builder.Services.AddHealthChecks();
         builder.Services.AddAutoMapper(typeof(IApplicationMarker).Assembly);
         builder.Services.AddValidatorsFromAssembly(typeof(IApplicationMarker).Assembly);
+        builder.Services.AddCors();
 
         builder.AddRepositories();
         builder.AddUtilities();

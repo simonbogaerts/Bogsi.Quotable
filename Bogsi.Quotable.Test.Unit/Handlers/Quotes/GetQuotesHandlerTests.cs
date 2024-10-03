@@ -1,6 +1,7 @@
 ﻿using Bogsi.Quotable.Application.Utilities;
 using Bogsi.Quotable.Test.Builders.Models;
 using Bogsi.Quotable.Test.Builders.Requests;
+
 using Quote = Bogsi.Quotable.Application.Models.Quote;
 
 namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
@@ -39,7 +40,7 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
                 new QuoteBuilder().Build()
             ];
 
-        CursorResponse<List<Quote>> quotes = new() 
+        CursorResponse<Quote> quotes = new() 
         { 
             Data = data 
         };
