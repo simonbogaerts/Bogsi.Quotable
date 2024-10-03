@@ -12,8 +12,8 @@ Accept: application/json
 # @name complete-request
 
 GET {{host-name}}/api/v1/quotes HTTP/1.1
-?PageNumber=1
-&PageSize=10
+?Cursor=1
+&Size=10
 &Origin=origintest
 &Tag=tagtest
 &SearchQuery=this-is-a-search
@@ -26,7 +26,7 @@ Accept: application/json
 # @name test-request
 
 GET {{host-name}}/api/v1/quotes 
-?PageNumber=1
-&PageSize=10
+?Cursor=1
+&Size=10
 &SearchQuery=dead HTTP/1.1
 Accept: application/json

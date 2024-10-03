@@ -37,25 +37,27 @@ docker compose down
 
 ## Roadmap
 
-
-* Integration Test with Testcontainers
-* Cashing with Redis
 * Logging with SEQ
+* Cashing with Redis (use Valkey instead = redis no longer open source, devs moved over to valkey)
 * code quality with sonarcube
 * head and options endpoints 
 * concurrency 
 * add documentation
 * Add additional pocos like author and tags
 * Add indexes 
+* Add security to everything
 
 
 
 ## Considerations
 
 * Add service between repo and handler. make repo use entities and service use models?
+* fix creates dates on create return object 
 * fluentassertion because args not doing what they supposed to do. 
     * see GivenGetAsync_WhenPaginationIsProvidedAndIsDefault_ThenReturnCorrectCollectionAndCursorInfo for correct useage.
 
+https://www.youtube.com/watch?v=B9ZUJN1Juhk
+=> use this for some docker stuff maybe? 
 
 
 ## Additional

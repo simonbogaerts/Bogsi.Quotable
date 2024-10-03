@@ -2,7 +2,6 @@
 using Bogsi.Quotable.Persistence;
 using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Builders.Requests;
-using CSharpFunctionalExtensions;
 
 using Quote = Bogsi.Quotable.Application.Models.Quote;
 

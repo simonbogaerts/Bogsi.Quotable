@@ -2,6 +2,7 @@
 using Bogsi.Quotable.Application.Validators;
 using Bogsi.Quotable.Test.Builders.Requests;
 using Bogsi.Quotable.Test.Utilities;
+
 using FluentValidation;
 
 namespace Bogsi.Quotable.Test.Unit.Validators;

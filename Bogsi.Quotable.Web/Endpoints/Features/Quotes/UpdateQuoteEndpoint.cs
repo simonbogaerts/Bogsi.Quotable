@@ -44,6 +44,11 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
 
         if (result.IsFailure)
         {
+            if (result.Error == QuotableErrors.NotFound)
+            {
+                return Results.NotFound();
+            }
+
             if (result.Error == QuotableErrors.InternalError)
             {
                 return Results.Problem(statusCode: 500);

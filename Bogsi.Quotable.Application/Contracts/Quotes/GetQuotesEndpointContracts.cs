@@ -39,7 +39,7 @@ public sealed record GetQuotesSingleQuoteResponse : AbstractQuoteResponse
 
 }
 
-public sealed record GetQuotesResponse : CursorResponse<List<GetQuotesSingleQuoteResponse>>
+public sealed record GetQuotesResponse : CursorResponse<GetQuotesSingleQuoteResponse>
 {
 
 }

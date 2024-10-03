@@ -50,7 +50,7 @@ public sealed class QuoteMappingProfiles : Profile
         // Get Quotes
         CreateMap<Quote, GetQuotesSingleQuoteHandlerResponse>();
         CreateMap<GetQuotesSingleQuoteHandlerResponse, GetQuotesSingleQuoteResponse>();
-        CreateMap<CursorResponse<List<Quote>>, GetQuotesHandlerResponse>();
+        CreateMap<CursorResponse<Quote>, GetQuotesHandlerResponse>();
         CreateMap<GetQuotesHandlerResponse, GetQuotesResponse>();
 
         // Get Quote By Id 

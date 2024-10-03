@@ -8,6 +8,7 @@ internal static class WebApplicationExtensions
     {
         application.UseHttpsRedirection();
         application.UseRouting();
+        application.UseCors();
         application.UseAuthentication();
         application.UseAuthorization();
         application.UseVersionedApiEndpoints();

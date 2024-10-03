@@ -34,15 +34,15 @@ namespace Bogsi.Quotable.Persistence.Migrations
                     table.PrimaryKey("PK_Quotes", x => x.Id);
                 });
 
-            migrationBuilder.InsertData(
-                schema: "Quotable",
-                table: "Quotes",
-                columns: new[] { "Id", "PublicId", "Value" },
-                values: new object[,]
-                {
-                    { 1, new Guid("3414eee0-355b-4cda-acb6-567212236bce"), "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn." },
-                    { 2, new Guid("64a140bd-bdfa-46e8-8cbf-169703626004"), "That is not dead which can eternal lie, And with strange aeons even death may die." }
-                });
+            //migrationBuilder.InsertData(
+            //    schema: "Quotable",
+            //    table: "Quotes",
+            //    columns: new[] { "Id", "PublicId", "Value" },
+            //    values: new object[,]
+            //    {
+            //        { 1, new Guid("3414eee0-355b-4cda-acb6-567212236bce"), "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn." },
+            //        { 2, new Guid("64a140bd-bdfa-46e8-8cbf-169703626004"), "That is not dead which can eternal lie, And with strange aeons even death may die." }
+            //    });
         }
 
         /// <inheritdoc />

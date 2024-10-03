@@ -19,12 +19,13 @@ public sealed class QuoteRepository(
     private readonly QuotableContext _quotable = quotable ?? throw new ArgumentNullException(nameof(quotable));
     private readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
-    public async Task<Result<CursorResponse<List<Quote>>, QuotableError>> GetAsync(
+    public async Task<Result<CursorResponse<Quote>, QuotableError>> GetAsync(
         GetQuotesHandlerRequest request, 
         CancellationToken cancellationToken)
     {
         var source = _quotable
             .Quotes
+            .AsNoTracking()
             .AsQueryable();
 
         // filtering
@@ -57,17 +58,22 @@ public sealed class QuoteRepository(
 
         int newCursor = entities.LastOrDefault()?.Id ?? Constants.Cursor.None;
 
-        var result = entities
-            .Take(request.Size)
+        var selection = entities
+            .Take(request.Size);
+
+        bool hasNext = newCursor > selection.LastOrDefault()?.Id;
+
+        var result = selection
             .Select(_mapper.Map<QuoteEntity, Quote>)
             .ToList();
 
-        return new CursorResponse<List<Quote>>()
+        return new CursorResponse<Quote>()
         {
             Cursor = newCursor,
             Data = result,
             Size = request.Size,
-            Total = total
+            Total = total,
+            HasNext = hasNext,
         };
     }
 
@@ -75,6 +81,7 @@ public sealed class QuoteRepository(
     {
         var entity = await _quotable
             .Quotes
+            .AsNoTracking()
             .FirstOrDefaultAsync(x=> x.PublicId == publicId, cancellationToken: cancellationToken);
 
         if (entity is null) 
@@ -134,6 +141,7 @@ public sealed class QuoteRepository(
     {
         var result = await _quotable
             .Quotes
+            .AsNoTracking()
             .AnyAsync(x => x.PublicId == publicId, cancellationToken: cancellationToken);
 
         return result;
