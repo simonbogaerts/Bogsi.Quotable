@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+
 using Bogsi.Quotable.Application.Contracts.Quotes;
 using Bogsi.Quotable.Application.Handlers.Quotes;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
@@ -23,16 +25,31 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
         [AsParameters] GetQuotesParameters parameters,
         [FromServices] IGetQuotesHandler handler,
         [FromServices] IMapper mapper,
+        [FromServices] ILogger<GetQuotesEndpoint> logger,
         CancellationToken cancellationToken)
     {
+        using var scope = logger.BeginScope(new Dictionary<string, object>
+        {
+            ["endpoint"] = nameof(GetQuotesEndpoint),
+            ["@parameters"] = parameters
+        });
+
+        logger.LogInformation("[{source}] mapping parameters to handler request", nameof(GetQuotesEndpoint));
+
         var handlerRequest = mapper.Map<GetQuotesParameters, GetQuotesHandlerRequest>(parameters);
+
+        logger.LogInformation("[{source}] executing handler", nameof(GetQuotesEndpoint));
 
         var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
         if (result.IsFailure)
         {
-            // Becomes applicable when doing something with the parameters.
+            logger.LogError("[{source}] something went wrong, {error}", nameof(GetQuotesEndpoint), result.Error);
+
+            return Results.Problem(statusCode: 500);
         }
+
+        logger.LogInformation("[{source}] mapping handler response to endpoint response", nameof(GetQuotesEndpoint));
 
         var response = mapper.Map<GetQuotesHandlerResponse?, GetQuotesResponse>(result.Value);
 

@@ -51,7 +51,7 @@ public class CreateQuoteEndpointTests : TestBase
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public async Task CreateQuoteEndpoint_WhenInvalidRequestIsSend_ThenBadRequestIsReturned(string? value)
+    public async Task GivenCreateQuoteEndpoint_WhenInvalidRequestIsSend_ThenBadRequestIsReturned(string? value)
     {
         // GIVEN 
         CreateQuoteRequest request = new CreateQuoteRequestBuilder().WithValue(value!).Build();
@@ -64,7 +64,7 @@ public class CreateQuoteEndpointTests : TestBase
     }
 
     [Fact]
-    public async Task CreateQuoteEndpoint_WhenRequestIsSendToEndpointWithIdAndItemExists_ThenConflictIsReturned()
+    public async Task GivenCreateQuoteEndpoint_WhenRequestIsSendToEndpointWithIdAndItemExists_ThenConflictIsReturned()
     {
         // GIVEN 
         Guid publicId = Guid.NewGuid();
@@ -84,7 +84,7 @@ public class CreateQuoteEndpointTests : TestBase
     }
 
     [Fact]
-    public async Task CreateQuoteEndpoint_WhenRequestIsSendToEndpointWithIdAndItemDoesNotExists_ThenNotFoundIsReturned()
+    public async Task GivenCreateQuoteEndpoint_WhenRequestIsSendToEndpointWithIdAndItemDoesNotExists_ThenNotFoundIsReturned()
     {
         // GIVEN 
         Guid publicId = Guid.NewGuid();
