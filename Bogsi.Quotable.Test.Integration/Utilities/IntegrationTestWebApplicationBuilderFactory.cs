@@ -21,6 +21,8 @@ public class IntegrationTestWebApplicationBuilderFactory : WebApplicationFactory
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment(Constants.Environments.Testing);
+
         builder.ConfigureTestServices(services => 
         {
             var descriptor = services

@@ -8,6 +8,7 @@ internal static class WebApplicationExtensions
 {
     internal static void ConfigureWebApplication(this WebApplication application)
     {
+        application.UseRequestContextLogging();
         application.UseHttpsRedirection();
         application.UseSerilogRequestLogging();
         application.UseRouting();

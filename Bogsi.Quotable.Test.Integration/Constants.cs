@@ -2,6 +2,11 @@
 
 public sealed record Constants
 {
+    public static class Environments
+    {
+        public const string Testing = nameof(Testing);
+    }
+
     public sealed record Database
     {
         public const string Image = "postgres:17rc1-alpine3.20";

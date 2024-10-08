@@ -6,6 +6,8 @@ using Bogsi.Quotable.Application.Models;
 using Bogsi.Quotable.Application.Utilities;
 using CSharpFunctionalExtensions;
 
+using Microsoft.Extensions.Logging;
+
 namespace Bogsi.Quotable.Application.Handlers.Quotes;
 
 public interface IGetQuotesHandler
@@ -45,6 +47,7 @@ public sealed class GetQuotesHandler(
         GetQuotesHandlerRequest request,
         CancellationToken cancellationToken)
     {
+
         var result = await _quoteRepository.GetAsync(request, cancellationToken);
 
         if (result.IsFailure)

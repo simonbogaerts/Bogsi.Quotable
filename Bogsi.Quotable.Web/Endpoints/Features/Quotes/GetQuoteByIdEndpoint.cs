@@ -25,22 +25,37 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
         [FromRoute] Guid id,
         [FromServices] IGetQuoteByIdHandler handler,
         [FromServices] IMapper mapper,
+        [FromServices] ILogger<GetQuoteByIdEndpoint> logger,
         CancellationToken cancellationToken)
     {
+        using var scope = logger.BeginScope(new Dictionary<string, object>
+        {
+            ["endpoint"] = nameof(GetQuoteByIdEndpoint),
+            ["public-id"] = id
+        });
+
+        logger.LogInformation("[{source}] mapping endpoint request to handler request", nameof(GetQuoteByIdEndpoint));
+
         GetQuoteByIdHandlerRequest handlerRequest = new()
         {
             PublicId = id
         };
 
+        logger.LogInformation("[{source}] executing handler", nameof(GetQuoteByIdEndpoint));
+
         var result = await handler.HandleAsync(handlerRequest, cancellationToken);
 
         if (result.IsFailure)
         {
+            logger.LogError("[{source}] something went wrong, {error}", nameof(GetQuoteByIdEndpoint), result.Error);
+
             if (result.Error == QuotableErrors.NotFound)
             {
                 return Results.NotFound();
             }
         }
+
+        logger.LogInformation("[{source}] mapping handler response to endpoint response", nameof(GetQuoteByIdEndpoint));
 
         var response = mapper.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(result.Value);
 
