@@ -4,7 +4,8 @@
   "settings": {
     "documentationRules": {
       "companyName": "BOGsi",
-      "copyrightText": "Copyright (c) BOGsi. All rights reserved."
+      "copyrightText": "Copyright (c) BOGsi. All rights reserved.",
+      "headerDecoration": "-----------------------------------------------------------------------"
     }
   }
 }

@@ -4,6 +4,9 @@
 
 namespace Bogsi.Quotable.Application;
 
+/// <summary>
+/// Constants used in the Application Layer.
+/// </summary>
 public sealed record Constants
 {
     /// <summary>
