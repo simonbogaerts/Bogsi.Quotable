@@ -213,6 +213,18 @@ dotnet_diagnostic.S108.severity = none
 # CA1851: Possible multiple enumerations of 'IEnumerable' collection
 dotnet_diagnostic.CA1851.severity = none
 
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = none
+
+# S1118: Utility classes should not have public constructors
+dotnet_diagnostic.S1118.severity = none
+
+# CA1848: Use the LoggerMessage delegates
+dotnet_diagnostic.CA1848.severity = none
+
+# CA1812: Avoid uninstantiated internal classes
+dotnet_diagnostic.CA1812.severity = none
+
 [*.{cs,vb}]
 
 # Naming rules

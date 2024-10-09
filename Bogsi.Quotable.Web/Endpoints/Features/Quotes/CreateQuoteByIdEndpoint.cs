@@ -1,12 +1,22 @@
-﻿using Bogsi.Quotable.Application.Interfaces.Repositories;
+﻿// -----------------------------------------------------------------------
+// <copyright file="CreateQuoteByIdEndpoint.cs" company="BOGsi">
+// Copyright (c) BOGsi. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
+
+using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Models;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
-
+/// <summary>
+/// Endpoint to block the creation of a quote on a route with an id.
+/// </summary>
 public sealed class CreateQuoteByIdEndpoint : IApiEndpoint
 {
+    /// <inheritdoc/>
     public void MapRoute(IEndpointRouteBuilder endpoints)
     {
         endpoints
@@ -15,6 +25,14 @@ public sealed class CreateQuoteByIdEndpoint : IApiEndpoint
             .ExcludeFromDescription();
     }
 
+    /// <summary>
+    /// Endpoint logic.
+    /// </summary>
+    /// <param name="id">The public id of a quote.</param>
+    /// <param name="repository">An instance of a readonly QuoteRepository.</param>
+    /// <param name="logger">An instance of a Serilog logger.</param>
+    /// <param name="cancellationToken">Cancellation token used during async computing.</param>
+    /// <returns>A specific status code.</returns>
     internal static async Task<IResult> BlockCreateQuote(
         [FromRoute] Guid id,
         [FromServices] IReadonlyRepository<Quote> repository,
@@ -24,12 +42,12 @@ public sealed class CreateQuoteByIdEndpoint : IApiEndpoint
         using var scope = logger.BeginScope(new Dictionary<string, object>
         {
             ["endpoint"] = nameof(CreateQuoteByIdEndpoint),
-            ["public-id"] = id
+            ["public-id"] = id,
         });
 
-        logger.LogInformation("[{source}] checking if item exists", nameof(CreateQuoteByIdEndpoint));
+        logger.LogInformation("[{Source}] checking if item exists", nameof(CreateQuoteByIdEndpoint));
 
-        var result = await repository.ExistsAsync(id, cancellationToken);
+        var result = await repository.ExistsAsync(id, cancellationToken).ConfigureAwait(false);
 
         return !result.Value
             ? Results.NotFound()
