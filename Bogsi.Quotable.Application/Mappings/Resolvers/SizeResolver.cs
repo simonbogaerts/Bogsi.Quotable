@@ -1,6 +1,8 @@
-﻿// <copyright file="SizeResolver.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="SizeResolver.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Mappings.Resolvers;
 

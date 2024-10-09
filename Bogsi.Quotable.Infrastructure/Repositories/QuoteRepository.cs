@@ -1,6 +1,8 @@
+// -----------------------------------------------------------------------
 // <copyright file="QuoteRepository.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Infrastructure.Repositories;
 
@@ -60,7 +62,7 @@ public sealed class QuoteRepository(
         {
             var searchQueryWhereClause = request.SearchQuery.Trim().ToUpperInvariant();
 
-            source = source.Where(x => x.Value.Contains(searchQueryWhereClause, StringComparison.CurrentCultureIgnoreCase));
+            source = source.Where(x => x.Value.ToUpper().Contains(searchQueryWhereClause));
         }
 
         // pagination

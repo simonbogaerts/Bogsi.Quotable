@@ -1,6 +1,8 @@
-﻿// <copyright file="IApplicationMarker.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="IApplicationMarker.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application;
 

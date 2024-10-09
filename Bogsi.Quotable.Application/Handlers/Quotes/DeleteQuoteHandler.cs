@@ -1,6 +1,8 @@
+// -----------------------------------------------------------------------
 // <copyright file="DeleteQuoteHandler.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Handlers.Quotes;
 

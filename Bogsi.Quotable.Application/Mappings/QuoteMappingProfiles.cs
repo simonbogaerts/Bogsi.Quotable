@@ -1,6 +1,8 @@
-﻿// <copyright file="QuoteMappingProfiles.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="QuoteMappingProfiles.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Mappings;
 

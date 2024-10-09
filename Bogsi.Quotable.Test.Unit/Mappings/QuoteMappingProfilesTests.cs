@@ -1,10 +1,9 @@
-﻿using Bogsi.Quotable.Application;
+﻿namespace Bogsi.Quotable.Test.Unit.Mappings;
+
 using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Builders.Models;
 
-using Quote = Bogsi.Quotable.Application.Models.Quote;
-
-namespace Bogsi.Quotable.Test.Unit.Mappings;
+using Quote = Application.Models.Quote;
 
 public class QuoteMappingProfilesTests : TestBase<IMapper>
 {

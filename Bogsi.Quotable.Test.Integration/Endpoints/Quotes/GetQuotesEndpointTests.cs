@@ -1,13 +1,11 @@
-﻿using System.Net.Http.Json;
+﻿namespace Bogsi.Quotable.Test.Integration.Endpoints.Quotes;
+
+using System.Net.Http.Json;
 
 using Bogsi.Quotable.Application.Contracts.Quotes;
 using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Integration.Utilities;
-
-using FluentAssertions;
-
-namespace Bogsi.Quotable.Test.Integration.Endpoints.Quotes;
 
 public class GetQuotesEndpointTests : TestBase
 {
@@ -81,7 +79,6 @@ public class GetQuotesEndpointTests : TestBase
         result.Data.Count.Should().Be(0, "we have no items");
     }
 
-    // return filtering
     [Fact]
     public async Task GivenGetQuotesEndpoint_WhenProvidingASearchQuery_ThenProvideCursorResponseWithItemsThatMatchQuery()
     {

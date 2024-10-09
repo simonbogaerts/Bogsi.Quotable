@@ -1,6 +1,8 @@
+// -----------------------------------------------------------------------
 // <copyright file="GetQuotesEndpointContracts.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Contracts.Quotes;
 

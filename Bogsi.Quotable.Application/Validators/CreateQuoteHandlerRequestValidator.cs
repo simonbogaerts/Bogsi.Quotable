@@ -1,6 +1,8 @@
-﻿// <copyright file="CreateQuoteHandlerRequestValidator.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="CreateQuoteHandlerRequestValidator.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Validators;
 

@@ -1,6 +1,8 @@
-﻿// <copyright file="AbstractQuoteResponse.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="AbstractQuoteResponse.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Contracts.Abstract;
 

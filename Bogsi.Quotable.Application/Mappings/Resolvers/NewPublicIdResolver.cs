@@ -1,6 +1,8 @@
-﻿// <copyright file="NewPublicIdResolver.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="NewPublicIdResolver.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Mappings.Resolvers;
 

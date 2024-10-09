@@ -53,8 +53,7 @@ All StyleCop and SonarAnalyzer rules are followed except for the following:
 
 ## Roadmap
 
-* add documentation
-* code quality with static analyzers.
+* test repo after analyzer changes (toupper > ordinalcaseignore)
 * code quality with sonarqube.
 
 

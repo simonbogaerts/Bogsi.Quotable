@@ -1,4 +1,6 @@
-﻿using Bogsi.Quotable.Persistence;
+﻿namespace Bogsi.Quotable.Test.Integration.Utilities;
+
+using Bogsi.Quotable.Persistence;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -7,8 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using Testcontainers.PostgreSql;
-
-namespace Bogsi.Quotable.Test.Integration.Utilities;
 
 public class IntegrationTestWebApplicationBuilderFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {

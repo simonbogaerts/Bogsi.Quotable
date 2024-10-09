@@ -1,6 +1,8 @@
-﻿// <copyright file="IRepository.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="IRepository.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Interfaces.Repositories;
 

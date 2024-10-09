@@ -1,6 +1,8 @@
-﻿// <copyright file="UnitOfWork.cs" company="BOGsi">
+﻿// -----------------------------------------------------------------------
+// <copyright file="UnitOfWork.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Infrastructure.Utilities;
 
