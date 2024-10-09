@@ -7,9 +7,11 @@
 using Bogsi.Quotable.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.ConfigureBuilder();
 
 var application = builder.Build();
+
 application.ConfigureWebApplication();
 
 await application.RunAsync().ConfigureAwait(false);

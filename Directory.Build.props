@@ -12,14 +12,14 @@
       Include="SonarAnalyzer.CSharp" 
       Version="9.32.0.97167"
       PrivateAssets="all"
-      Condition="$(MSBuildProjectExtension) == '.csproj' And '$(AssemblyName)' != 'Bogsi.Quotable.Test.*'"
+      Condition="$(MSBuildProjectExtension) == '.csproj'"
       />
 
     <PackageReference 
       Include="StyleCop.Analyzers" 
       Version="1.1.118"
       PrivateAssets="all"
-      Condition="$(MSBuildProjectExtension) == '.csproj' And '$(AssemblyName)' != 'Bogsi.Quotable.Test.*'"
+      Condition="$(MSBuildProjectExtension) == '.csproj'"
       />
     
   </ItemGroup>

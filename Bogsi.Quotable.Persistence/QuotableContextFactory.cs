@@ -26,7 +26,7 @@ internal sealed class QuotableContextFactory : IDesignTimeDbContextFactory<Quota
             .AddUserSecrets<QuotableContextFactory>()
             .Build();
 
-        string connectionString = configuration.GetConnectionString(Constants.QuotableDb)!; 
+        string connectionString = configuration.GetConnectionString(Constants.QuotableDb)!;
 
         var builder = new DbContextOptionsBuilder<QuotableContext>()
             .UseNpgsql(connectionString)
