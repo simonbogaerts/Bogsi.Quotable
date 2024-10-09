@@ -1,0 +1,10 @@
+{
+  // File Added to all Projects as a Link.
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "companyName": "BOGsi",
+      "copyrightText": "Copyright (c) BOGsi. All rights reserved."
+    }
+  }
+}

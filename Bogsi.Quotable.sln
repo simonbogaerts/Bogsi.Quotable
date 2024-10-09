@@ -21,6 +21,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{293ACBC1-A65
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{171AFDBA-C29B-4386-9CAE-176E84CF7492}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{DE12BBD5-1D32-46C3-9E9D-9036C20560CB}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+		stylecop.json = stylecop.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,5 +75,8 @@ Global
 		{40D42849-BF7F-40C2-96B7-3F3E3FF16745} = {171AFDBA-C29B-4386-9CAE-176E84CF7492}
 		{02DE9781-07FC-4092-B209-165CA21265EC} = {171AFDBA-C29B-4386-9CAE-176E84CF7492}
 		{889D7A0E-9CF3-42F6-9E7A-095FDA5C82DC} = {293ACBC1-A65E-41A6-95F2-BDC652D9010F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FE62375-E1B5-49E4-871F-6A846FDD56CF}
 	EndGlobalSection
 EndGlobal
