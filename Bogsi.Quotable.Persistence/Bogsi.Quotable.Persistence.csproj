@@ -28,4 +28,8 @@
     <ProjectReference Include="..\Bogsi.Quotable.Application\Bogsi.Quotable.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
+  </ItemGroup>
+  
 </Project>
