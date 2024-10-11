@@ -25,6 +25,8 @@ public abstract class TestBase : IClassFixture<IntegrationTestWebApplicationBuil
 
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
+
         _quotableContext.Database.EnsureDeleted();
     }
 }

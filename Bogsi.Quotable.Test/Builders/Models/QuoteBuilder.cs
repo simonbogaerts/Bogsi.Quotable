@@ -54,8 +54,8 @@ public sealed class QuoteBuilder : BuilderBase<Quote>
     {
         var now = DateTime.UtcNow;
 
-        created = created ?? now;
-        updated = updated ?? now;
+        created ??= now;
+        updated ??= now;
 
         Instance = Instance with
         {

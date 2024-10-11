@@ -34,41 +34,24 @@ To stop Quotable use the following docker command.
 docker compose down
 ```
 
+
 ## Code Quality
 
-StyleCope file added to solution items folder and linked to other folders as Link.
-All StyleCop and SonarAnalyzer rules are followed except for the following: 
-
-* SA1009: Closing parenthesis should be spaced correctly
-* SA1101: Prefix local calls with this
-* SA1124: Do not use regions
-* SA1313: Parameter names should begin with lower-case letter
-* SA1309: Field names should not begin with underscore
-* CA1815: Override equals and operator equals on value types
-* CA1040: Avoid empty interfaces
-    * required for marker interface.
-* CA1034: Nested types should not be visible
-* CA1031: Do not catch general exception types
+* Using both StyleCop and SonarAnalyzer, with only a handful of rules disabled.
+* Additional quality check done by SonarQube to maintain 0 issues.
 
 
 ## Roadmap
 
-* test repo after analyzer changes (toupper > ordinalcaseignore)
-* code quality with sonarqube.
-
-
 * Cashing with Redis (use Valkey instead = redis no longer open source, devs moved over to valkey)
 * head and options endpoints 
-* concurrency 
 * Add additional pocos like author and tags
 * Add indexes 
 * Add security to everything
 
 
-
 ## Considerations
 
-* Add service between repo and handler. make repo use entities and service use models?
 * fix creates dates on create return object 
 * fluentassertion because args not doing what they supposed to do. 
     * see GivenGetAsync_WhenPaginationIsProvidedAndIsDefault_ThenReturnCorrectCollectionAndCursorInfo for correct useage.

@@ -19,9 +19,6 @@ internal static class LoggingExtensions
     /// <param name="builder">WebApplicationBuilder during startip.</param>
     internal static void AddLoggingWithSerilogAndSeq(this WebApplicationBuilder builder)
     {
-        builder.Host.UseSerilog((context, config) =>
-        {
-            config.ReadFrom.Configuration(context.Configuration);
-        });
+        builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
     }
 }

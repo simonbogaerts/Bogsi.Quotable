@@ -21,9 +21,7 @@ internal static class DatabaseContextExtensions
     internal static void AddQuotableDbContext(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<QuotableContext>(options =>
-        {
-            options.UseNpgsql(builder.Configuration.GetConnectionString(Constants.QuotableDb)!);
-        });
+            options.UseNpgsql(builder.Configuration.GetConnectionString(Constants.QuotableDb)!));
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }
