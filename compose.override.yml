@@ -3,5 +3,5 @@ name: bogsi-quotable
 services:
   aspnet-backend:
     environment:
-      - ConnectionStrings__QuotableDb=Server=database;Port=5432;Database=quotable-db;User Id=quotable;Password=quotable123;
-      - ConnectionStrings__Valkey=caching-valkey:6379
+      ConnectionStrings__QuotableDb=Server: database;Port=5432;Database=quotable-db;User Id=quotable;Password=quotable123;
+      ConnectionStrings__Valkey: caching-valkey:6379
