@@ -487,3 +487,6 @@ $RECYCLE.BIN/
 # mounted volumes 
 .container-data/
 .sonarqube/
+
+# secret files
+*secrets*
