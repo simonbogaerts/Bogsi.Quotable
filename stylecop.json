@@ -1,5 +1,5 @@
 {
-  // File Added to all Projects as a Link.
+  // Add to all Projects as a Link + properties change build action to analyzer.
   "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {

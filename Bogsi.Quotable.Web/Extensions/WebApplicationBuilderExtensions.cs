@@ -24,6 +24,7 @@ internal static class WebApplicationBuilderExtensions
         builder.AddAuthenticationAndAuthorization();
         builder.AddSwaggerGenWithAuth();
         builder.AddApiEndpoints();
+        builder.AddAndConfigureHealthChecks();
         builder.AddQuotableDbContext();
         builder.AddDistributedCache();
         builder.AddServices();

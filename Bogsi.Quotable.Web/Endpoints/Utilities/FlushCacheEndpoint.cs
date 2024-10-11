@@ -34,6 +34,6 @@ internal class FlushCacheEndpoint : IApiEndpoint
     {
         await muxer.GetServers()[0].FlushAllDatabasesAsync().ConfigureAwait(false);
 
-        return Results.Ok();
+        return Results.Ok("Flushed..");
     }
 }

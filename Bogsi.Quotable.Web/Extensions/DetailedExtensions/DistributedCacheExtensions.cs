@@ -4,9 +4,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using StackExchange.Redis;
-
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+
+using StackExchange.Redis;
 
 /// <summary>
 /// Extensions regarding database connections.
