@@ -8,7 +8,7 @@ _adjective._
 
 A massively, over-engineered, best-practice-filled-solution using dotnet. It's a CRUD interface for quotes and their respectable origins, nothing more, nothing less. 
 
-It's a personal experiment where I take a deep dive in a lot of stuff I haven't gotten the chance to use a lot in my professional career. I'll be taking a deeper look at Docker, Valkey, Serilog, Seq, SonarQube, Keycloak, Test Containers and integration testing in general, AutoMapper, FluentValidation, FluentAssertions, and a couple of design patterns like Result, Flyweight, Builder, etc...
+It's a personal experiment where I take a deep dive in a lot of stuff I haven't gotten the chance to use a lot in my professional career. I'll be taking a deeper look at Docker, Valkey, Serilog, Seq, SonarQube, Keycloak, Test Containers and integration testing in general, AutoMapper, FluentValidation, FluentAssertions, and a couple of design patterns like Decorator, Result, Flyweight, Builder, etc...
 
 Afterwards I intend to use Quotable when trying new frontend frameworks, cloud platforms, or other stuff that might need a teeny tiny backend application laying around. 
 

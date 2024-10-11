@@ -25,6 +25,7 @@ internal static class WebApplicationBuilderExtensions
         builder.AddSwaggerGenWithAuth();
         builder.AddApiEndpoints();
         builder.AddQuotableDbContext();
+        builder.AddDistributedCache();
         builder.AddServices();
     }
 }

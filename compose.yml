@@ -47,5 +47,18 @@ services:
     networks:
       - quotable-network
 
+  caching-valkey:
+    image: valkey/valkey:8.0.1-alpine
+    container_name: caching-valkey 
+    restart: always
+    command: valkey-server /etc/valkey/valkey.conf --save 60 1 --loglevel warning
+    volumes:
+      - ./.container-data/valkey/conf:/etc/valkey/valkey.conf
+      - ./.container-data/valkey/data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - quotable-network
+
 networks:
   quotable-network:
