@@ -1,12 +1,13 @@
 ﻿namespace Bogsi.Quotable.Test.Integration.Utilities;
 
-using Bogsi.Quotable.Persistence;
+using Bogsi.Quotable.Test.Integration.Utilities.TestServiceConfiguration;
+
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Containers;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 using Testcontainers.PostgreSql;
 
@@ -19,34 +20,31 @@ public class IntegrationTestWebApplicationBuilderFactory : WebApplicationFactory
         .WithPassword(Constants.Database.Password)
         .Build();
 
+    private readonly IContainer _valkeyContainer = new ContainerBuilder()
+        .WithImage(Constants.Valkey.Image)
+        .WithPortBinding(Constants.Valkey.Port, true)
+        .Build();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment(Constants.Environments.Testing);
+        builder.UseEnvironment(Web.Constants.Environments.Testing);
 
         builder.ConfigureTestServices(services => 
         {
-            var descriptor = services
-                .SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<QuotableContext>));
-
-            if (descriptor is not null)
-            {
-                services.Remove(descriptor);
-            }
-
-            services.AddDbContext<QuotableContext>(options =>
-            {
-                options.UseNpgsql(_quotableContainer.GetConnectionString());
-            });
+            services.ConfigureQuotableContextForIntegrationTest(_quotableContainer.GetConnectionString());
+            services.ConfigureValkeyForIntegrationTest($"{_valkeyContainer.Hostname}:{_valkeyContainer.GetMappedPublicPort(6379)}");
         });
     }
 
-    public Task InitializeAsync()
+    public async Task InitializeAsync()
     {
-        return _quotableContainer.StartAsync();
+        await _quotableContainer.StartAsync();
+        await _valkeyContainer.StartAsync();
     }
 
-    public new Task DisposeAsync()
+    public async new Task DisposeAsync()
     {
-        return _quotableContainer.StopAsync();
+        await _quotableContainer.StopAsync();
+        await _valkeyContainer.StopAsync();
     }
 }

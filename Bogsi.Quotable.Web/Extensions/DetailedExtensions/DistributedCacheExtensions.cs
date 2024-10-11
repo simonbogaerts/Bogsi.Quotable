@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using StackExchange.Redis;
+
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
 /// <summary>
@@ -17,10 +19,21 @@ internal static class DistributedCacheExtensions
     /// <param name="builder">WebApplicationBuilder during startip.</param>
     internal static void AddDistributedCache(this WebApplicationBuilder builder)
     {
-        string? connectionstring = builder.Configuration.GetConnectionString(Constants.ConnectionStrings.Valkey);
+        string? connectionString = builder.Configuration.GetConnectionString(Constants.ConnectionStrings.Valkey);
 
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionstring);
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionString);
 
-        builder.Services.AddStackExchangeRedisCache(options => options.Configuration = connectionstring);
+        builder.Services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
+
+        if (!builder.Environment.IsEnvironment(Constants.Environments.Testing))
+        {
+            var options = ConfigurationOptions.Parse(connectionString);
+
+            options.AllowAdmin = true;
+
+            ConnectionMultiplexer cm = ConnectionMultiplexer.Connect(options);
+
+            builder.Services.AddSingleton<IConnectionMultiplexer>(cm);
+        }
     }
 }

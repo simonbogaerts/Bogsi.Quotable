@@ -17,7 +17,6 @@ using Bogsi.Quotable.Infrastructure.Utilities;
 using FluentValidation;
 
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>

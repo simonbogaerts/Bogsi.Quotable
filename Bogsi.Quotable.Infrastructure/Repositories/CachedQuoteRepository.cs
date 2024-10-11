@@ -7,6 +7,7 @@
 namespace Bogsi.Quotable.Infrastructure.Repositories;
 
 using System.Text.Json;
+using System.Threading;
 
 using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Handlers.Quotes;
@@ -49,8 +50,12 @@ public sealed class CachedQuoteRepository(
             if (quotes.IsSuccess)
             {
                 await _cache
-                .SetStringAsync(key, JsonSerializer.Serialize(quotes.Value), cancellationToken)
-                .ConfigureAwait(false);
+                    .SetStringAsync(
+                        key,
+                        JsonSerializer.Serialize(quotes.Value),
+                        new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1) },
+                        cancellationToken)
+                    .ConfigureAwait(false);
             }
 
             return quotes;
@@ -79,7 +84,11 @@ public sealed class CachedQuoteRepository(
             if (quote.IsSuccess)
             {
                 await _cache
-                .SetStringAsync(key, JsonSerializer.Serialize(quote.Value), cancellationToken)
+                .SetStringAsync(
+                    key,
+                    JsonSerializer.Serialize(quote.Value),
+                    new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) },
+                    cancellationToken)
                 .ConfigureAwait(false);
             }
 
@@ -101,13 +110,63 @@ public sealed class CachedQuoteRepository(
 
     /// <inheritdoc/>
     public async Task<Result<Unit, QuotableError>> UpdateAsync(Quote model, CancellationToken cancellationToken)
-        => await _decorated.UpdateAsync(model, cancellationToken).ConfigureAwait(false);
+    {
+        if (model is null)
+        {
+            return QuotableErrors.InputRequired;
+        }
+
+        var result = await _decorated.UpdateAsync(model, cancellationToken).ConfigureAwait(false);
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
+
+        await RemoveCacheByPublicId(model.PublicId, cancellationToken).ConfigureAwait(false);
+
+        return Unit.Instance;
+    }
 
     /// <inheritdoc/>
     public async Task<Result<Unit, QuotableError>> DeleteAsync(Quote model, CancellationToken cancellationToken)
-        => await _decorated.DeleteAsync(model, cancellationToken).ConfigureAwait(false);
+    {
+        if (model is null)
+        {
+            return QuotableErrors.InputRequired;
+        }
+
+        var result = await _decorated.DeleteAsync(model, cancellationToken).ConfigureAwait(false);
+
+        if (result.IsFailure)
+        {
+            return result;
+        }
+
+        await RemoveCacheByPublicId(model.PublicId, cancellationToken).ConfigureAwait(false);
+
+        return Unit.Instance;
+    }
 
     /// <inheritdoc/>
     public async Task<Result<bool, QuotableError>> ExistsAsync(Guid publicId, CancellationToken cancellationToken)
         => await _decorated.ExistsAsync(publicId, cancellationToken).ConfigureAwait(false);
+
+    /// <summary>
+    /// Remove a cache key by public id if it exists.
+    /// </summary>
+    /// <param name="publicId">public id of the quote.</param>
+    /// <param name="cancellationToken">Cancellation token used during async computing.</param>
+    /// <returns>Result object of Unit and QuotableError.</returns>
+    private async Task RemoveCacheByPublicId(Guid publicId, CancellationToken cancellationToken)
+    {
+        string key = $"QUOTE:{publicId}";
+
+        var cachedQuote = await _cache.GetStringAsync(key, cancellationToken).ConfigureAwait(false);
+
+        if (!string.IsNullOrWhiteSpace(cachedQuote))
+        {
+            await _cache.RemoveAsync(key, cancellationToken).ConfigureAwait(false);
+        }
+    }
 }

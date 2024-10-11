@@ -47,7 +47,7 @@ docker compose down
 - [x] Integration tests with Test Containers. 
 - [x] Add logging (Serilog) and SEQ.
 - [x] Add static code analyzers and setup SonarQube. 
-- [ ] Use distributed Cashing (Valkey)
+- [x] Use distributed Cashing (Valkey)
 - [ ] Clean-Up for release V1.0. 
 
 ### V1.1
