@@ -1,4 +1,12 @@
-﻿using Bogsi.Quotable.Application;
+﻿// -----------------------------------------------------------------------
+// <copyright file="ServiceCollectionExtensions.cs" company="BOGsi">
+// Copyright (c) BOGsi. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+
+using Bogsi.Quotable.Application;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
@@ -8,10 +16,15 @@ using Bogsi.Quotable.Infrastructure.Utilities;
 
 using FluentValidation;
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
-
+/// <summary>
+/// Extensions regarding service collexction.
+/// </summary>
 internal static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Add and configure all services.
+    /// </summary>
+    /// <param name="builder">WebApplicationBuilder during startip.</param>
     internal static void AddServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks();
@@ -24,6 +37,10 @@ internal static class ServiceCollectionExtensions
         builder.AddHandlers();
     }
 
+    /// <summary>
+    /// Configure and add all repositories.
+    /// </summary>
+    /// <param name="builder">WebApplicationBuilder during startip.</param>
     private static void AddRepositories(this WebApplicationBuilder builder)
     {
         builder.Services
@@ -32,6 +49,10 @@ internal static class ServiceCollectionExtensions
             .AddScoped<IRepository<Quote>>(x => x.GetRequiredService<QuoteRepository>());
     }
 
+    /// <summary>
+    /// Configure and add all handlers.
+    /// </summary>
+    /// <param name="builder">WebApplicationBuilder during startip.</param>
     private static void AddHandlers(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IGetQuotesHandler, GetQuotesHandler>();
@@ -41,6 +62,10 @@ internal static class ServiceCollectionExtensions
         builder.Services.AddScoped<IDeleteQuoteHandler, DeleteQuoteHandler>();
     }
 
+    /// <summary>
+    /// Configure and add utility services.
+    /// </summary>
+    /// <param name="builder">WebApplicationBuilder during startip.</param>
     private static void AddUtilities(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

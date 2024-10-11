@@ -1,10 +1,10 @@
-﻿using Bogsi.Quotable.Application.Errors;
+﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Test.Builders.Models;
 using Bogsi.Quotable.Test.Builders.Requests;
 
-using Quote = Bogsi.Quotable.Application.Models.Quote;
-
-namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+using Quote = Application.Models.Quote;
 
 public class GetQuoteByIdHandlerTests : TestBase<IGetQuoteByIdHandler>
 {

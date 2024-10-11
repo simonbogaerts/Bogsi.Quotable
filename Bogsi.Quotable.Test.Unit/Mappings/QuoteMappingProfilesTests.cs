@@ -1,10 +1,9 @@
-﻿using Bogsi.Quotable.Application;
+﻿namespace Bogsi.Quotable.Test.Unit.Mappings;
+
 using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Builders.Models;
 
-using Quote = Bogsi.Quotable.Application.Models.Quote;
-
-namespace Bogsi.Quotable.Test.Unit.Mappings;
+using Quote = Application.Models.Quote;
 
 public class QuoteMappingProfilesTests : TestBase<IMapper>
 {
@@ -268,7 +267,7 @@ public class QuoteMappingProfilesTests : TestBase<IMapper>
         // THEN 
         result.Should().NotBeNull("Result should not be NULL");
         result.Data.Should().NotBeNullOrEmpty("Result should not be empty");
-        result.Data.Count().Should().Be(2, "Result should contain 2 items");
+        result.Data.Count.Should().Be(2, "Result should contain 2 items");
         result.Cursor.Should().Be(Cursor.Default + Cursor.Offset, $"Cursor should be {Cursor.Default + Cursor.Offset}");
         result.Size.Should().Be(Size.Default, $"Size should be {Size.Default}");
         result.HasNext.Should().BeFalse("HasNext should be false");

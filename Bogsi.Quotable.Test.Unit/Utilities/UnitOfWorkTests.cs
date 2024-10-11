@@ -1,9 +1,9 @@
-﻿using Bogsi.Quotable.Application.Interfaces.Utilities;
+﻿namespace Bogsi.Quotable.Test.Unit.Utilities;
+
+using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Infrastructure.Utilities;
 using Bogsi.Quotable.Persistence;
 using Bogsi.Quotable.Test.Builders.Entities;
-
-namespace Bogsi.Quotable.Test.Unit.Utilities;
 
 public sealed class UnitOfWorkTests : TestBase<IUnitOfWork>
 {

@@ -1,11 +1,11 @@
-﻿using Bogsi.Quotable.Application;
+﻿namespace Bogsi.Quotable.Test.Unit.Validators;
+
+using Bogsi.Quotable.Application;
 using Bogsi.Quotable.Application.Validators;
 using Bogsi.Quotable.Test.Builders.Requests;
 using Bogsi.Quotable.Test.Utilities;
 
 using FluentValidation;
-
-namespace Bogsi.Quotable.Test.Unit.Validators;
 
 public class UpdateQuoteHandlerRequestValidatorTests : TestBase<IValidator<UpdateQuoteHandlerRequest>>
 {

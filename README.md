@@ -35,23 +35,23 @@ docker compose down
 ```
 
 
+## Code Quality
+
+* Using both StyleCop and SonarAnalyzer, with only a handful of rules disabled.
+* Additional quality check done by SonarQube to maintain 0 issues.
+
+
 ## Roadmap
 
-* Logging with SEQ
 * Cashing with Redis (use Valkey instead = redis no longer open source, devs moved over to valkey)
-* code quality with sonarcube
 * head and options endpoints 
-* concurrency 
-* add documentation
 * Add additional pocos like author and tags
 * Add indexes 
 * Add security to everything
 
 
-
 ## Considerations
 
-* Add service between repo and handler. make repo use entities and service use models?
 * fix creates dates on create return object 
 * fluentassertion because args not doing what they supposed to do. 
     * see GivenGetAsync_WhenPaginationIsProvidedAndIsDefault_ThenReturnCorrectCollectionAndCursorInfo for correct useage.

@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>c4390586-6022-499b-84af-f0a67ce81923</UserSecretsId>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +28,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Bogsi.Quotable.Infrastructure\Bogsi.Quotable.Infrastructure.csproj" />
     <ProjectReference Include="..\Bogsi.Quotable.Persistence\Bogsi.Quotable.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>

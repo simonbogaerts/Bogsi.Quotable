@@ -1,12 +1,12 @@
-﻿using Bogsi.Quotable.Application.Errors;
+﻿namespace Bogsi.Quotable.Test.Unit.Repositories.Quotes;
+
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Infrastructure.Repositories;
 using Bogsi.Quotable.Persistence;
 using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Builders.Requests;
 
-using Quote = Bogsi.Quotable.Application.Models.Quote;
-
-namespace Bogsi.Quotable.Test.Unit.Repositories.Quotes;
+using Quote = Application.Models.Quote;
 
 public sealed class IReadonlyRepositoryTests : TestBase<IReadonlyRepository<Quote>>
 {

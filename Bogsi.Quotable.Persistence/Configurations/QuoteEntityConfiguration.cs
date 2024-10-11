@@ -1,13 +1,27 @@
-﻿using Bogsi.Quotable.Application.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿// -----------------------------------------------------------------------
+// <copyright file="QuoteEntityConfiguration.cs" company="BOGsi">
+// Copyright (c) BOGsi. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Persistence.Configurations;
 
+using Bogsi.Quotable.Application.Entities;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+/// <summary>
+/// Entity configuration for the QuoteEntity.
+/// </summary>
 internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<QuoteEntity>
 {
     #region Configure Method
 
+    /// <summary>
+    /// Configuration of the entity.
+    /// </summary>
+    /// <param name="builder">Context builder.</param>
     public void Configure(EntityTypeBuilder<QuoteEntity> builder)
     {
         builder.ToTable(Constants.Tables.Quotes, Constants.Schemas.Quotable);
@@ -32,13 +46,11 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
 
         builder
             .Property(x => x.Created)
-            //.ValueGeneratedOnAdd()
             .HasDefaultValueSql(Constants.Functions.GetDate)
             .IsRequired();
 
         builder
             .Property(x => x.Updated)
-            //.ValueGeneratedOnAddOrUpdate()
             .HasDefaultValueSql(Constants.Functions.GetDate)
             .IsRequired()
             .IsConcurrencyToken();
@@ -52,18 +64,19 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
 
     private static IEnumerable<QuoteEntity> Seed =>
     [
-        new()
+        new ()
         {
             Id = 1,
             PublicId = Guid.NewGuid(),
-            Value = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn."
+            Value = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn.",
         },
-        new()
+        new ()
         {
             Id = 2,
             PublicId = Guid.NewGuid(),
-            Value = "That is not dead which can eternal lie, And with strange aeons even death may die."
+            Value = "That is not dead which can eternal lie, And with strange aeons even death may die.",
         }
+
     ];
 
     #endregion

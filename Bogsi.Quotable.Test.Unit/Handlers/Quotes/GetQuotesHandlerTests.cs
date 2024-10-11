@@ -1,10 +1,10 @@
-﻿using Bogsi.Quotable.Application.Utilities;
+﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+
+using Bogsi.Quotable.Application.Utilities;
 using Bogsi.Quotable.Test.Builders.Models;
 using Bogsi.Quotable.Test.Builders.Requests;
 
-using Quote = Bogsi.Quotable.Application.Models.Quote;
-
-namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+using Quote = Application.Models.Quote;
 
 public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
 {
@@ -55,6 +55,6 @@ public class GetQuotesHandlerTests : TestBase<IGetQuotesHandler>
         result.IsSuccess.Should().BeTrue("Result should be success");
         result.IsFailure.Should().BeFalse("Result should be success");
         result.Value.Should().NotBeNull("Result should contain success value");
-        result.Value.Data.Count().Should().Be(2, "Result should contain 2 items");
+        result.Value.Data.Count.Should().Be(2, "Result should contain 2 items");
     }
 }

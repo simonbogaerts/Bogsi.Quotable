@@ -1,10 +1,10 @@
-﻿using Bogsi.Quotable.Persistence;
+﻿namespace Bogsi.Quotable.Test.Integration;
+
+using Bogsi.Quotable.Persistence;
 using Bogsi.Quotable.Test.Integration.Utilities;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace Bogsi.Quotable.Test.Integration;
 
 public abstract class TestBase : IClassFixture<IntegrationTestWebApplicationBuilderFactory>, IDisposable
 {
@@ -25,6 +25,8 @@ public abstract class TestBase : IClassFixture<IntegrationTestWebApplicationBuil
 
     public void Dispose()
     {
+        GC.SuppressFinalize(this);
+
         _quotableContext.Database.EnsureDeleted();
     }
 }

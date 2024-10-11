@@ -1,14 +1,27 @@
-﻿using AutoMapper;
-using Bogsi.Quotable.Application.Contracts.Quotes;
-using Bogsi.Quotable.Application.Errors;
-using Bogsi.Quotable.Application.Handlers.Quotes;
-using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+﻿// -----------------------------------------------------------------------
+// <copyright file="UpdateQuoteEndpoint.cs" company="BOGsi">
+// Copyright (c) BOGsi. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
 
+using AutoMapper;
+
+using Bogsi.Quotable.Application.Contracts.Quotes;
+using Bogsi.Quotable.Application.Errors;
+using Bogsi.Quotable.Application.Handlers.Quotes;
+
+using FluentValidation;
+
+using Microsoft.AspNetCore.Mvc;
+
+/// <summary>
+/// Endpoint to create a new quote.
+/// </summary>
 public sealed class UpdateQuoteEndpoint : IApiEndpoint
 {
+    /// <inheritdoc/>
     public void MapRoute(IEndpointRouteBuilder endpoints)
     {
         endpoints
@@ -23,7 +36,18 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
             .WithOpenApi();
     }
 
-    public static async Task<IResult> UpdateQuote(
+    /// <summary>
+    /// Update ane existing quote.
+    /// </summary>
+    /// <param name="id">Public id of quote to delete.</param>
+    /// <param name="request">Incoming request body.</param>
+    /// <param name="handler">Handler for the busines logic.</param>
+    /// <param name="validator">Validator for the incoming request.</param>
+    /// <param name="mapper">A configured instance of AutoMapper.</param>
+    /// <param name="logger">An instance of a Serilog logger.</param>
+    /// <param name="cancellationToken">Cancellation token used during async computing.</param>
+    /// <returns>A statuscode indicating success or failure.</returns>
+    internal static async Task<IResult> UpdateQuote(
         [FromRoute] Guid id,
         [FromBody] UpdateQuoteRequest request,
         [FromServices] IUpdateQuoteHandler handler,
@@ -35,31 +59,31 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
         using var scope = logger.BeginScope(new Dictionary<string, object>
         {
             ["endpoint"] = nameof(UpdateQuoteEndpoint),
-            ["public-id"] = id
+            ["public-id"] = id,
         });
 
-        logger.LogInformation("[{source}] mapping endpoint request to handler request", nameof(UpdateQuoteEndpoint));
+        logger.LogInformation("[{Source}] mapping endpoint request to handler request", nameof(UpdateQuoteEndpoint));
 
         var handlerRequest = mapper.Map<UpdateQuoteRequest, UpdateQuoteHandlerRequest>(request, opt => opt.Items["Id"] = id);
 
-        logger.LogInformation("[{source}] validating handler request", nameof(UpdateQuoteEndpoint));
+        logger.LogInformation("[{Source}] validating handler request", nameof(UpdateQuoteEndpoint));
 
-        var isValidRequest = await validator.ValidateAsync(handlerRequest, cancellationToken);
+        var isValidRequest = await validator.ValidateAsync(handlerRequest, cancellationToken).ConfigureAwait(false);
 
         if (!isValidRequest.IsValid)
         {
-            logger.LogError("[{source}] invalid handler request", nameof(UpdateQuoteEndpoint));
+            logger.LogError("[{Source}] invalid handler request", nameof(UpdateQuoteEndpoint));
 
             return Results.ValidationProblem(isValidRequest.ToDictionary());
         }
 
-        logger.LogInformation("[{source}] executing handler", nameof(UpdateQuoteEndpoint));
+        logger.LogInformation("[{Source}] executing handler", nameof(UpdateQuoteEndpoint));
 
-        var result = await handler.HandleAsync(handlerRequest, cancellationToken);
+        var result = await handler.HandleAsync(handlerRequest, cancellationToken).ConfigureAwait(false);
 
         if (result.IsFailure)
         {
-            logger.LogError("[{source}] something went wrong, {error}", nameof(CreateQuoteEndpoint), result.Error);
+            logger.LogError("[{Source}] something went wrong, {Error}", nameof(CreateQuoteEndpoint), result.Error);
 
             if (result.Error == QuotableErrors.NotFound)
             {

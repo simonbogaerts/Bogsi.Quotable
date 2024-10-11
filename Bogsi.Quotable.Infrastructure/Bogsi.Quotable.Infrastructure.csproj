@@ -4,8 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Bogsi.Quotable.Application\Bogsi.Quotable.Application.csproj" />
     <ProjectReference Include="..\Bogsi.Quotable.Persistence\Bogsi.Quotable.Persistence.csproj" />

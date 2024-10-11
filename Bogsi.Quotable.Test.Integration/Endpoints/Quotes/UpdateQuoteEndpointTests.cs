@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿namespace Bogsi.Quotable.Test.Integration.Endpoints.Quotes;
+
+using System.Net.Http.Json;
 
 using Bogsi.Quotable.Application.Contracts.Quotes;
 using Bogsi.Quotable.Application.Entities;
@@ -6,12 +8,7 @@ using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Builders.Requests;
 using Bogsi.Quotable.Test.Integration.Utilities;
 
-using FluentAssertions;
-
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-
-namespace Bogsi.Quotable.Test.Integration.Endpoints.Quotes;
 
 public class UpdateQuoteEndpointTests : TestBase
 {

@@ -1,10 +1,10 @@
-﻿using Bogsi.Quotable.Application.Errors;
+﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+
+using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Test.Builders.Requests;
 
-using Quote = Bogsi.Quotable.Application.Models.Quote;
-
-namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
+using Quote = Application.Models.Quote;
 
 public class DeleteQuoteHandlerTests : TestBase<IDeleteQuoteHandler>
 {

@@ -1,10 +1,8 @@
-﻿using Bogsi.Quotable.Application.Entities;
+﻿namespace Bogsi.Quotable.Test.Integration.Endpoints.Quotes;
+
+using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Integration.Utilities;
-
-using FluentAssertions;
-
-namespace Bogsi.Quotable.Test.Integration.Endpoints.Quotes;
 
 public class DeleteQuoteEndpointTests : TestBase
 {

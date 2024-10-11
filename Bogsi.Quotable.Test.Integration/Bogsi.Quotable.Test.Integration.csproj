@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\Bogsi.Quotable.Test\Bogsi.Quotable.Test.csproj" />
     <ProjectReference Include="..\Bogsi.Quotable.Web\Bogsi.Quotable.Web.csproj" />
   </ItemGroup>

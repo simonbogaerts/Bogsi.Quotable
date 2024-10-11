@@ -1,7 +1,18 @@
-﻿namespace Bogsi.Quotable.Web.Endpoints.Utilities;
+﻿// -----------------------------------------------------------------------
+// <copyright file="HelloWorldEndpoint.cs" company="BOGsi">
+// Copyright (c) BOGsi. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
+namespace Bogsi.Quotable.Web.Endpoints.Utilities;
+
+/// <summary>
+/// Hello world endpoint.
+/// Test endpoint used furing development.
+/// </summary>
 internal class HelloWorldEndpoint : IApiEndpoint
 {
+    /// <inheritdoc/>
     public void MapRoute(IEndpointRouteBuilder endpoints)
     {
         endpoints
@@ -12,6 +23,10 @@ internal class HelloWorldEndpoint : IApiEndpoint
             .WithOpenApi();
     }
 
+    /// <summary>
+    /// Endpoint logic.
+    /// </summary>
+    /// <returns>Hello world string.</returns>
     internal static IResult HelloWorld()
     {
         return Results.Ok("Hello, Quotable!");
