@@ -16,6 +16,10 @@ using Bogsi.Quotable.Infrastructure.Utilities;
 
 using FluentValidation;
 
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
+
 /// <summary>
 /// Extensions regarding service collexction.
 /// </summary>
@@ -43,10 +47,12 @@ internal static class ServiceCollectionExtensions
     /// <param name="builder">WebApplicationBuilder during startip.</param>
     private static void AddRepositories(this WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<QuoteRepository>();
         builder.Services
-            .AddScoped<QuoteRepository>()
-            .AddScoped<IReadonlyRepository<Quote>>(x => x.GetRequiredService<QuoteRepository>())
-            .AddScoped<IRepository<Quote>>(x => x.GetRequiredService<QuoteRepository>());
+            .AddScoped<IReadonlyRepository<Quote>>(x =>
+                new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()))
+            .AddScoped<IRepository<Quote>>(x =>
+                new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()));
     }
 
     /// <summary>

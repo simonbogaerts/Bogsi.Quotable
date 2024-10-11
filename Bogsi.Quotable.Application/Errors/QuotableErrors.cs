@@ -38,4 +38,11 @@ public sealed record QuotableErrors
     public static QuotableError InternalError => new (
         nameof(InternalError),
         "Something went wrong");
+
+    /// <summary>
+    /// Gets error for could not deserialize.
+    /// </summary>
+    public static QuotableError CouldNotDeserialize => new (
+        nameof(CouldNotDeserialize),
+        "Could not deserialize cache.");
 }

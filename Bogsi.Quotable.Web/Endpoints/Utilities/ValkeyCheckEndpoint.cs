@@ -33,7 +33,7 @@ internal class ValkeyCheckEndpoint : IApiEndpoint
     /// </summary>
     /// <param name="distributedCache">Instance of Valkey.</param>
     /// <param name="cancellationToken">Cancellation token used during async computing.</param>
-    /// <returns>Random gibberish from Valkey.</returns>
+    /// <returns>Some gibberish I put into Valkey.</returns>
     internal static async Task<IResult> ValkeyHealthCheck(
         IDistributedCache distributedCache,
         CancellationToken cancellationToken)

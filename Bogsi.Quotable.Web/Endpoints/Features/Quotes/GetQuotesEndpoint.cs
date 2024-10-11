@@ -27,6 +27,7 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
             .WithName(Constants.Endpoints.QuoteEndpoints.GetQuotesEndpoint)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status500InternalServerError)
             .MapToApiVersion(1)
             .WithOpenApi();
     }
