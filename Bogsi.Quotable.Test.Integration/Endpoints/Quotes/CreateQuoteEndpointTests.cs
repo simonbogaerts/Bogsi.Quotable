@@ -42,8 +42,8 @@ public class CreateQuoteEndpointTests : TestBase
         result!.Value.Should().Be(created!.Value, "the same value should be returned");
         result!.Value.Should().Be(request!.Value, "the same value should be stored");
         result!.PublicId.Should().Be(created!.PublicId, "the same value should be returned");
-        //result!.Created.Should().Be(created!.Created, "the same value should be returned");
-        //result!.Updated.Should().Be(created!.Updated, "the same value should be returned");
+        result!.Created.Should().Be(created!.Created, "the same value should be returned");
+        result!.Updated.Should().Be(created!.Updated, "the same value should be returned");
     }
 
     [Theory]

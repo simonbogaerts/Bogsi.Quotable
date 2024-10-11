@@ -113,7 +113,14 @@ public sealed class CreateQuoteHandler(
             return QuotableErrors.InternalError;
         }
 
-        var response = _mapper.Map<Quote, CreateQuoteHandlerResponse>(model);
+        var responseModel = await _quoteRepository.GetByIdAsync(model.PublicId, cancellationToken).ConfigureAwait(false);
+
+        if (responseModel.IsFailure)
+        {
+            return QuotableErrors.InternalError;
+        }
+
+        var response = _mapper.Map<Quote, CreateQuoteHandlerResponse>(responseModel.Value);
 
         return response;
     }

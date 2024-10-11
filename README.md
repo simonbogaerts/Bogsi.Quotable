@@ -58,11 +58,6 @@ docker compose down
 - [ ] Clean-Up for release V1.1. 
 
 
-## Known Bugs 
-
-* When creating a quote, the Created and updated fields are a default date value. 
-
-
 ## Code Quality
 
 * Using both StyleCop and SonarAnalyzer, with only a handful of rules disabled.

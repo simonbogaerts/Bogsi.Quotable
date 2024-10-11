@@ -1,8 +1,13 @@
 ﻿namespace Bogsi.Quotable.Test.Unit.Handlers.Quotes;
 
 using Bogsi.Quotable.Application.Errors;
+using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
+using Bogsi.Quotable.Test.Builders.Entities;
+using Bogsi.Quotable.Test.Builders.Models;
 using Bogsi.Quotable.Test.Builders.Requests;
+
+using NSubstitute;
 
 using Quote = Application.Models.Quote;
 
@@ -37,8 +42,10 @@ public class CreateQuoteHandlerTests : TestBase<CreateQuoteHandler>
     {
         // GIVEN
         CreateQuoteHandlerRequest request = new CreateQuoteHandlerRequestBuilder().Build();
+        Quote model = new QuoteBuilder().WithValue(request.Value).Build();
 
         _unitOfWork.SaveChangesAsync(Arg.Any<CancellationToken>()).Returns(true);
+        _repository.GetByIdAsync(Arg.Any<Guid>(), Arg.Any<CancellationToken>()).Returns(model);
 
         // WHEN
         var result = await Sut.HandleAsync(request, _cancellationToken);
