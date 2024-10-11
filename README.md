@@ -8,9 +8,9 @@ _adjective._
 
 A massively, over-engineered, best-practice-filled-solution using dotnet. It's a CRUD interface for quotes and their respectable origins, nothing more, nothing less. 
 
-It's an experiment where I take a deep dive in some best practices regarding dotnet and REST. Further delve into Docker and Docker Compose. Set-up an entire environment using development containers, and test my code base using test containers. 
+It's a personal experiment where I take a deep dive in a lot of stuff I haven't gotten the chance to use a lot in my professional career. I'll be taking a deeper look at Docker, Valkey, Serilog, Seq, SonarQube, Keycloak, Test Containers and integration testing in general, AutoMapper, FluentValidation, FluentAssertions, and a couple of design patterns like Decorator, Result, Flyweight, Builder, etc...
 
-Afterwards I'll be using Quotable when trying new frontend frameworks, cloud platforms, or other stuff that might need a teeny tiny application laying around to test. 
+Afterwards I intend to use Quotable when trying new frontend frameworks, cloud platforms, or other stuff that might need a teeny tiny backend application laying around. 
 
 
 ## Prerequisites
@@ -35,36 +35,43 @@ docker compose down
 ```
 
 
+## Roadmap
+
+### V1.0
+
+- [x] Setup project base and add Docker support.
+- [x] Add endpoint discovery through reflection.
+- [x] Setup Entity Framework and create DbContext. 
+- [x] CRUD functionality for base Quote model. 
+- [x] Implement Result monad pattern. 
+- [x] Integration tests with Test Containers. 
+- [x] Add logging (Serilog) and SEQ.
+- [x] Add static code analyzers and setup SonarQube. 
+- [x] Use distributed Cashing (Valkey)
+- [ ] Clean-Up for release V1.0. 
+
+### V1.1
+
+- [ ] Head and Options endpoints 
+- [ ] Update data model
+- [ ] Add security (bearer)
+- [ ] Clean-Up for release V1.1. 
+
+
+## Known Bugs 
+
+* When creating a quote, the Created and updated fields are a default date value. 
+
+
 ## Code Quality
 
 * Using both StyleCop and SonarAnalyzer, with only a handful of rules disabled.
 * Additional quality check done by SonarQube to maintain 0 issues.
 
 
-## Roadmap
-
-* Cashing with Redis (use Valkey instead = redis no longer open source, devs moved over to valkey)
-* head and options endpoints 
-* Add additional pocos like author and tags
-* Add indexes 
-* Add security to everything
-
-
 ## Considerations
 
-* fix creates dates on create return object 
-* fluentassertion because args not doing what they supposed to do. 
-    * see GivenGetAsync_WhenPaginationIsProvidedAndIsDefault_ThenReturnCorrectCollectionAndCursorInfo for correct useage.
-
-https://www.youtube.com/watch?v=B9ZUJN1Juhk
-=> use this for some docker stuff maybe? 
-
-
-## Additional
-
-* **Health checks**. https://www.youtube.com/watch?v=4abSfjdzqms
-* **Cursor pagination vs SkipTake Pagination**. https://www.youtube.com/watch?v=gfRJBoOuNUA
-* I chose to unit test my mappers because without them I wouldn't know about the resolver (since you can only have a single FromMember for a member).
-* I chose to use resolver instead of inline mapping because this makes the profile easier to read and profile doesn't need to know the specific of the resolve. 
-
-* swagger alternative: https://dev.to/eminvergil/an-alternative-to-swagger-in-dotnet-9-2jd6
+* **Regarding a lack of Mediatr**. I originally reasoned not to use it because I would not be using the Pipeline behavior. At second thought it would have made integration testing even easier so I might add it along the line. 
+* **Regarding unit tests for AutoMapper profiles**. I found quite a bit of "oh I didn't know that" because of them. Since mapping happens a lot I found it useful to unit test these mapping profiles. 
+* **Regarding micro resolvers**. Inline would definitely suffice in most cases, but it's possible in other. Since I prefer a uniform look, I decided to put all resolvers in their own file, however small. 
+* **Regarding cursor pagination instead of skip-take pagination**. Just a try-out after seeing a YouTube video about it. It did bring quite a bit of unforeseen issues with it, and opened up the id property to the user, but I like that it can enable infinite scrolling so I decided to stick with it. 

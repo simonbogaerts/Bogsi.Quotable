@@ -12,11 +12,6 @@ namespace Bogsi.Quotable.Web;
 public static class Constants
 {
     /// <summary>
-    /// Name of the database section.
-    /// </summary>
-    public const string QuotableDb = nameof(QuotableDb);
-
-    /// <summary>
     /// Name of the keycloak section.
     /// </summary>
     public const string Keycloak = nameof(Keycloak);
@@ -25,6 +20,43 @@ public static class Constants
     /// Name of the authentication schema.
     /// </summary>
     public const string Bearer = nameof(Bearer);
+
+    /// <summary>
+    /// Different environments.
+    /// </summary>
+    public static class Environments
+    {
+        /// <summary>
+        /// Production environment.
+        /// </summary>
+        public const string Production = nameof(Production);
+
+        /// <summary>
+        /// Test environment.
+        /// </summary>
+        public const string Testing = nameof(Testing);
+
+        /// <summary>
+        /// Test environment.
+        /// </summary>
+        public const string Development = nameof(Development);
+    }
+
+    /// <summary>
+    /// Different keys for all connectionstrings.
+    /// </summary>
+    public static class ConnectionStrings
+    {
+        /// <summary>
+        /// Name of the database connectionstring.
+        /// </summary>
+        public const string QuotableDb = nameof(QuotableDb);
+
+        /// <summary>
+        /// Name of the distributed cache connectionstring.
+        /// </summary>
+        public const string Valkey = nameof(Valkey);
+    }
 
     /// <summary>
     /// Different key literals within the appsettings.

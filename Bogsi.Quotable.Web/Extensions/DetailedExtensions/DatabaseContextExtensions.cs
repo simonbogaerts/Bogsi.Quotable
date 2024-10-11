@@ -15,13 +15,13 @@ using Microsoft.EntityFrameworkCore;
 internal static class DatabaseContextExtensions
 {
     /// <summary>
-    /// Configure and add DbCContext.
+    /// Configure and add DbContext.
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
     internal static void AddQuotableDbContext(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<QuotableContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString(Constants.QuotableDb)!));
+            options.UseNpgsql(builder.Configuration.GetConnectionString(Constants.ConnectionStrings.QuotableDb)!));
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }
