@@ -3,7 +3,6 @@
 using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
-using Bogsi.Quotable.Test.Builders.Entities;
 using Bogsi.Quotable.Test.Builders.Models;
 using Bogsi.Quotable.Test.Builders.Requests;
 

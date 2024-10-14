@@ -48,7 +48,7 @@ docker compose down
 - [x] Add logging (Serilog) and SEQ.
 - [x] Add static code analyzers and setup SonarQube. 
 - [x] Use distributed Cashing (Valkey)
-- [ ] Clean-Up for release V1.0. 
+- [x] Clean-Up for release V1.0. 
 
 ### V1.1
 
