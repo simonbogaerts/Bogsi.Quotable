@@ -48,19 +48,15 @@ docker compose down
 - [x] Add logging (Serilog) and SEQ.
 - [x] Add static code analyzers and setup SonarQube. 
 - [x] Use distributed Cashing (Valkey)
-- [ ] Clean-Up for release V1.0. 
+- [x] Clean-Up for release V1.0. 
 
 ### V1.1
 
+- [ ] Switch to Mediatr.
 - [ ] Head and Options endpoints 
 - [ ] Update data model
 - [ ] Add security (bearer)
 - [ ] Clean-Up for release V1.1. 
-
-
-## Known Bugs 
-
-* When creating a quote, the Created and updated fields are a default date value. 
 
 
 ## Code Quality
@@ -71,7 +67,6 @@ docker compose down
 
 ## Considerations
 
-* **Regarding a lack of Mediatr**. I originally reasoned not to use it because I would not be using the Pipeline behavior. At second thought it would have made integration testing even easier so I might add it along the line. 
 * **Regarding unit tests for AutoMapper profiles**. I found quite a bit of "oh I didn't know that" because of them. Since mapping happens a lot I found it useful to unit test these mapping profiles. 
 * **Regarding micro resolvers**. Inline would definitely suffice in most cases, but it's possible in other. Since I prefer a uniform look, I decided to put all resolvers in their own file, however small. 
 * **Regarding cursor pagination instead of skip-take pagination**. Just a try-out after seeing a YouTube video about it. It did bring quite a bit of unforeseen issues with it, and opened up the id property to the user, but I like that it can enable infinite scrolling so I decided to stick with it. 

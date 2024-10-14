@@ -1,0 +1,6 @@
+### Flush All Cache
+# @name flush-cache
+
+GET {{host-name}}/api/v1/utilities/flush-cache HTTP/1.1 
+
+Accept: application/json

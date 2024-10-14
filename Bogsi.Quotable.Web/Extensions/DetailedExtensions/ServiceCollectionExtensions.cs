@@ -30,7 +30,6 @@ internal static class ServiceCollectionExtensions
     /// <param name="builder">WebApplicationBuilder during startip.</param>
     internal static void AddServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddHealthChecks();
         builder.Services.AddAutoMapper(typeof(IApplicationMarker).Assembly);
         builder.Services.AddValidatorsFromAssembly(typeof(IApplicationMarker).Assembly);
         builder.Services.AddCors();
