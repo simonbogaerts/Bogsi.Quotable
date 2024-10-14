@@ -1,0 +1,16 @@
+### Hello World 
+# @name hello-world
+# Only available in development and testing.
+
+GET {{host-name}}/api/v1/utilities/hello-world HTTP/1.1 
+
+Accept: application/json
+
+
+
+### Health Check
+# @name health-check
+
+GET {{host-name}}/api/v1/healthz HTTP/1.1 
+
+Accept: application/json

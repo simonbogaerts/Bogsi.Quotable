@@ -1,0 +1,64 @@
+name: bogsi-quotable
+
+services:
+  aspnet-backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: bogsi-quotable-aspnet-backend:latest
+    container_name: aspnet-backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    networks:
+      - quotable-network
+    ports:
+      - 8080:8080
+      - 8081:8081
+    depends_on:
+      - database
+      - logging-seq
+  
+  database:
+    image: postgres:17rc1-alpine3.20
+    container_name: database 
+    restart: always
+    environment:
+      POSTGRES_USER: quotable
+      POSTGRES_PASSWORD: quotable123
+      POSTGRES_DB: quotable-db
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.container-data/db:/var/lib/postgresql/data
+    networks:
+      - quotable-network
+
+  logging-seq:
+    image: datalust/seq:latest
+    container_name: logging-seq 
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+    ports:
+      - 5341:5341
+      - 8082:80
+    volumes:
+      - ./.container-data/seq:/data
+    networks:
+      - quotable-network
+
+  caching-valkey:
+    image: valkey/valkey:8.0.1-alpine
+    container_name: caching-valkey 
+    restart: always
+    command: valkey-server /etc/valkey/valkey.conf --save 60 1 --loglevel warning
+    volumes:
+      - ./.container-data/valkey/conf:/etc/valkey/valkey.conf
+      - ./.container-data/valkey/data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - quotable-network
+
+networks:
+  quotable-network:

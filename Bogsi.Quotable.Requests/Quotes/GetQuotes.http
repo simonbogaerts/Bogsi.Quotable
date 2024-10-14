@@ -1,0 +1,32 @@
+### Minimal Request 
+# Only has the minimum required parameters for the request to work. 
+# @name minimal-request
+
+GET {{host-name}}/api/v1/quotes HTTP/1.1
+Accept: application/json
+
+
+
+### Complete Request Example
+# Contains every parameter and serves more as a showcase than an actual useable endpoint. 
+# @name complete-request
+
+GET {{host-name}}/api/v1/quotes HTTP/1.1
+?Cursor=1
+&Size=10
+&Origin=origintest
+&Tag=tagtest
+&SearchQuery=this-is-a-search
+Accept: application/json
+
+
+
+### Working Request
+# Use this request to test. The other two serve more as examples or guidelines.  
+# @name test-request
+
+GET {{host-name}}/api/v1/quotes 
+?Cursor=1
+&Size=10
+&SearchQuery=dead HTTP/1.1
+Accept: application/json

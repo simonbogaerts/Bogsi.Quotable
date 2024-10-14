@@ -1,0 +1,14 @@
+﻿global using AutoMapper;
+global using Bogsi.Quotable.Application.Contracts.Quotes;
+global using Bogsi.Quotable.Application.Entities;
+global using Bogsi.Quotable.Application.Handlers.Quotes;
+global using Bogsi.Quotable.Application.Interfaces.Repositories;
+global using Bogsi.Quotable.Application.Mappings;
+global using Bogsi.Quotable.Application.Models;
+global using FluentAssertions;
+global using NSubstitute;
+global using static Bogsi.Quotable.Application.Constants;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using System;

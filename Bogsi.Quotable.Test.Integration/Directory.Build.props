@@ -1,0 +1,7 @@
+<Project>
+  <!-- Empty file to override root Directory.Build.props -->
+  <PropertyGroup>
+
+
+  </PropertyGroup>
+</Project>
