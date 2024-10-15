@@ -7,7 +7,6 @@
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
 using Bogsi.Quotable.Application;
-using Bogsi.Quotable.Application.Handlers.Quotes;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
@@ -36,7 +35,6 @@ internal static class ServiceCollectionExtensions
 
         builder.AddRepositories();
         builder.AddUtilities();
-        builder.AddHandlers();
     }
 
     /// <summary>
@@ -51,19 +49,6 @@ internal static class ServiceCollectionExtensions
                 new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()))
             .AddScoped<IRepository<Quote>>(x =>
                 new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()));
-    }
-
-    /// <summary>
-    /// Configure and add all handlers.
-    /// </summary>
-    /// <param name="builder">WebApplicationBuilder during startip.</param>
-    private static void AddHandlers(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddScoped<IGetQuotesHandler, GetQuotesHandler>();
-        builder.Services.AddScoped<IGetQuoteByIdHandler, GetQuoteByIdHandler>();
-        builder.Services.AddScoped<ICreateQuoteHandler, CreateQuoteHandler>();
-        builder.Services.AddScoped<IUpdateQuoteHandler, UpdateQuoteHandler>();
-        builder.Services.AddScoped<IDeleteQuoteHandler, DeleteQuoteHandler>();
     }
 
     /// <summary>

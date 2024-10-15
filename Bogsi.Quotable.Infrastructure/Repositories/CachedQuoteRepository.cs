@@ -32,7 +32,7 @@ public sealed class CachedQuoteRepository(
     private readonly IDistributedCache _cache = cache ?? throw new ArgumentNullException(nameof(cache));
 
     /// <inheritdoc/>
-    public async Task<Result<CursorResponse<Quote>, QuotableError>> GetAsync(GetQuotesHandlerRequest request, CancellationToken cancellationToken)
+    public async Task<Result<CursorResponse<Quote>, QuotableError>> GetAsync(GetQuotesQuery request, CancellationToken cancellationToken)
     {
         if (request is null)
         {

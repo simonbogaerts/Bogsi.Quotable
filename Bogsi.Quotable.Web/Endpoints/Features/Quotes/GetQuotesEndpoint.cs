@@ -11,6 +11,8 @@ using AutoMapper;
 using Bogsi.Quotable.Application.Contracts.Quotes;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -36,14 +38,14 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
     /// Get all quotes or filter them.
     /// </summary>
     /// <param name="parameters">Search parameters.</param>
-    /// <param name="handler">Handler for the busines logic.</param>
+    /// <param name="mediator">Handler for the busines logic.</param>
     /// <param name="mapper">A configured instance of AutoMapper.</param>
     /// <param name="logger">An instance of a Serilog logger.</param>
     /// <param name="cancellationToken">Cancellation token used during async computing.</param>
     /// <returns>A list containing the matching quotes and some metadata.</returns>
     internal static async Task<IResult> GetQuotes(
         [AsParameters] GetQuotesParameters parameters,
-        [FromServices] IGetQuotesHandler handler,
+        [FromServices] IMediator mediator,
         [FromServices] IMapper mapper,
         [FromServices] ILogger<GetQuotesEndpoint> logger,
         CancellationToken cancellationToken)
@@ -56,11 +58,11 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] mapping parameters to handler request", nameof(GetQuotesEndpoint));
 
-        var handlerRequest = mapper.Map<GetQuotesParameters, GetQuotesHandlerRequest>(parameters);
+        var handlerRequest = mapper.Map<GetQuotesParameters, GetQuotesQuery>(parameters);
 
         logger.LogInformation("[{Source}] executing handler", nameof(GetQuotesEndpoint));
 
-        var result = await handler.HandleAsync(handlerRequest, cancellationToken).ConfigureAwait(false);
+        var result = await mediator.Send(handlerRequest, cancellationToken).ConfigureAwait(false);
 
         if (result.IsFailure)
         {
@@ -71,7 +73,7 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] mapping handler response to endpoint response", nameof(GetQuotesEndpoint));
 
-        var response = mapper.Map<GetQuotesHandlerResponse?, GetQuotesResponse>(result.Value);
+        var response = mapper.Map<Application.Handlers.Quotes.GetQuotesResponse, Application.Contracts.Quotes.GetQuotesResponse>(result.Value);
 
         return Results.Ok(response);
     }

@@ -35,7 +35,7 @@ public sealed class QuoteRepository(
 
     /// <inheritdoc/>
     public async Task<Result<CursorResponse<Quote>, QuotableError>> GetAsync(
-        GetQuotesHandlerRequest request,
+        GetQuotesQuery request,
         CancellationToken cancellationToken)
     {
         if (request is null)

@@ -14,7 +14,7 @@ using Bogsi.Quotable.Application.Handlers.Quotes;
 /// <summary>
 /// Resolver to validate and set cursor.
 /// </summary>
-internal sealed class CursorResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
+internal sealed class CursorResolver : IValueResolver<GetQuotesParameters, GetQuotesQuery, int>
 {
     /// <summary>
     /// The method called by the resolver.
@@ -26,7 +26,7 @@ internal sealed class CursorResolver : IValueResolver<GetQuotesParameters, GetQu
     /// <returns>A validated or default cursor.</returns>
     public int Resolve(
         GetQuotesParameters source,
-        GetQuotesHandlerRequest destination,
+        GetQuotesQuery destination,
         int destMember,
         ResolutionContext context)
     {
