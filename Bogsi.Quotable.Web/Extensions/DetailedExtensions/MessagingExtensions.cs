@@ -6,6 +6,9 @@
 
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
+using Bogsi.Quotable.Application;
+using Bogsi.Quotable.Application.Sagas;
+
 using MassTransit;
 
 /// <summary>
@@ -23,6 +26,8 @@ internal static class MessagingExtensions
         {
             massTransitConfig.SetKebabCaseEndpointNameFormatter();
 
+            massTransitConfig.AddAndConfigureSagasAndConsumers();
+
             massTransitConfig.UsingRabbitMq((context, rabbitMqConfig) =>
             {
                 var host = builder.Configuration["MessageBroker:Host"];
@@ -39,8 +44,23 @@ internal static class MessagingExtensions
                     host.Password(password!);
                 });
 
+                rabbitMqConfig.UseInMemoryOutbox(context);
+
                 rabbitMqConfig.ConfigureEndpoints(context);
             });
         });
+    }
+
+    /// <summary>
+    /// Add the sagas and consumers to the mass transit configurator.
+    /// </summary>
+    /// <param name="config">The configurator.</param>
+    private static void AddAndConfigureSagasAndConsumers(this IBusRegistrationConfigurator config)
+    {
+        config.AddConsumers(typeof(IApplicationMarker).Assembly);
+
+        config
+            .AddSagaStateMachine<CreateQuoteSaga, CreateQuoteSagaData>()
+            .InMemoryRepository();
     }
 }

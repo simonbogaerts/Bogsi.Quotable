@@ -12,11 +12,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using Bogsi.Quotable.Application.Errors;
-using Bogsi.Quotable.Application.Interfaces.Repositories;
-using Bogsi.Quotable.Application.Interfaces.Utilities;
+using Bogsi.Quotable.Application.Events;
 using Bogsi.Quotable.Application.Models;
 
 using CSharpFunctionalExtensions;
+
+using MassTransit;
 
 using MediatR;
 
@@ -37,24 +38,20 @@ public sealed record CreateQuoteCommand : IRequest<Result<Guid, QuotableError>>
 public sealed class CreateQuoteHandler
     : IRequestHandler<CreateQuoteCommand, Result<Guid, QuotableError>>
 {
-    private readonly IRepository<Quote> _repository;
     private readonly IMapper _mapper;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IBus _bus;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateQuoteHandler"/> class.
     /// </summary>
-    /// <param name="repository">A readonly repository for quote items.</param>
     /// <param name="mapper">A configured instance of AutoMapper.</param>
-    /// <param name="unitOfWork">A unit of work to persist data and create migrations.</param>
+    /// <param name="bus">A mass transit instance.</param>
     public CreateQuoteHandler(
-        IRepository<Quote> repository,
         IMapper mapper,
-        IUnitOfWork unitOfWork)
+        IBus bus)
     {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        _bus = bus ?? throw new ArgumentNullException(nameof(bus));
     }
 
     /// <inheritdoc/>
@@ -69,32 +66,15 @@ public sealed class CreateQuoteHandler
 
         Quote model = _mapper.Map<CreateQuoteCommand, Quote>(request);
 
-        bool isSaveSuccess = false;
-
-        using var transaction = _unitOfWork.BeginTransaction();
-
-        try
-        {
-            var result = await _repository.CreateAsync(model, cancellationToken).ConfigureAwait(false);
-
-            if (result.IsFailure)
-            {
-                return result.Error;
-            }
-
-            isSaveSuccess = await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-
-            transaction.Commit();
-        }
-        catch (Exception)
-        {
-            transaction.Rollback();
-        }
-
-        if (!isSaveSuccess)
-        {
-            return QuotableErrors.InternalError;
-        }
+        await _bus
+            .Publish(
+                new CreateQuoteRequestedEvent
+                {
+                    PublicId = model.PublicId,
+                    Model = model,
+                },
+                cancellationToken)
+            .ConfigureAwait(false);
 
         return model.PublicId;
     }

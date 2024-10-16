@@ -65,13 +65,14 @@ services:
   messaging:
     image: rabbitmq:management
     container_name: messaging
-    hostname: bogsi_quotable
+    hostname: messaging
     restart: always
     volumes:
       - ./.container-data/queue/data:/var/lib/rabbitmq
       - ./.container-data/queue/logs:/var/log/rabbitmq
     ports:
       - 5672:5672
+      - 15672:15672
     environment:
       RABBITMQ_DEFAULT_USER: quotable
       RABBITMQ_DEFAULT_PASS: quotable

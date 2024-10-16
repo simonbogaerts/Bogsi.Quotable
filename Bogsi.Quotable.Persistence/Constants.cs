@@ -25,6 +25,11 @@ internal sealed record Constants
         /// Name of the default schema.
         /// </summary>
         public const string Quotable = nameof(Quotable);
+
+        /// <summary>
+        /// Name of the saga schema.
+        /// </summary>
+        public const string Saga = nameof(Saga);
     }
 
     /// <summary>

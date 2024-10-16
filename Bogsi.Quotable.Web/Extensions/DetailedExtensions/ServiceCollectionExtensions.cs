@@ -7,6 +7,7 @@
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
 using Bogsi.Quotable.Application;
+using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
@@ -49,6 +50,8 @@ internal static class ServiceCollectionExtensions
                 new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()))
             .AddScoped<IRepository<Quote>>(x =>
                 new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()));
+
+        builder.Services.AddScoped<IAuditableRepository<QuoteEntity>, AuditableQuoteRepository>();
     }
 
     /// <summary>

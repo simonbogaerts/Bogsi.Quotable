@@ -36,20 +36,22 @@ docker compose down
 
 ## Port Mapping 
 
-| Port | Application         | 
-|------|---------------------|
-| 5341 | SEQ log ingestion   |
-| 5432 | PostgreSQL database |
-| 5672 | RabbitMQ            |
-| 6379 | Valkey caching      |
-| 8080 | Quotable web HTTP   |
-| 8081 | Quotable web HTTPS  |
-| 8082 | SEQ GUI             |
+| Port | Application          | 
+|------|----------------------|
+|  5341 | SEQ log ingestion   |
+|  5432 | PostgreSQL database |
+|  5672 | RabbitMQ            |
+|  6379 | Valkey caching      |
+|  8080 | Quotable web HTTP   |
+|  8081 | Quotable web HTTPS  |
+|  8082 | SEQ GUI             |
+| 15672 | RabbitMQ GUI        |
 
 
 ## Known Bugs 
 
 * Unit Tests not working anymore. I'm in the midst of migrating from using self made requests to mediatr and mass transit, after the migration the tests will be overhauled.
+
 
 ## Roadmap
 
@@ -74,6 +76,13 @@ docker compose down
 - [ ] Update data model
 - [ ] Add security (bearer)
 - [ ] Clean-Up for release V1.1. 
+
+### V1.2.
+
+After dotnet 9.
+
+- [ ] Switch Swagger to Scalar.
+- [ ] TBD.
 
 
 ## Code Quality
