@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="UpdateQuoteSaga.cs" company="BOGsi">
+// <copyright file="DeleteQuoteSaga.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -11,48 +11,36 @@ using Bogsi.Quotable.Application.Events;
 using MassTransit;
 
 /// <summary>
-/// The state machine for the UpdateQuoteSaga.
+/// The state machine for the DeleteQuoteSaga.
 /// </summary>
-public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaData>
+public sealed class DeleteQuoteSaga : MassTransitStateMachine<DeleteQuoteSagaData>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="UpdateQuoteSaga"/> class.
+    /// Initializes a new instance of the <see cref="DeleteQuoteSaga"/> class.
     /// </summary>
-    public UpdateQuoteSaga()
+    public DeleteQuoteSaga()
     {
         InstanceState(x => x.CurrentState);
 
-        Event(() => UpdateQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => QuoteUpdatedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => AuditEntityUpdatedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => DeleteQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => QuoteDeletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
         Event(() => CacheCleanedEvent, e => e.CorrelateById(m => m.Message.PublicId));
         Event(() => FinalizeFailedEvent, e => e.CorrelateById(m => m.Message.PublicId));
 
         Initially(
-            When(UpdateQuoteRequestedEvent)
+            When(DeleteQuoteRequestedEvent)
                 .Then(context => context.Saga.PublicId = context.Message.PublicId)
-                .TransitionTo(Updating)
-                .Publish(context => new UpdateQuoteEvent
+                .TransitionTo(Deleting)
+                .Publish(context => new DeleteQuoteEvent
                 {
                     PublicId = context.Message.PublicId,
                     Model = context.Message.Model,
                 }));
 
         During(
-            Updating,
-            When(QuoteUpdatedEvent)
-                .Then(context => context.Saga.QuoteUpdated = true)
-                .TransitionTo(Auditing)
-                .Publish(context => new UpdateAuditEntityEvent
-                {
-                    PublicId = context.Message.PublicId,
-                    Type = Enums.AuditUpdateType.Update,
-                }));
-
-        During(
-            Auditing,
-            When(AuditEntityUpdatedEvent)
-                .Then(context => context.Saga.EntityAudited = true)
+            Deleting,
+            When(QuoteDeletedEvent)
+                .Then(context => context.Saga.QuoteDeleted = true)
                 .TransitionTo(Maintenance)
                 .Publish(context => new CleanCacheEvent
                 {
@@ -68,7 +56,7 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
                     context.Saga.SagaFinalized = true;
                 })
                 .TransitionTo(Finalizing)
-                .Publish(context => new UpdateQuoteCompletedEvent
+                .Publish(context => new DeleteQuoteCompletedEvent
                 {
                     PublicId = context.Message.PublicId,
                 })
@@ -83,14 +71,9 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
     #region State
 
     /// <summary>
-    /// Gets or sets the Updating state.
+    /// Gets or sets the Deleting state.
     /// </summary>
-    required public State Updating { get; set; }
-
-    /// <summary>
-    /// Gets or sets the Auditing state.
-    /// </summary>
-    required public State Auditing { get; set; }
+    required public State Deleting { get; set; }
 
     /// <summary>
     /// Gets or sets the Maintenance state.
@@ -112,19 +95,14 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
     #region Events
 
     /// <summary>
-    /// Gets or sets the UpdateQuoteRequestedEvent.
+    /// Gets or sets the DeleteQuoteRequestedEvent.
     /// </summary>
-    required public Event<UpdateQuoteRequestedEvent> UpdateQuoteRequestedEvent { get; set; }
+    required public Event<DeleteQuoteRequestedEvent> DeleteQuoteRequestedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the QuoteUpdatedEvent.
+    /// Gets or sets the QuoteDeletedEvent.
     /// </summary>
-    required public Event<QuoteUpdatedEvent> QuoteUpdatedEvent { get; set; }
-
-    /// <summary>
-    /// Gets or sets the AuditEntityUpdatedEvent.
-    /// </summary>
-    required public Event<AuditEntityUpdatedEvent> AuditEntityUpdatedEvent { get; set; }
+    required public Event<QuoteDeletedEvent> QuoteDeletedEvent { get; set; }
 
     /// <summary>
     /// Gets or sets the CacheCleanedEvent.
@@ -140,9 +118,9 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
 }
 
 /// <summary>
-/// Contains the data for the UpdateQuoteSaga.
+/// Contains the data for the DeleteQuoteSaga.
 /// </summary>
-public sealed class UpdateQuoteSagaData : SagaStateMachineInstance
+public sealed class DeleteQuoteSagaData : SagaStateMachineInstance
 {
     /// <summary>
     /// Gets or sets the correlation id.
@@ -160,14 +138,9 @@ public sealed class UpdateQuoteSagaData : SagaStateMachineInstance
     required public Guid PublicId { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the quote has been updated.
+    /// Gets or sets a value indicating whether the quote has been deleted.
     /// </summary>
-    public bool QuoteUpdated { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the auditable dates have been updated.
-    /// </summary>
-    public bool EntityAudited { get; set; }
+    public bool QuoteDeleted { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the cache regarding the quote has been cleaned.
