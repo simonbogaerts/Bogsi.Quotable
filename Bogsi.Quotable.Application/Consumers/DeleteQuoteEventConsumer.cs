@@ -56,7 +56,7 @@ public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
         var message = context.Message;
         var cancellationToken = context.CancellationToken;
 
-        _logger.LogInformation("Updating Quote..");
+        _logger.LogInformation("Deleting Quote..");
 
         using var transaction = _unitOfWork.BeginTransaction();
 
@@ -85,7 +85,7 @@ public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
 
             await context
                 .Publish(
-                    new FinalizeFailedEvent
+                    new FinalizeFailedSagaEvent
                     {
                         PublicId = message.PublicId,
                     }, cancellationToken)
@@ -94,10 +94,9 @@ public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
 
         await context
             .Publish(
-                new QuoteDeletedEvent
+                new DeleteQuoteCompletedEvent
                 {
                     PublicId = message.PublicId,
-                    IsSuccess = true,
                 }, cancellationToken)
             .ConfigureAwait(false);
     }

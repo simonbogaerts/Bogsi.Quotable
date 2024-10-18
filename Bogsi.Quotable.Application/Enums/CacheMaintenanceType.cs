@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="AuditUpdateType.cs" company="BOGsi">
+// <copyright file="CacheMaintenanceType.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -7,17 +7,17 @@
 namespace Bogsi.Quotable.Application.Enums;
 
 /// <summary>
-/// Defines the types of updates that can be done on Auditable items.
+/// Different types of manitenance on cache.
 /// </summary>
-public enum AuditUpdateType
+public enum CacheMaintenanceType
 {
     /// <summary>
-    /// Updates both the Created and Updated dates.
+    /// Add or Update cache.
     /// </summary>
-    Create,
+    AddOrUpdate,
 
     /// <summary>
-    /// Updates the Updated date.
+    /// Delete cache.
     /// </summary>
-    Update,
+    Delete,
 }

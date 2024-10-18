@@ -23,10 +23,9 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
         InstanceState(x => x.CurrentState);
 
         Event(() => UpdateQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => QuoteUpdatedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => AuditEntityUpdatedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => CacheCleanedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => FinalizeFailedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => UpdateQuoteCompletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => CacheMaintenanceCompletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => FinalizeFailedSagaEvent, e => e.CorrelateById(m => m.Message.PublicId));
 
         Initially(
             When(UpdateQuoteRequestedEvent)
@@ -40,42 +39,33 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
 
         During(
             Updating,
-            When(QuoteUpdatedEvent)
+            When(UpdateQuoteCompletedEvent)
                 .Then(context => context.Saga.QuoteUpdated = true)
-                .TransitionTo(Auditing)
-                .Publish(context => new UpdateAuditEntityEvent
-                {
-                    PublicId = context.Message.PublicId,
-                    Type = Enums.AuditUpdateType.Update,
-                }));
-
-        During(
-            Auditing,
-            When(AuditEntityUpdatedEvent)
-                .Then(context => context.Saga.EntityAudited = true)
                 .TransitionTo(Maintenance)
-                .Publish(context => new CleanCacheEvent
+                .Publish(context => new CacheMaintanenceRequestedEvent
                 {
                     PublicId = context.Message.PublicId,
+                    MaintenanceType = Enums.CacheMaintenanceType.AddOrUpdate,
+                    Model = context.Message.Model,
                 }));
 
         During(
             Maintenance,
-            When(CacheCleanedEvent)
+            When(CacheMaintenanceCompletedEvent)
                 .Then(context =>
                 {
-                    context.Saga.CacheCleaned = true;
+                    context.Saga.CacheUpdated = true;
                     context.Saga.SagaFinalized = true;
                 })
                 .TransitionTo(Finalizing)
-                .Publish(context => new UpdateQuoteCompletedEvent
+                .Publish(context => new QuoteSagaCompletedEvent
                 {
                     PublicId = context.Message.PublicId,
                 })
             .Finalize());
 
         DuringAny(
-            When(FinalizeFailedEvent)
+            When(FinalizeFailedSagaEvent)
                 .TransitionTo(Failed)
             .Finalize());
     }
@@ -86,11 +76,6 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
     /// Gets or sets the Updating state.
     /// </summary>
     required public State Updating { get; set; }
-
-    /// <summary>
-    /// Gets or sets the Auditing state.
-    /// </summary>
-    required public State Auditing { get; set; }
 
     /// <summary>
     /// Gets or sets the Maintenance state.
@@ -117,24 +102,19 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
     required public Event<UpdateQuoteRequestedEvent> UpdateQuoteRequestedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the QuoteUpdatedEvent.
+    /// Gets or sets the UpdateQuoteCompletedEvent.
     /// </summary>
-    required public Event<QuoteUpdatedEvent> QuoteUpdatedEvent { get; set; }
+    required public Event<UpdateQuoteCompletedEvent> UpdateQuoteCompletedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the AuditEntityUpdatedEvent.
+    /// Gets or sets the CacheMaintenanceCompletedEvent.
     /// </summary>
-    required public Event<AuditEntityUpdatedEvent> AuditEntityUpdatedEvent { get; set; }
+    required public Event<CacheMaintenanceCompletedEvent> CacheMaintenanceCompletedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the CacheCleanedEvent.
+    /// Gets or sets the FinalizeFailedSagaEvent.
     /// </summary>
-    required public Event<CacheCleanedEvent> CacheCleanedEvent { get; set; }
-
-    /// <summary>
-    /// Gets or sets the FinalizeFailedEvent.
-    /// </summary>
-    required public Event<FinalizeFailedEvent> FinalizeFailedEvent { get; set; }
+    required public Event<FinalizeFailedSagaEvent> FinalizeFailedSagaEvent { get; set; }
 
     #endregion
 }
@@ -165,14 +145,9 @@ public sealed class UpdateQuoteSagaData : SagaStateMachineInstance
     public bool QuoteUpdated { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the auditable dates have been updated.
+    /// Gets or sets a value indicating whether the cache regarding the quote has been updated.
     /// </summary>
-    public bool EntityAudited { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the cache regarding the quote has been cleaned.
-    /// </summary>
-    public bool CacheCleaned { get; set; }
+    public bool CacheUpdated { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the saga has been sucesfully tun to the end.

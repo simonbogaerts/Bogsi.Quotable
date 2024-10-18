@@ -33,17 +33,10 @@ public sealed record UpdateQuoteEvent : BaseEvent
 /// <summary>
 /// Event when a quote is updated.
 /// </summary>
-public sealed record QuoteUpdatedEvent : BaseEvent
-{
-    /// <summary>
-    /// Gets a value indicating whether the UpdateQuoteEvent was succesful.
-    /// </summary>
-    public bool IsSuccess { get; init; }
-}
-
-/// <summary>
-/// Event when saga is done.
-/// </summary>
 public sealed record UpdateQuoteCompletedEvent : BaseEvent
 {
+    /// <summary>
+    /// Gets the quote model that needs to be cached.
+    /// </summary>
+    public Quote? Model { get; init; }
 }

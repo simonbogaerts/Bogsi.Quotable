@@ -23,9 +23,9 @@ public sealed class DeleteQuoteSaga : MassTransitStateMachine<DeleteQuoteSagaDat
         InstanceState(x => x.CurrentState);
 
         Event(() => DeleteQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => QuoteDeletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => CacheCleanedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => FinalizeFailedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => DeleteQuoteCompletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => CacheMaintenanceCompletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => FinalizeFailedSagaEvent, e => e.CorrelateById(m => m.Message.PublicId));
 
         Initially(
             When(DeleteQuoteRequestedEvent)
@@ -39,31 +39,32 @@ public sealed class DeleteQuoteSaga : MassTransitStateMachine<DeleteQuoteSagaDat
 
         During(
             Deleting,
-            When(QuoteDeletedEvent)
+            When(DeleteQuoteCompletedEvent)
                 .Then(context => context.Saga.QuoteDeleted = true)
                 .TransitionTo(Maintenance)
-                .Publish(context => new CleanCacheEvent
+                .Publish(context => new CacheMaintanenceRequestedEvent
                 {
                     PublicId = context.Message.PublicId,
+                    MaintenanceType = Enums.CacheMaintenanceType.Delete,
                 }));
 
         During(
             Maintenance,
-            When(CacheCleanedEvent)
+            When(CacheMaintenanceCompletedEvent)
                 .Then(context =>
                 {
                     context.Saga.CacheCleaned = true;
                     context.Saga.SagaFinalized = true;
                 })
                 .TransitionTo(Finalizing)
-                .Publish(context => new DeleteQuoteCompletedEvent
+                .Publish(context => new QuoteSagaCompletedEvent
                 {
                     PublicId = context.Message.PublicId,
                 })
             .Finalize());
 
         DuringAny(
-            When(FinalizeFailedEvent)
+            When(FinalizeFailedSagaEvent)
                 .TransitionTo(Failed)
             .Finalize());
     }
@@ -100,19 +101,19 @@ public sealed class DeleteQuoteSaga : MassTransitStateMachine<DeleteQuoteSagaDat
     required public Event<DeleteQuoteRequestedEvent> DeleteQuoteRequestedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the QuoteDeletedEvent.
+    /// Gets or sets the DeleteQuoteCompletedEvent.
     /// </summary>
-    required public Event<QuoteDeletedEvent> QuoteDeletedEvent { get; set; }
+    required public Event<DeleteQuoteCompletedEvent> DeleteQuoteCompletedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the CacheCleanedEvent.
+    /// Gets or sets the CacheMaintenanceCompletedEvent.
     /// </summary>
-    required public Event<CacheCleanedEvent> CacheCleanedEvent { get; set; }
+    required public Event<CacheMaintenanceCompletedEvent> CacheMaintenanceCompletedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the FinalizeFailedEvent.
+    /// Gets or sets the FinalizeFailedSagaEvent.
     /// </summary>
-    required public Event<FinalizeFailedEvent> FinalizeFailedEvent { get; set; }
+    required public Event<FinalizeFailedSagaEvent> FinalizeFailedSagaEvent { get; set; }
 
     #endregion
 }

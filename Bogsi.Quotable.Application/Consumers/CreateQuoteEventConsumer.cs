@@ -89,19 +89,21 @@ public sealed class CreateQuoteEventConsumer : IConsumer<CreateQuoteEvent>
 
             await context
                 .Publish(
-                    new FinalizeFailedEvent
+                    new FinalizeFailedSagaEvent
                     {
                         PublicId = message.PublicId,
                     }, cancellationToken)
                 .ConfigureAwait(false);
         }
 
+        var response = await _repository.GetByIdAsync(message.PublicId, cancellationToken).ConfigureAwait(false);
+
         await context
             .Publish(
-                new QuoteCreatedEvent
+                new CreateQuoteCompletedEvent
                 {
                     PublicId = message.PublicId,
-                    IsSuccess = true,
+                    Model = response.Value,
                 }, cancellationToken)
             .ConfigureAwait(false);
     }

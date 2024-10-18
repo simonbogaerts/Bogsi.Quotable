@@ -33,17 +33,10 @@ public sealed record CreateQuoteEvent : BaseEvent
 /// <summary>
 /// Event when a quote is created.
 /// </summary>
-public sealed record QuoteCreatedEvent : BaseEvent
-{
-    /// <summary>
-    /// Gets a value indicating whether the CreateQuoteEvent was succesful.
-    /// </summary>
-    public bool IsSuccess { get; init; }
-}
-
-/// <summary>
-/// Event when saga is done.
-/// </summary>
 public sealed record CreateQuoteCompletedEvent : BaseEvent
 {
+    /// <summary>
+    /// Gets the quote model that has been created.
+    /// </summary>
+    required public Quote Model { get; init; }
 }

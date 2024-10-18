@@ -7,46 +7,52 @@
 namespace Bogsi.Quotable.Application.Events;
 
 using Bogsi.Quotable.Application.Enums;
+using Bogsi.Quotable.Application.Models;
 
 /// <summary>
-/// Event when audit dates are updated.
+/// Base event type.
 /// </summary>
-public sealed record UpdateAuditEntityEvent : BaseEvent
+public abstract record BaseEvent
 {
     /// <summary>
-    /// Gets the type of audit update required.
+    /// Gets the public identifier of an item.
     /// </summary>
-    public AuditUpdateType Type { get; init; }
+    public Guid PublicId { get; init; }
 }
 
 /// <summary>
-/// Event when audit dates are updated.
+/// Event when the saga is done/completed.
 /// </summary>
-public sealed record AuditEntityUpdatedEvent : BaseEvent
+public sealed record QuoteSagaCompletedEvent : BaseEvent
+{
+}
+
+/// <summary>
+/// Event when something goes wrong to finalize the saga.
+/// </summary>
+public sealed record FinalizeFailedSagaEvent : BaseEvent
+{
+}
+
+/// <summary>
+/// Event when you want to do something with the cache.
+/// </summary>
+public sealed record CacheMaintanenceRequestedEvent : BaseEvent
 {
     /// <summary>
-    /// Gets a value indicating whether the UpdateAuditEntityEvent was succesful.
+    /// Gets cache maintenance type.
     /// </summary>
-    public bool IsSuccess { get; init; }
+    public CacheMaintenanceType MaintenanceType { get; init; }
+
+    /// <summary>
+    /// Gets the quote model that needs to be cached.
+    /// </summary>
+    public Quote? Model { get; init; }
 }
 
 /// <summary>
-/// Event when audit dates are updated.
+/// Event when cache maintenance is done.
 /// </summary>
-public sealed record CleanCacheEvent : BaseEvent
-{
-}
-
-/// <summary>
-/// Event when audit dates are updated.
-/// </summary>
-public sealed record CacheCleanedEvent : BaseEvent
-{
-}
-
-/// <summary>
-/// Event when something goes wrong to finalize the saga..
-/// </summary>
-public sealed record FinalizeFailedEvent : BaseEvent
+public sealed record CacheMaintenanceCompletedEvent : BaseEvent
 {
 }

@@ -33,17 +33,6 @@ public sealed record DeleteQuoteEvent : BaseEvent
 /// <summary>
 /// Event when a quote is deleted.
 /// </summary>
-public sealed record QuoteDeletedEvent : BaseEvent
-{
-    /// <summary>
-    /// Gets a value indicating whether the DeleteQuoteEvent was succesful.
-    /// </summary>
-    public bool IsSuccess { get; init; }
-}
-
-/// <summary>
-/// Event when saga is done.
-/// </summary>
 public sealed record DeleteQuoteCompletedEvent : BaseEvent
 {
 }

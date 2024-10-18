@@ -32,12 +32,13 @@ public sealed class UnitOfWork(QuotableContext quotable) : IUnitOfWork
     /// <inheritdoc/>
     public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken)
     {
+        UpdateAuditableEntities();
+
         return await _quotable.SaveChangesAsync(cancellationToken: cancellationToken).ConfigureAwait(false) >= 0;
     }
 
     /// <summary>
     /// Updates the AuditableEntities with the correct Created and Updated values.
-    /// not used anymore, but kept as a reference.
     /// </summary>
     private void UpdateAuditableEntities()
     {
