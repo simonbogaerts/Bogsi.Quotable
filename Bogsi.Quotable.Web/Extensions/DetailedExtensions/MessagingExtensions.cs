@@ -59,8 +59,8 @@ internal static class MessagingExtensions
     {
         config.AddConsumers(typeof(IApplicationMarker).Assembly);
 
-        config
-            .AddSagaStateMachine<CreateQuoteSaga, CreateQuoteSagaData>()
-            .InMemoryRepository();
+        config.AddSagaStateMachines(typeof(IApplicationMarker).Assembly);
+
+        config.SetInMemorySagaRepositoryProvider();
     }
 }

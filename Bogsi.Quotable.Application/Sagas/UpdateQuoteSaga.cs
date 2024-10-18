@@ -1,63 +1,74 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CreateQuoteSaga.cs" company="BOGsi">
+// <copyright file="UpdateQuoteSaga.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
+
+namespace Bogsi.Quotable.Application.Sagas;
 
 using Bogsi.Quotable.Application.Events;
 
 using MassTransit;
 
-namespace Bogsi.Quotable.Application.Sagas;
-
 /// <summary>
-/// The state machine for the CreateQuoteSaga.
+/// The state machine for the UpdateQuoteSaga.
 /// </summary>
-public sealed class CreateQuoteSaga : MassTransitStateMachine<CreateQuoteSagaData>
+public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaData>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateQuoteSaga"/> class.
+    /// Initializes a new instance of the <see cref="UpdateQuoteSaga"/> class.
     /// </summary>
-    public CreateQuoteSaga()
+    public UpdateQuoteSaga()
     {
         InstanceState(x => x.CurrentState);
 
-        Event(() => CreateQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => QuoteCreatedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => UpdateQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => QuoteUpdatedEvent, e => e.CorrelateById(m => m.Message.PublicId));
         Event(() => AuditEntityUpdatedEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => CacheCleanedEvent, e => e.CorrelateById(m => m.Message.PublicId));
         Event(() => FinalizeFailedEvent, e => e.CorrelateById(m => m.Message.PublicId));
 
         Initially(
-            When(CreateQuoteRequestedEvent)
+            When(UpdateQuoteRequestedEvent)
                 .Then(context => context.Saga.PublicId = context.Message.PublicId)
-                .TransitionTo(Creating)
-                .Publish(context => new CreateQuoteEvent
+                .TransitionTo(Updating)
+                .Publish(context => new UpdateQuoteEvent
                 {
                     PublicId = context.Message.PublicId,
                     Model = context.Message.Model,
                 }));
 
         During(
-            Creating,
-            When(QuoteCreatedEvent)
-                .Then(context => context.Saga.QuoteCreated = true)
+            Updating,
+            When(QuoteUpdatedEvent)
+                .Then(context => context.Saga.QuoteUpdated = true)
                 .TransitionTo(Auditing)
                 .Publish(context => new UpdateAuditEntityEvent
                 {
                     PublicId = context.Message.PublicId,
-                    Type = Enums.AuditUpdateType.Create,
+                    Type = Enums.AuditUpdateType.Update,
                 }));
 
         During(
             Auditing,
             When(AuditEntityUpdatedEvent)
+                .Then(context => context.Saga.EntityAudited = true)
+                .TransitionTo(Cleaning)
+                .Publish(context => new CleanCacheEvent
+                {
+                    PublicId = context.Message.PublicId,
+                }));
+
+        During(
+            Cleaning,
+            When(CacheCleanedEvent)
                 .Then(context =>
                 {
-                    context.Saga.EntityAudited = true;
+                    context.Saga.CacheCleaned = true;
                     context.Saga.SagaFinalized = true;
                 })
                 .TransitionTo(Finalizing)
-                .Publish(context => new CreateQuoteCompletedEvent
+                .Publish(context => new UpdateQuoteCompletedEvent
                 {
                     PublicId = context.Message.PublicId,
                 })
@@ -72,14 +83,19 @@ public sealed class CreateQuoteSaga : MassTransitStateMachine<CreateQuoteSagaDat
     #region State
 
     /// <summary>
-    /// Gets or sets the Creating state.
+    /// Gets or sets the Updating state.
     /// </summary>
-    required public State Creating { get; set; }
+    required public State Updating { get; set; }
 
     /// <summary>
     /// Gets or sets the Auditing state.
     /// </summary>
     required public State Auditing { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Cleaning state.
+    /// </summary>
+    required public State Cleaning { get; set; }
 
     /// <summary>
     /// Gets or sets the Finalized state.
@@ -96,19 +112,24 @@ public sealed class CreateQuoteSaga : MassTransitStateMachine<CreateQuoteSagaDat
     #region Events
 
     /// <summary>
-    /// Gets or sets the CreateQuoteRequestedEvent.
+    /// Gets or sets the UpdateQuoteRequestedEvent.
     /// </summary>
-    required public Event<CreateQuoteRequestedEvent> CreateQuoteRequestedEvent { get; set; }
+    required public Event<UpdateQuoteRequestedEvent> UpdateQuoteRequestedEvent { get; set; }
 
     /// <summary>
-    /// Gets or sets the QuoteCreatedEvent.
+    /// Gets or sets the QuoteUpdatedEvent.
     /// </summary>
-    required public Event<QuoteCreatedEvent> QuoteCreatedEvent { get; set; }
+    required public Event<QuoteUpdatedEvent> QuoteUpdatedEvent { get; set; }
 
     /// <summary>
     /// Gets or sets the AuditEntityUpdatedEvent.
     /// </summary>
     required public Event<AuditEntityUpdatedEvent> AuditEntityUpdatedEvent { get; set; }
+
+    /// <summary>
+    /// Gets or sets the CacheCleanedEvent.
+    /// </summary>
+    required public Event<CacheCleanedEvent> CacheCleanedEvent { get; set; }
 
     /// <summary>
     /// Gets or sets the FinalizeFailedEvent.
@@ -119,9 +140,9 @@ public sealed class CreateQuoteSaga : MassTransitStateMachine<CreateQuoteSagaDat
 }
 
 /// <summary>
-/// Contains the data for the CreateQuoteSaga.
+/// Contains the data for the UpdateQuoteSaga.
 /// </summary>
-public sealed class CreateQuoteSagaData : SagaStateMachineInstance
+public sealed class UpdateQuoteSagaData : SagaStateMachineInstance
 {
     /// <summary>
     /// Gets or sets the correlation id.
@@ -139,14 +160,19 @@ public sealed class CreateQuoteSagaData : SagaStateMachineInstance
     required public Guid PublicId { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the quote has been created.
+    /// Gets or sets a value indicating whether the quote has been updated.
     /// </summary>
-    public bool QuoteCreated { get; set; }
+    public bool QuoteUpdated { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the auditable dates have been updated.
     /// </summary>
     public bool EntityAudited { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the cache regarding the quote has been cleaned.
+    /// </summary>
+    public bool CacheCleaned { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the saga has been sucesfully tun to the end.

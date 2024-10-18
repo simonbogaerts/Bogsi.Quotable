@@ -1,12 +1,12 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CreateQuoteEventConsumer.cs" company="BOGsi">
+// <copyright file="UpdateQuoteEventConsumer.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
 namespace Bogsi.Quotable.Application.Consumers;
 
-using System.Threading.Tasks;
+using System;
 
 using Bogsi.Quotable.Application.Events;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
@@ -14,28 +14,27 @@ using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
 
 using MassTransit;
-
 using Microsoft.Extensions.Logging;
 
 /// <summary>
-/// The consumer for CreateQuoteEvent.
+/// The consumer for UpdateQuoteEvent.
 /// </summary>
-public sealed class CreateQuoteEventConsumer : IConsumer<CreateQuoteEvent>
+public sealed class UpdateQuoteEventConsumer : IConsumer<UpdateQuoteEvent>
 {
     private readonly IRepository<Quote> _repository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<CreateQuoteEventConsumer> _logger;
+    private readonly ILogger<UpdateQuoteEventConsumer> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateQuoteEventConsumer"/> class.
+    /// Initializes a new instance of the <see cref="UpdateQuoteEventConsumer"/> class.
     /// </summary>
     /// <param name="repository">Implementation of the Repository for the Quote entity.</param>
     /// <param name="unitOfWork">A unit of work to persist data and create migrations.</param>
     /// <param name="logger">An instance of a Serilog logger.</param>
-    public CreateQuoteEventConsumer(
+    public UpdateQuoteEventConsumer(
         IRepository<Quote> repository,
         IUnitOfWork unitOfWork,
-        ILogger<CreateQuoteEventConsumer> logger)
+        ILogger<UpdateQuoteEventConsumer> logger)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -43,7 +42,7 @@ public sealed class CreateQuoteEventConsumer : IConsumer<CreateQuoteEvent>
     }
 
     /// <inheritdoc/>
-    public async Task Consume(ConsumeContext<CreateQuoteEvent> context)
+    public async Task Consume(ConsumeContext<UpdateQuoteEvent> context)
     {
         ArgumentNullException.ThrowIfNull(context);
 
@@ -55,15 +54,14 @@ public sealed class CreateQuoteEventConsumer : IConsumer<CreateQuoteEvent>
         var message = context.Message;
         var cancellationToken = context.CancellationToken;
 
-        _logger.LogInformation("Creating Quote..");
+        _logger.LogInformation("Updating Quote..");
 
         using var transaction = _unitOfWork.BeginTransaction();
-
         bool isSaveSuccess = false;
 
         try
         {
-            var result = await _repository.CreateAsync(message.Model, cancellationToken).ConfigureAwait(false);
+            var result = await _repository.UpdateAsync(message.Model, cancellationToken).ConfigureAwait(false);
 
             if (result.IsFailure)
             {
@@ -98,7 +96,7 @@ public sealed class CreateQuoteEventConsumer : IConsumer<CreateQuoteEvent>
 
         await context
             .Publish(
-                new QuoteCreatedEvent
+                new QuoteUpdatedEvent
                 {
                     PublicId = message.PublicId,
                     IsSuccess = true,

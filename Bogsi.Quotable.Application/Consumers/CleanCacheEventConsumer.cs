@@ -47,5 +47,13 @@ public class CleanCacheEventConsumer : IConsumer<CleanCacheEvent>
         {
             await _cache.RemoveAsync(key, cancellationToken).ConfigureAwait(false);
         }
+
+        await context
+            .Publish(
+                new CacheCleanedEvent
+                {
+                    PublicId = message.PublicId,
+                }, cancellationToken)
+            .ConfigureAwait(false);
     }
 }

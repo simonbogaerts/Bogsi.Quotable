@@ -110,63 +110,13 @@ public sealed class CachedQuoteRepository(
 
     /// <inheritdoc/>
     public async Task<Result<Unit, QuotableError>> UpdateAsync(Quote model, CancellationToken cancellationToken)
-    {
-        if (model is null)
-        {
-            return QuotableErrors.InputRequired;
-        }
-
-        var result = await _decorated.UpdateAsync(model, cancellationToken).ConfigureAwait(false);
-
-        if (result.IsFailure)
-        {
-            return result;
-        }
-
-        await RemoveCacheByPublicId(model.PublicId, cancellationToken).ConfigureAwait(false);
-
-        return Unit.Instance;
-    }
+        => await _decorated.UpdateAsync(model, cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc/>
     public async Task<Result<Unit, QuotableError>> DeleteAsync(Quote model, CancellationToken cancellationToken)
-    {
-        if (model is null)
-        {
-            return QuotableErrors.InputRequired;
-        }
-
-        var result = await _decorated.DeleteAsync(model, cancellationToken).ConfigureAwait(false);
-
-        if (result.IsFailure)
-        {
-            return result;
-        }
-
-        await RemoveCacheByPublicId(model.PublicId, cancellationToken).ConfigureAwait(false);
-
-        return Unit.Instance;
-    }
+        => await _decorated.DeleteAsync(model, cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc/>
     public async Task<Result<bool, QuotableError>> ExistsAsync(Guid publicId, CancellationToken cancellationToken)
         => await _decorated.ExistsAsync(publicId, cancellationToken).ConfigureAwait(false);
-
-    /// <summary>
-    /// Remove a cache key by public id if it exists.
-    /// </summary>
-    /// <param name="publicId">public id of the quote.</param>
-    /// <param name="cancellationToken">Cancellation token used during async computing.</param>
-    /// <returns>Result object of Unit and QuotableError.</returns>
-    private async Task RemoveCacheByPublicId(Guid publicId, CancellationToken cancellationToken)
-    {
-        string key = $"QUOTE:{publicId}";
-
-        var cachedQuote = await _cache.GetStringAsync(key, cancellationToken).ConfigureAwait(false);
-
-        if (!string.IsNullOrWhiteSpace(cachedQuote))
-        {
-            await _cache.RemoveAsync(key, cancellationToken).ConfigureAwait(false);
-        }
-    }
 }
