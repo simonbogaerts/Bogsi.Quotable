@@ -8,6 +8,8 @@ namespace Bogsi.Quotable.Persistence;
 
 using Bogsi.Quotable.Application.Entities;
 
+using MassTransit.Internals;
+
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
@@ -35,7 +37,9 @@ public sealed class QuotableContext(DbContextOptions<QuotableContext> options)
 
         modelBuilder.HasDefaultSchema(Constants.Schemas.Quotable);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IPersistenceMarker).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(IPersistenceMarker).Assembly,
+            c => c.HasInterface<IQuotableConfiguration>());
     }
 
     #endregion

@@ -70,7 +70,7 @@ docker compose down
 
 ### V1.1
 
-- [ ] Switch to Mediatr, MassTransit and RabbitMq.
+- [x] Switch to Mediatr, MassTransit and RabbitMq.
 - [ ] Improve/Clean-Up DI.
 - [ ] Head and Options endpoints 
 - [ ] Update data model

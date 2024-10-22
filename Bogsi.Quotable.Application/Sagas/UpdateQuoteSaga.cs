@@ -22,10 +22,10 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
     {
         InstanceState(x => x.CurrentState);
 
-        Event(() => UpdateQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => UpdateQuoteCompletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => CacheMaintenanceCompletedEvent, e => e.CorrelateById(m => m.Message.PublicId));
-        Event(() => FinalizeFailedSagaEvent, e => e.CorrelateById(m => m.Message.PublicId));
+        Event(() => UpdateQuoteRequestedEvent, e => e.CorrelateById(m => m.Message.SagaId));
+        Event(() => UpdateQuoteCompletedEvent, e => e.CorrelateById(m => m.Message.SagaId));
+        Event(() => CacheMaintenanceCompletedEvent, e => e.CorrelateById(m => m.Message.SagaId));
+        Event(() => FinalizeFailedSagaEvent, e => e.CorrelateById(m => m.Message.SagaId));
 
         Initially(
             When(UpdateQuoteRequestedEvent)
@@ -34,6 +34,7 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
                 .Publish(context => new UpdateQuoteEvent
                 {
                     PublicId = context.Message.PublicId,
+                    SagaId = context.Message.SagaId,
                     Model = context.Message.Model,
                 }));
 
@@ -45,6 +46,7 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
                 .Publish(context => new CacheMaintanenceRequestedEvent
                 {
                     PublicId = context.Message.PublicId,
+                    SagaId = context.Message.SagaId,
                     MaintenanceType = Enums.CacheMaintenanceType.AddOrUpdate,
                     Model = context.Message.Model,
                 }));
@@ -61,11 +63,13 @@ public sealed class UpdateQuoteSaga : MassTransitStateMachine<UpdateQuoteSagaDat
                 .Publish(context => new QuoteSagaCompletedEvent
                 {
                     PublicId = context.Message.PublicId,
+                    SagaId = context.Message.SagaId,
                 })
             .Finalize());
 
         DuringAny(
             When(FinalizeFailedSagaEvent)
+                .Then(context => context.Saga.SagaFailed = true)
                 .TransitionTo(Failed)
             .Finalize());
     }
@@ -153,4 +157,14 @@ public sealed class UpdateQuoteSagaData : SagaStateMachineInstance
     /// Gets or sets a value indicating whether the saga has been sucesfully tun to the end.
     /// </summary>
     public bool SagaFinalized { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the saga has failed.
+    /// </summary>
+    public bool SagaFailed { get; set; }
+
+    /// <summary>
+    /// Gets or sets the row version, required for optimistic concurrency.
+    /// </summary>
+    required public uint RowVersion { get; set; }
 }

@@ -41,6 +41,21 @@ internal sealed record Constants
         /// Name of the table that has the Quote entities.
         /// </summary>
         public const string Quotes = nameof(Quotes);
+
+        /// <summary>
+        /// Name of the table that has the Quote entities.
+        /// </summary>
+        public const string CreateQuoteSagaData = nameof(CreateQuoteSagaData);
+
+        /// <summary>
+        /// Name of the table that has the Quote entities.
+        /// </summary>
+        public const string UpdateQuoteSagaData = nameof(UpdateQuoteSagaData);
+
+        /// <summary>
+        /// Name of the table that has the Quote entities.
+        /// </summary>
+        public const string DeleteQuoteSagaData = nameof(DeleteQuoteSagaData);
     }
 
     /// <summary>

@@ -4,9 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Microsoft.EntityFrameworkCore;
-
 namespace Bogsi.Quotable.Persistence;
+
+using Bogsi.Quotable.Application.Sagas;
+
+using MassTransit.Internals;
+
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// The database context for sagas.
@@ -22,6 +26,25 @@ public sealed class SagaContext : DbContext
     {
     }
 
+    #region DbSets
+
+    /// <summary>
+    /// Gets the DbSet for the create quote saga data.
+    /// </summary>
+    public DbSet<CreateQuoteSagaData> CreateQuoteSagaData => Set<CreateQuoteSagaData>();
+
+    /// <summary>
+    /// Gets the DbSet for the create quote saga data.
+    /// </summary>
+    public DbSet<UpdateQuoteSagaData> UpdateQuoteSagaData => Set<UpdateQuoteSagaData>();
+
+    /// <summary>
+    /// Gets the DbSet for the create quote saga data.
+    /// </summary>
+    public DbSet<DeleteQuoteSagaData> DeleteQuoteSagaData => Set<DeleteQuoteSagaData>();
+
+    #endregion
+
     /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,6 +52,8 @@ public sealed class SagaContext : DbContext
 
         modelBuilder.HasDefaultSchema(Constants.Schemas.Saga);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IPersistenceMarker).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(
+            typeof(IPersistenceMarker).Assembly,
+            c => c.HasInterface<ISagaConfiguration>());
     }
 }

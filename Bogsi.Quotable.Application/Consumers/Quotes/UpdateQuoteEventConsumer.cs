@@ -1,14 +1,13 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="DeleteQuoteEventConsumer.cs" company="BOGsi">
+// <copyright file="UpdateQuoteEventConsumer.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Application.Consumers;
+namespace Bogsi.Quotable.Application.Consumers.Quotes;
 
 using System;
 
-using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Events;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
@@ -19,24 +18,24 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 
 /// <summary>
-/// The consumer for DeleteQuoteEvent.
+/// The consumer for UpdateQuoteEvent.
 /// </summary>
-public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
+public sealed class UpdateQuoteEventConsumer : IConsumer<UpdateQuoteEvent>
 {
     private readonly IRepository<Quote> _repository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<DeleteQuoteEventConsumer> _logger;
+    private readonly ILogger<UpdateQuoteEventConsumer> _logger;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DeleteQuoteEventConsumer"/> class.
+    /// Initializes a new instance of the <see cref="UpdateQuoteEventConsumer"/> class.
     /// </summary>
     /// <param name="repository">Implementation of the Repository for the Quote entity.</param>
     /// <param name="unitOfWork">A unit of work to persist data and create migrations.</param>
     /// <param name="logger">An instance of a Serilog logger.</param>
-    public DeleteQuoteEventConsumer(
+    public UpdateQuoteEventConsumer(
         IRepository<Quote> repository,
         IUnitOfWork unitOfWork,
-        ILogger<DeleteQuoteEventConsumer> logger)
+        ILogger<UpdateQuoteEventConsumer> logger)
     {
         _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
@@ -44,7 +43,7 @@ public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
     }
 
     /// <inheritdoc/>
-    public async Task Consume(ConsumeContext<DeleteQuoteEvent> context)
+    public async Task Consume(ConsumeContext<UpdateQuoteEvent> context)
     {
         ArgumentNullException.ThrowIfNull(context);
 
@@ -56,7 +55,7 @@ public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
         var message = context.Message;
         var cancellationToken = context.CancellationToken;
 
-        _logger.LogInformation("Deleting Quote..");
+        _logger.LogInformation("Updating Quote..");
 
         using var transaction = _unitOfWork.BeginTransaction();
 
@@ -64,7 +63,12 @@ public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
 
         try
         {
-            await _repository.DeleteAsync(message.Model, cancellationToken).ConfigureAwait(false);
+            var result = await _repository.UpdateAsync(message.Model, cancellationToken).ConfigureAwait(false);
+
+            if (result.IsFailure)
+            {
+                _logger.LogError("{Code} - {Description}", result.Error.Code, result.Error.Description);
+            }
 
             isSaveSuccess = await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
@@ -88,15 +92,20 @@ public sealed class DeleteQuoteEventConsumer : IConsumer<DeleteQuoteEvent>
                     new FinalizeFailedSagaEvent
                     {
                         PublicId = message.PublicId,
+                        SagaId = message.SagaId,
                     }, cancellationToken)
                 .ConfigureAwait(false);
         }
 
+        var response = await _repository.GetByIdAsync(message.PublicId, cancellationToken).ConfigureAwait(false);
+
         await context
             .Publish(
-                new DeleteQuoteCompletedEvent
+                new UpdateQuoteCompletedEvent
                 {
                     PublicId = message.PublicId,
+                    SagaId = message.SagaId,
+                    Model = response.Value,
                 }, cancellationToken)
             .ConfigureAwait(false);
     }

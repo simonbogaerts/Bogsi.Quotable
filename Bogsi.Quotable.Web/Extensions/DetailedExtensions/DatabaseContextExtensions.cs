@@ -8,6 +8,7 @@ namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
 using Bogsi.Quotable.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 /// <summary>
 /// Extensions regarding database connections.
@@ -21,7 +22,14 @@ internal static class DatabaseContextExtensions
     internal static void AddQuotableDbContext(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<QuotableContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString(Constants.ConnectionStrings.QuotableDb)!));
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString(Constants.ConnectionStrings.QuotableDb)!,
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "Quotable")));
+
+        builder.Services.AddDbContext<SagaContext>(options =>
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString(Constants.ConnectionStrings.QuotableDb)!,
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "Saga")));
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }

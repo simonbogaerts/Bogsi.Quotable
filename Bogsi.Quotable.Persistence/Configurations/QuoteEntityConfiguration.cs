@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 /// <summary>
 /// Entity configuration for the QuoteEntity.
 /// </summary>
-internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<QuoteEntity>
+internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<QuoteEntity>, IQuotableConfiguration
 {
     #region Configure Method
 

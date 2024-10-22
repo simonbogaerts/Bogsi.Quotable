@@ -50,8 +50,6 @@ internal static class ServiceCollectionExtensions
                 new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()))
             .AddScoped<IRepository<Quote>>(x =>
                 new CachedQuoteRepository(x.GetRequiredService<QuoteRepository>(), x.GetRequiredService<IDistributedCache>()));
-
-        builder.Services.AddScoped<IAuditableRepository<QuoteEntity>, AuditableQuoteRepository>();
     }
 
     /// <summary>

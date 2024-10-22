@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Application.Consumers;
+namespace Bogsi.Quotable.Application.Consumers.Quotes;
 
 using Bogsi.Quotable.Application.Events;
 

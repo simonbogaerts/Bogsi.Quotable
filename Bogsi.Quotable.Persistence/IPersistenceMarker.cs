@@ -12,3 +12,17 @@ namespace Bogsi.Quotable.Persistence;
 public interface IPersistenceMarker
 {
 }
+
+/// <summary>
+/// Marker interface for the Assembly: Bogsi.Quotable.Persistence.
+/// </summary>
+public interface IQuotableConfiguration
+{
+}
+
+/// <summary>
+/// Marker interface for the Assembly: Bogsi.Quotable.Persistence.
+/// </summary>
+public interface ISagaConfiguration
+{
+}

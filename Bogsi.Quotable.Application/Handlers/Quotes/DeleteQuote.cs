@@ -79,6 +79,7 @@ public sealed class DeleteQuoteHandler
                 new DeleteQuoteRequestedEvent
                 {
                     PublicId = model.Value.PublicId,
+                    SagaId = Guid.NewGuid(),
                     Model = model.Value,
                 },
                 cancellationToken)

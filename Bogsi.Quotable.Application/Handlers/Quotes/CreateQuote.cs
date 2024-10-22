@@ -71,6 +71,7 @@ public sealed class CreateQuoteHandler
                 new CreateQuoteRequestedEvent
                 {
                     PublicId = model.PublicId,
+                    SagaId = Guid.NewGuid(),
                     Model = model,
                 },
                 cancellationToken)

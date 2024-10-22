@@ -7,7 +7,7 @@
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
 using Bogsi.Quotable.Application;
-using Bogsi.Quotable.Application.Sagas;
+using Bogsi.Quotable.Persistence;
 
 using MassTransit;
 
@@ -61,6 +61,13 @@ internal static class MessagingExtensions
 
         config.AddSagaStateMachines(typeof(IApplicationMarker).Assembly);
 
-        config.SetInMemorySagaRepositoryProvider();
+        config.SetEntityFrameworkSagaRepositoryProvider(r =>
+        {
+            r.ExistingDbContext<SagaContext>();
+
+            r.UsePostgres();
+
+            r.ConcurrencyMode = ConcurrencyMode.Optimistic;
+        });
     }
 }

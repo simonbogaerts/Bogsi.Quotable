@@ -17,7 +17,12 @@ public abstract record BaseEvent
     /// <summary>
     /// Gets the public identifier of an item.
     /// </summary>
-    public Guid PublicId { get; init; }
+    required public Guid PublicId { get; init; }
+
+    /// <summary>
+    /// Gets the public identifier of a saga.
+    /// </summary>
+    required public Guid SagaId { get; init; }
 }
 
 /// <summary>

@@ -252,6 +252,9 @@ dotnet_diagnostic.S1144.severity = none
 # S6667: Logging in a catch clause should pass the caught exception as a parameter.
 dotnet_diagnostic.S6667.severity = none
 
+# CA1819: Properties should not return arrays
+dotnet_diagnostic.CA1819.severity = none
+
 [*.{cs,vb}]
 
 # Naming rules

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Application.Consumers;
+namespace Bogsi.Quotable.Application.Consumers.Quotes;
 
 using System.Text.Json;
 
@@ -71,6 +71,7 @@ public sealed class CacheMaintanenceRequestedEventConsumer : IConsumer<CacheMain
                 new CacheMaintenanceCompletedEvent
                 {
                     PublicId = message.PublicId,
+                    SagaId = message.SagaId,
                 }, cancellationToken)
             .ConfigureAwait(false);
     }

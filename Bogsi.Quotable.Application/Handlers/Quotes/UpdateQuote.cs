@@ -81,6 +81,7 @@ public sealed class UpdateQuoteHandler
                 new UpdateQuoteRequestedEvent
                 {
                     PublicId = model.PublicId,
+                    SagaId = Guid.NewGuid(),
                     Model = model,
                 },
                 cancellationToken)
