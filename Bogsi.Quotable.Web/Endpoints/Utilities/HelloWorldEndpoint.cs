@@ -15,7 +15,9 @@ internal class HelloWorldEndpoint : IApiEndpoint
     /// <inheritdoc/>
     public void MapRoute(IEndpointRouteBuilder endpoints)
     {
-        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!.Equals(Constants.Environments.Production, StringComparison.Ordinal))
+        if (Environment
+            .GetEnvironmentVariable(Common.Constants.EnvironmentVariable.ApsNetCoreEnvironment)!
+            .Equals(Common.Constants.Environment.Production, StringComparison.Ordinal))
         {
             return;
         }

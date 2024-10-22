@@ -22,27 +22,6 @@ public static class Constants
     public const string Bearer = nameof(Bearer);
 
     /// <summary>
-    /// Different environments.
-    /// </summary>
-    public static class Environments
-    {
-        /// <summary>
-        /// Production environment.
-        /// </summary>
-        public const string Production = nameof(Production);
-
-        /// <summary>
-        /// Test environment.
-        /// </summary>
-        public const string Testing = nameof(Testing);
-
-        /// <summary>
-        /// Test environment.
-        /// </summary>
-        public const string Development = nameof(Development);
-    }
-
-    /// <summary>
     /// Different keys for all connectionstrings.
     /// </summary>
     public static class ConnectionStrings
