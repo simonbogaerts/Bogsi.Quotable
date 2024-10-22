@@ -17,11 +17,11 @@ internal static class HealthCheckExtensions
     /// <param name="builder">WebApplicationBuilder during startip.</param>
     internal static void AddAndConfigureHealthChecks(this WebApplicationBuilder builder)
     {
-        string? databaseConnectionString = builder.Configuration.GetConnectionString(Constants.ConnectionStrings.QuotableDb);
+        string? databaseConnectionString = builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.QuotableDb);
 
         ArgumentNullException.ThrowIfNullOrWhiteSpace(databaseConnectionString);
 
-        string? valKeyConnectionString = builder.Configuration.GetConnectionString(Constants.ConnectionStrings.Valkey);
+        string? valKeyConnectionString = builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.Valkey);
 
         ArgumentNullException.ThrowIfNullOrWhiteSpace(valKeyConnectionString);
 

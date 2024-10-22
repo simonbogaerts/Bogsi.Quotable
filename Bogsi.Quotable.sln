@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogsi.Quotable.Common", "Bo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogsi.Quotable.Module", "Bogsi.Quotable.Module\Bogsi.Quotable.Module.csproj", "{EF7E262B-32D8-4909-B1EA-5DD0AD7DAF3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogsi.Quotable.Test.Architecture", "Bogsi.Quotable.Test.Architecture\Bogsi.Quotable.Test.Architecture.csproj", "{B26D18DA-F1C3-41C1-BF87-B78BA0F8A6B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{EF7E262B-32D8-4909-B1EA-5DD0AD7DAF3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF7E262B-32D8-4909-B1EA-5DD0AD7DAF3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF7E262B-32D8-4909-B1EA-5DD0AD7DAF3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26D18DA-F1C3-41C1-BF87-B78BA0F8A6B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26D18DA-F1C3-41C1-BF87-B78BA0F8A6B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26D18DA-F1C3-41C1-BF87-B78BA0F8A6B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26D18DA-F1C3-41C1-BF87-B78BA0F8A6B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{889D7A0E-9CF3-42F6-9E7A-095FDA5C82DC} = {293ACBC1-A65E-41A6-95F2-BDC652D9010F}
 		{C26862DC-530D-4F8D-9AFE-B0B9F59468BB} = {293ACBC1-A65E-41A6-95F2-BDC652D9010F}
 		{EF7E262B-32D8-4909-B1EA-5DD0AD7DAF3E} = {293ACBC1-A65E-41A6-95F2-BDC652D9010F}
+		{B26D18DA-F1C3-41C1-BF87-B78BA0F8A6B2} = {171AFDBA-C29B-4386-9CAE-176E84CF7492}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4FE62375-E1B5-49E4-871F-6A846FDD56CF}

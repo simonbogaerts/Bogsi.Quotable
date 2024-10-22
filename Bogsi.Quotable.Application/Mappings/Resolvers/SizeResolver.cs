@@ -30,14 +30,14 @@ internal sealed class SizeResolver : IValueResolver<GetQuotesParameters, GetQuot
         int destMember,
         ResolutionContext context)
     {
-        if (source.Size == null || source.Size < Constants.Size.Minimum)
+        if (source.Size == null || source.Size < Common.Constants.Properties.Size.Minimum)
         {
-            return Constants.Size.Default;
+            return Common.Constants.Properties.Size.Default;
         }
 
-        if (source.Size > Constants.Size.Maximum)
+        if (source.Size > Common.Constants.Properties.Size.Maximum)
         {
-            return Constants.Size.Maximum;
+            return Common.Constants.Properties.Size.Maximum;
         }
 
         return source.Size!.Value;

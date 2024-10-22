@@ -23,13 +23,13 @@ internal static class AuthExtensions
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         .AddJwtBearer(x =>
                         {
-                            x.Audience = builder.Configuration[Constants.AppSettingKeys.Audience]!;
-                            x.Authority = builder.Configuration[Constants.AppSettingKeys.Authority]!;
-                            x.MetadataAddress = builder.Configuration[Constants.AppSettingKeys.MetadataAddress]!;
+                            x.Audience = builder.Configuration[Common.Constants.AuthenticationKeys.Audience]!;
+                            x.Authority = builder.Configuration[Common.Constants.AuthenticationKeys.Authority]!;
+                            x.MetadataAddress = builder.Configuration[Common.Constants.AuthenticationKeys.MetadataAddress]!;
                             x.RequireHttpsMetadata = false;
                             x.TokenValidationParameters = new TokenValidationParameters
                             {
-                                ValidIssuer = builder.Configuration[Constants.AppSettingKeys.ValidIssuer]!,
+                                ValidIssuer = builder.Configuration[Common.Constants.AuthenticationKeys.ValidIssuer]!,
                             };
                         });
 

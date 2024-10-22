@@ -22,7 +22,9 @@ internal sealed record DeleteQuoteSagaDataConfiguration : IEntityTypeConfigurati
     /// <param name="builder">Context builder.</param>
     public void Configure(EntityTypeBuilder<DeleteQuoteSagaData> builder)
     {
-        builder.ToTable(Constants.Tables.DeleteQuoteSagaData, Constants.Schemas.Saga);
+        builder.ToTable(
+            Common.Constants.Database.Tables.DeleteQuoteSagaData,
+            Common.Constants.Database.Schemas.Saga);
 
         builder
             .HasKey(x => x.CorrelationId);

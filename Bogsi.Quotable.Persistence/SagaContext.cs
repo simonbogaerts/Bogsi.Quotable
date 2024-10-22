@@ -50,7 +50,7 @@ public sealed class SagaContext : DbContext
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
 
-        modelBuilder.HasDefaultSchema(Constants.Schemas.Saga);
+        modelBuilder.HasDefaultSchema(Common.Constants.Database.Schemas.Saga);
 
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(IPersistenceMarker).Assembly,

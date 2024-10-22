@@ -30,9 +30,9 @@ internal sealed class CursorResolver : IValueResolver<GetQuotesParameters, GetQu
         int destMember,
         ResolutionContext context)
     {
-        if (source.Cursor == null || source.Cursor < Constants.Cursor.Minimum)
+        if (source.Cursor == null || source.Cursor < Common.Constants.Properties.Cursor.Minimum)
         {
-            return Constants.Cursor.Default;
+            return Common.Constants.Properties.Cursor.Default;
         }
 
         return source.Cursor!.Value;

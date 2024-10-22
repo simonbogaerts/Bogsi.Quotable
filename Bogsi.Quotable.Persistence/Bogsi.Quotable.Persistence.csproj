@@ -26,6 +26,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Bogsi.Quotable.Application\Bogsi.Quotable.Application.csproj" />
+    <ProjectReference Include="..\Bogsi.Quotable.Common\Bogsi.Quotable.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -59,7 +59,7 @@ namespace Bogsi.Quotable.Persistence.Migrations.Quotable
                         {
                             Id = 1,
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PublicId = new Guid("61d25ee4-e4b6-4fea-ad10-ed600f5e7fa6"),
+                            PublicId = new Guid("e59726ec-01d8-4d82-93f7-f414d05c80cd"),
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Value = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn."
                         },
@@ -67,7 +67,7 @@ namespace Bogsi.Quotable.Persistence.Migrations.Quotable
                         {
                             Id = 2,
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PublicId = new Guid("05a5346d-680e-455c-965e-cc7a626d1950"),
+                            PublicId = new Guid("9d7184b0-591f-49c1-aeae-e5ebdad466a5"),
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Value = "That is not dead which can eternal lie, And with strange aeons even death may die."
                         });

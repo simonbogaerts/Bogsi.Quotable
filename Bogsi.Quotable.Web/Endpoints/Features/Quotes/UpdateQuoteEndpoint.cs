@@ -28,8 +28,8 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
     {
         endpoints
             .MapPut("quotes/{id:guid}", UpdateQuote)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.UpdateQuoteEndpoint)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.UpdateQuoteEndpoint)
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)

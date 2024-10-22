@@ -71,11 +71,11 @@ public sealed class QuoteRepository(
         var entities = await source
             .Where(x => x.Id >= request.Cursor)
             .OrderBy(x => x.Id)
-            .Take(request.Size + Constants.Cursor.Offset)
+            .Take(request.Size + Common.Constants.Properties.Cursor.Offset)
             .ToListAsync(cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
-        int newCursor = entities.LastOrDefault()?.Id ?? Constants.Cursor.None;
+        int newCursor = entities.LastOrDefault()?.Id ?? Common.Constants.Properties.Cursor.None;
 
         var selection = entities
             .Take(request.Size);

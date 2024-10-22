@@ -23,9 +23,9 @@ public sealed class DeleteQuoteEndpoint : IApiEndpoint
     {
         endpoints
             .MapDelete("quotes/{id:guid}", DeleteQuote)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.DeleteQuoteEndpoint)
-            .Produces(StatusCodes.Status204NoContent)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.DeleteQuoteEndpoint)
+            .Produces(StatusCodes.Status202Accepted)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)
             .MapToApiVersion(1)
@@ -78,6 +78,6 @@ public sealed class DeleteQuoteEndpoint : IApiEndpoint
             }
         }
 
-        return Results.NoContent();
+        return Results.Accepted();
     }
 }

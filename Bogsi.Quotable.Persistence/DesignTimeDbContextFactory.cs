@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="QuotableContextFactory.cs" company="BOGsi">
+// <copyright file="DesignTimeDbContextFactory.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -29,7 +29,7 @@ internal abstract class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFact
             .AddUserSecrets<DesignTimeDbContextFactory<T>>()
             .Build();
 
-        string connectionString = configuration.GetConnectionString(Constants.QuotableDb)!;
+        string connectionString = configuration.GetConnectionString(Common.Constants.Database.DatabaseNames.QuotableDb)!;
 
         var builder = GetBuilder(connectionString);
 
@@ -60,7 +60,7 @@ internal sealed class QuotableContextFactory : DesignTimeDbContextFactory<Quotab
         var options = new DbContextOptionsBuilder<QuotableContext>()
             .UseNpgsql(
                 connectionString,
-                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Constants.Schemas.Quotable))
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Common.Constants.Database.Schemas.Quotable))
             .EnableSensitiveDataLogging();
 
         return options;
@@ -79,7 +79,7 @@ internal sealed class SagaContextFactory : DesignTimeDbContextFactory<SagaContex
         var options = new DbContextOptionsBuilder<SagaContext>()
             .UseNpgsql(
                 connectionString,
-                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Constants.Schemas.Saga))
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Common.Constants.Database.Schemas.Saga))
             .EnableSensitiveDataLogging();
 
         return options;

@@ -19,13 +19,13 @@ internal static class DistributedCacheExtensions
     /// <param name="builder">WebApplicationBuilder during startip.</param>
     internal static void AddDistributedCache(this WebApplicationBuilder builder)
     {
-        string? connectionString = builder.Configuration.GetConnectionString(Constants.ConnectionStrings.Valkey);
+        string? connectionString = builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.Valkey);
 
         ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionString);
 
         builder.Services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
 
-        if (!builder.Environment.IsEnvironment(Constants.Environments.Testing))
+        if (!builder.Environment.IsEnvironment(Common.Constants.Environment.Testing))
         {
             var options = ConfigurationOptions.Parse(connectionString);
 

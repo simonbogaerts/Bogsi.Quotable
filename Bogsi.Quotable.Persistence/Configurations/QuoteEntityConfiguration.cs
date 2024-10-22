@@ -24,7 +24,9 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
     /// <param name="builder">Context builder.</param>
     public void Configure(EntityTypeBuilder<QuoteEntity> builder)
     {
-        builder.ToTable(Constants.Tables.Quotes, Constants.Schemas.Quotable);
+        builder.ToTable(
+            Common.Constants.Database.Tables.Quotes,
+            Common.Constants.Database.Schemas.Quotable);
 
         builder
             .HasKey(x => x.Id);
@@ -42,16 +44,16 @@ internal sealed record QuoteEntityConfiguration : IEntityTypeConfiguration<Quote
         builder
             .Property(x => x.Value)
             .IsRequired()
-            .HasMaxLength(Application.Constants.Quote.Properties.Value.MaximumLength);
+            .HasMaxLength(Common.Constants.Properties.Value.MaximumLength);
 
         builder
             .Property(x => x.Created)
-            .HasDefaultValueSql(Constants.Functions.GetDate)
+            .HasDefaultValueSql(Common.Constants.Database.Functions.GetDate)
             .IsRequired();
 
         builder
             .Property(x => x.Updated)
-            .HasDefaultValueSql(Constants.Functions.GetDate)
+            .HasDefaultValueSql(Common.Constants.Database.Functions.GetDate)
             .IsRequired()
             .IsConcurrencyToken();
 

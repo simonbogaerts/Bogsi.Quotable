@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bogsi.Quotable.Persistence.Migrations.Saga
 {
     /// <inheritdoc />
-    public partial class Initial_Saga : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,9 @@ namespace Bogsi.Quotable.Persistence.Migrations.Saga
                     PublicId = table.Column<Guid>(type: "uuid", nullable: false),
                     QuoteCreated = table.Column<bool>(type: "boolean", nullable: false),
                     CacheCreated = table.Column<bool>(type: "boolean", nullable: false),
-                    SagaFinalized = table.Column<bool>(type: "boolean", nullable: false)
+                    SagaFinalized = table.Column<bool>(type: "boolean", nullable: false),
+                    SagaFailed = table.Column<bool>(type: "boolean", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,7 +44,9 @@ namespace Bogsi.Quotable.Persistence.Migrations.Saga
                     PublicId = table.Column<Guid>(type: "uuid", nullable: false),
                     QuoteDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CacheCleaned = table.Column<bool>(type: "boolean", nullable: false),
-                    SagaFinalized = table.Column<bool>(type: "boolean", nullable: false)
+                    SagaFinalized = table.Column<bool>(type: "boolean", nullable: false),
+                    SagaFailed = table.Column<bool>(type: "boolean", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,7 +63,9 @@ namespace Bogsi.Quotable.Persistence.Migrations.Saga
                     PublicId = table.Column<Guid>(type: "uuid", nullable: false),
                     QuoteUpdated = table.Column<bool>(type: "boolean", nullable: false),
                     CacheUpdated = table.Column<bool>(type: "boolean", nullable: false),
-                    SagaFinalized = table.Column<bool>(type: "boolean", nullable: false)
+                    SagaFinalized = table.Column<bool>(type: "boolean", nullable: false),
+                    SagaFailed = table.Column<bool>(type: "boolean", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

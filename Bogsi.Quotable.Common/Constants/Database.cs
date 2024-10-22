@@ -1,25 +1,31 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Constants.cs" company="BOGsi">
+// <copyright file="Database.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Persistence;
+namespace Bogsi.Quotable.Common.Constants;
 
 /// <summary>
-/// Constants used in the Persistence Layer.
+/// Different values concerning the database.
 /// </summary>
-internal sealed record Constants
+public sealed record Database
 {
     /// <summary>
-    /// Name of the database.
+    /// List of different schemas.
     /// </summary>
-    public const string QuotableDb = nameof(QuotableDb);
+    public sealed record DatabaseNames
+    {
+        /// <summary>
+        /// Name of the quotable database.
+        /// </summary>
+        public const string QuotableDb = nameof(QuotableDb);
+    }
 
     /// <summary>
     /// List of different schemas.
     /// </summary>
-    internal sealed record Schemas
+    public sealed record Schemas
     {
         /// <summary>
         /// Name of the default schema.
@@ -35,7 +41,7 @@ internal sealed record Constants
     /// <summary>
     /// List of the tables.
     /// </summary>
-    internal sealed record Tables
+    public sealed record Tables
     {
         /// <summary>
         /// Name of the table that has the Quote entities.
@@ -61,7 +67,7 @@ internal sealed record Constants
     /// <summary>
     /// List of functions.
     /// </summary>
-    internal sealed record Functions
+    public sealed record Functions
     {
         /// <summary>
         /// The GetDate method in PosgreSQL.

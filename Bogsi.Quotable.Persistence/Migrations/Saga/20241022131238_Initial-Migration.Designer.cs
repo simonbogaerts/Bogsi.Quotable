@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bogsi.Quotable.Persistence.Migrations.Saga
 {
     [DbContext(typeof(SagaContext))]
-    [Migration("20241022092533_Initial_Saga")]
-    partial class Initial_Saga
+    [Migration("20241022131238_Initial-Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,15 @@ namespace Bogsi.Quotable.Persistence.Migrations.Saga
                     b.Property<bool>("QuoteCreated")
                         .HasColumnType("boolean");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<bool>("SagaFailed")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("SagaFinalized")
                         .HasColumnType("boolean");
 
@@ -72,6 +81,15 @@ namespace Bogsi.Quotable.Persistence.Migrations.Saga
                     b.Property<bool>("QuoteDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<bool>("SagaFailed")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("SagaFinalized")
                         .HasColumnType("boolean");
 
@@ -97,6 +115,15 @@ namespace Bogsi.Quotable.Persistence.Migrations.Saga
                         .HasColumnType("uuid");
 
                     b.Property<bool>("QuoteUpdated")
+                        .HasColumnType("boolean");
+
+                    b.Property<uint>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
+
+                    b.Property<bool>("SagaFailed")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("SagaFinalized")

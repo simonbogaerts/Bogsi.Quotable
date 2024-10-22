@@ -27,12 +27,12 @@ public sealed class CreateQuoteCommandValidator : AbstractValidator<CreateQuoteC
             .WithMessage("Value should not be null or empty.");
 
         RuleFor(x => x.Value)
-            .MinimumLength(Constants.Quote.Properties.Value.MinimumLength)
-            .WithMessage($"Value should be at least {Constants.Quote.Properties.Value.MinimumLength} characters long.");
+            .MinimumLength(Common.Constants.Properties.Value.MinimumLength)
+            .WithMessage($"Value should be at least {Common.Constants.Properties.Value.MinimumLength} characters long.");
 
         RuleFor(x => x.Value)
-            .MaximumLength(Constants.Quote.Properties.Value.MaximumLength)
-            .WithMessage($"Value should not be longer than {Constants.Quote.Properties.Value.MaximumLength} characters.");
+            .MaximumLength(Common.Constants.Properties.Value.MaximumLength)
+            .WithMessage($"Value should not be longer than {Common.Constants.Properties.Value.MaximumLength} characters.");
 
         // The author should exist.
         // https://www.youtube.com/watch?v=AYrmu9_RFnM

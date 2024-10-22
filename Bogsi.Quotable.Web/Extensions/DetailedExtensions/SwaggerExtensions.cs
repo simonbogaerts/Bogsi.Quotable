@@ -23,18 +23,18 @@ internal static class SwaggerExtensions
         {
             x.CustomSchemaIds(id => id.FullName!.Replace('+', '-'));
 
-            x.AddSecurityDefinition(Constants.Keycloak, new OpenApiSecurityScheme
+            x.AddSecurityDefinition(Common.Constants.Security.Keycloak, new OpenApiSecurityScheme
             {
                 Type = SecuritySchemeType.OAuth2,
                 Flows = new OpenApiOAuthFlows
                 {
                     Implicit = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl = new Uri(builder.Configuration[Constants.AppSettingKeys.AuthorizationUrl]!),
+                        AuthorizationUrl = new Uri(builder.Configuration[Common.Constants.AuthenticationKeys.AuthorizationUrl]!),
                         Scopes = new Dictionary<string, string>
                         {
-                            { "openid", "openid" },
-                            { "profile", "profile" },
+                            { Common.Constants.Security.Scopes.OpenId, Common.Constants.Security.Scopes.OpenId },
+                            { Common.Constants.Security.Scopes.Profile, Common.Constants.Security.Scopes.Profile },
                         },
                     },
                 },
@@ -47,12 +47,12 @@ internal static class SwaggerExtensions
                     {
                         Reference = new OpenApiReference
                         {
-                            Id = Constants.Keycloak,
+                            Id = Common.Constants.Security.Keycloak,
                             Type = ReferenceType.SecurityScheme,
                         },
                         In = ParameterLocation.Header,
-                        Name = Constants.Bearer,
-                        Scheme = Constants.Bearer,
+                        Name = Common.Constants.Security.Bearer,
+                        Scheme = Common.Constants.Security.Bearer,
                     },
                     []
                 },

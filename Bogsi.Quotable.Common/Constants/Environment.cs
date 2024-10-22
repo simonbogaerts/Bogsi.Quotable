@@ -9,7 +9,7 @@ namespace Bogsi.Quotable.Common.Constants;
 /// <summary>
 /// Different environments.
 /// </summary>
-public static class Environment
+public sealed record Environment
 {
     /// <summary>
     /// Production environment.

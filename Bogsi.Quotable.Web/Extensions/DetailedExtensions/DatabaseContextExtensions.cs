@@ -23,13 +23,17 @@ internal static class DatabaseContextExtensions
     {
         builder.Services.AddDbContext<QuotableContext>(options =>
             options.UseNpgsql(
-                builder.Configuration.GetConnectionString(Constants.ConnectionStrings.QuotableDb)!,
-                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "Quotable")));
+                builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.QuotableDb)!,
+                o => o.MigrationsHistoryTable(
+                    HistoryRepository.DefaultTableName,
+                    Common.Constants.Database.Schemas.Saga)));
 
         builder.Services.AddDbContext<SagaContext>(options =>
             options.UseNpgsql(
-                builder.Configuration.GetConnectionString(Constants.ConnectionStrings.QuotableDb)!,
-                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "Saga")));
+                builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.QuotableDb)!,
+                o => o.MigrationsHistoryTable(
+                    HistoryRepository.DefaultTableName,
+                    Common.Constants.Database.Schemas.Saga)));
 
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }

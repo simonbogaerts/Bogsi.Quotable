@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bogsi.Quotable.Persistence.Migrations.Quotable
 {
     /// <inheritdoc />
-    public partial class Initial_Quotable : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,8 +41,8 @@ namespace Bogsi.Quotable.Persistence.Migrations.Quotable
                 columns: new[] { "Id", "PublicId", "Value" },
                 values: new object[,]
                 {
-                    { 1, new Guid("61d25ee4-e4b6-4fea-ad10-ed600f5e7fa6"), "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn." },
-                    { 2, new Guid("05a5346d-680e-455c-965e-cc7a626d1950"), "That is not dead which can eternal lie, And with strange aeons even death may die." }
+                    { 1, new Guid("e59726ec-01d8-4d82-93f7-f414d05c80cd"), "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn." },
+                    { 2, new Guid("9d7184b0-591f-49c1-aeae-e5ebdad466a5"), "That is not dead which can eternal lie, And with strange aeons even death may die." }
                 });
         }
 

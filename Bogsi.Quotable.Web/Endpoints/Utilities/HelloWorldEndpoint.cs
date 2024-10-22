@@ -24,7 +24,7 @@ internal class HelloWorldEndpoint : IApiEndpoint
 
         endpoints
             .MapGet("utilities/hello-world", HelloWorld)
-            .WithTags(Constants.Endpoints.Utilities)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Utilities)
             .Produces(StatusCodes.Status200OK)
             .MapToApiVersion(1)
             .WithOpenApi();
