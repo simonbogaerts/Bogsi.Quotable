@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CreateQuoteHandlerRequestValidator.cs" company="BOGsi">
+// <copyright file="CreateQuoteCommandValidator.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -13,13 +13,13 @@ using FluentValidation;
 /// <summary>
 /// Validator for incoming CreateQuoteHandlerRequest models.
 /// </summary>
-public sealed class CreateQuoteHandlerRequestValidator : AbstractValidator<CreateQuoteHandlerRequest>
+public sealed class CreateQuoteCommandValidator : AbstractValidator<CreateQuoteCommand>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateQuoteHandlerRequestValidator"/> class.
+    /// Initializes a new instance of the <see cref="CreateQuoteCommandValidator"/> class.
     /// FluentValidation requires the validators to be configured witin the ctor.
     /// </summary>
-    public CreateQuoteHandlerRequestValidator()
+    public CreateQuoteCommandValidator()
     {
         RuleFor(x => x.Value)
             .NotNull()

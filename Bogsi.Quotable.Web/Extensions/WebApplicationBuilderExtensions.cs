@@ -26,7 +26,9 @@ internal static class WebApplicationBuilderExtensions
         builder.AddApiEndpoints();
         builder.AddAndConfigureHealthChecks();
         builder.AddQuotableDbContext();
+        builder.AddAndConfigureMessageQueue();
         builder.AddDistributedCache();
+        builder.AddAndConfigureMediatr();
         builder.AddServices();
     }
 }

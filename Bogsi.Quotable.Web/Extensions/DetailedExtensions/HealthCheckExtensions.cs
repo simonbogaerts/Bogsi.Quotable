@@ -4,8 +4,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Bogsi.Quotable.Persistence;
-
 namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
 
 /// <summary>
@@ -27,9 +25,15 @@ internal static class HealthCheckExtensions
 
         ArgumentNullException.ThrowIfNullOrWhiteSpace(valKeyConnectionString);
 
+        // Fix this when redoing DI.
+        string rabbitMq = "amqp://quotable:quotable@localhost:5672";
+
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(nameof(rabbitMq));
+
         builder.Services
             .AddHealthChecks()
             .AddNpgSql(databaseConnectionString)
-            .AddRedis(valKeyConnectionString);
+            .AddRedis(valKeyConnectionString)
+            .AddRabbitMQ(new Uri(rabbitMq));
     }
 }

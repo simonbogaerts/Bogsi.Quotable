@@ -7,10 +7,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Bogsi.Quotable.Persistence.Migrations
+namespace Bogsi.Quotable.Persistence.Migrations.Quotable
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial_Quotable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,22 +28,22 @@ namespace Bogsi.Quotable.Persistence.Migrations
                     Value = table.Column<string>(type: "character varying(1255)", maxLength: 1255, nullable: false),
                     PublicId = table.Column<Guid>(type: "uuid", nullable: false),
                     Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
-                    Updated = table.Column<DateTime>(type: "timestamp with time zone", rowVersion: true, nullable: false, defaultValueSql: "NOW()")
+                    Updated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Quotes", x => x.Id);
                 });
 
-            //migrationBuilder.InsertData(
-            //    schema: "Quotable",
-            //    table: "Quotes",
-            //    columns: new[] { "Id", "PublicId", "Value" },
-            //    values: new object[,]
-            //    {
-            //        { 1, new Guid("3414eee0-355b-4cda-acb6-567212236bce"), "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn." },
-            //        { 2, new Guid("64a140bd-bdfa-46e8-8cbf-169703626004"), "That is not dead which can eternal lie, And with strange aeons even death may die." }
-            //    });
+            migrationBuilder.InsertData(
+                schema: "Quotable",
+                table: "Quotes",
+                columns: new[] { "Id", "PublicId", "Value" },
+                values: new object[,]
+                {
+                    { 1, new Guid("61d25ee4-e4b6-4fea-ad10-ed600f5e7fa6"), "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn." },
+                    { 2, new Guid("05a5346d-680e-455c-965e-cc7a626d1950"), "That is not dead which can eternal lie, And with strange aeons even death may die." }
+                });
         }
 
         /// <inheritdoc />

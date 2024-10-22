@@ -9,6 +9,8 @@ namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
 using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Handlers.Quotes;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -34,13 +36,13 @@ public sealed class DeleteQuoteEndpoint : IApiEndpoint
     /// Delete an existing quote by its public id.
     /// </summary>
     /// <param name="id">Public id of quote to delete.</param>
-    /// <param name="handler">Handler for the busines logic.</param>
+    /// <param name="mediator">Handler for the busines logic.</param>
     /// <param name="logger">An instance of a Serilog logger.</param>
     /// <param name="cancellationToken">Cancellation token used during async computing.</param>
     /// <returns>Status code indicating succes or failure.</returns>
     internal static async Task<IResult> DeleteQuote(
         [FromRoute] Guid id,
-        [FromServices] IDeleteQuoteHandler handler,
+        [FromServices] IMediator mediator,
         [FromServices] ILogger<DeleteQuoteEndpoint> logger,
         CancellationToken cancellationToken)
     {
@@ -52,14 +54,14 @@ public sealed class DeleteQuoteEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] mapping endpoint request to handler request", nameof(DeleteQuoteEndpoint));
 
-        DeleteQuoteHandlerRequest request = new ()
+        DeleteQuoteCommand request = new ()
         {
             PublicId = id,
         };
 
         logger.LogInformation("[{Source}] executing handler", nameof(DeleteQuoteEndpoint));
 
-        var result = await handler.HandleAsync(request, cancellationToken).ConfigureAwait(false);
+        var result = await mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
         if (result.IsFailure)
         {

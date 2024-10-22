@@ -44,35 +44,31 @@ public sealed class QuoteMappingProfiles : Profile
     private void RequestMapping()
     {
         // Get Quotes
-        CreateMap<GetQuotesParameters, GetQuotesHandlerRequest>()
+        CreateMap<GetQuotesParameters, GetQuotesQuery>()
             .ForMember(dest => dest.Cursor, opt => opt.MapFrom<CursorResolver>())
             .ForMember(dest => dest.Size, opt => opt.MapFrom<SizeResolver>());
 
         // Create Quote
-        CreateMap<CreateQuoteRequest, CreateQuoteHandlerRequest>();
-        CreateMap<CreateQuoteHandlerRequest, Quote>()
+        CreateMap<CreateQuoteRequest, CreateQuoteCommand>();
+        CreateMap<CreateQuoteCommand, Quote>()
             .ForMember(dest => dest.PublicId, opt => opt.MapFrom<NewPublicIdResolver>());
 
         // Update Quote
-        CreateMap<UpdateQuoteRequest, UpdateQuoteHandlerRequest>()
+        CreateMap<UpdateQuoteRequest, UpdateQuoteCommand>()
             .ForMember(dest => dest.PublicId, opt => opt.MapFrom<PassPublicIdResolver>());
-        CreateMap<UpdateQuoteHandlerRequest, Quote>();
+        CreateMap<UpdateQuoteCommand, Quote>();
     }
 
     private void ResponseMapping()
     {
         // Get Quotes
-        CreateMap<Quote, GetQuotesSingleQuoteHandlerResponse>();
-        CreateMap<GetQuotesSingleQuoteHandlerResponse, GetQuotesSingleQuoteResponse>();
-        CreateMap<CursorResponse<Quote>, GetQuotesHandlerResponse>();
-        CreateMap<GetQuotesHandlerResponse, GetQuotesResponse>();
+        CreateMap<Quote, Handlers.Quotes.GetQuotesSingleQuoteResponse>();
+        CreateMap<Handlers.Quotes.GetQuotesSingleQuoteResponse, Contracts.Quotes.GetQuotesSingleQuoteResponse>();
+        CreateMap<CursorResponse<Quote>, Handlers.Quotes.GetQuotesResponse>();
+        CreateMap<Handlers.Quotes.GetQuotesResponse, Contracts.Quotes.GetQuotesResponse>();
 
         // Get Quote By Id
-        CreateMap<Quote, GetQuoteByIdHandlerResponse>();
-        CreateMap<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>();
-
-        // Create Quote
-        CreateMap<Quote, CreateQuoteHandlerResponse>();
-        CreateMap<CreateQuoteHandlerResponse, CreateQuoteResponse>();
+        CreateMap<Quote, Handlers.Quotes.GetQuoteByIdResponse>();
+        CreateMap<Handlers.Quotes.GetQuoteByIdResponse, Contracts.Quotes.GetQuoteByIdResponse>();
     }
 }

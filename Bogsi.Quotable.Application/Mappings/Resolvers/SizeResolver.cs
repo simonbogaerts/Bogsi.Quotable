@@ -14,7 +14,7 @@ using Bogsi.Quotable.Application.Handlers.Quotes;
 /// <summary>
 /// Resolver to validate and set size.
 /// </summary>
-internal sealed class SizeResolver : IValueResolver<GetQuotesParameters, GetQuotesHandlerRequest, int>
+internal sealed class SizeResolver : IValueResolver<GetQuotesParameters, GetQuotesQuery, int>
 {
     /// <summary>
     /// The method called by the resolver.
@@ -26,7 +26,7 @@ internal sealed class SizeResolver : IValueResolver<GetQuotesParameters, GetQuot
     /// <returns>A validated or default size.</returns>
     public int Resolve(
         GetQuotesParameters source,
-        GetQuotesHandlerRequest destination,
+        GetQuotesQuery destination,
         int destMember,
         ResolutionContext context)
     {

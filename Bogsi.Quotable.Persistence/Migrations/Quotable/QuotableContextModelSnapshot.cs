@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Bogsi.Quotable.Persistence.Migrations
+namespace Bogsi.Quotable.Persistence.Migrations.Quotable
 {
     [DbContext(typeof(QuotableContext))]
     partial class QuotableContextModelSnapshot : ModelSnapshot
@@ -18,7 +18,7 @@ namespace Bogsi.Quotable.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("Quotable")
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -41,7 +41,7 @@ namespace Bogsi.Quotable.Persistence.Migrations
 
                     b.Property<DateTime>("Updated")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
@@ -59,7 +59,7 @@ namespace Bogsi.Quotable.Persistence.Migrations
                         {
                             Id = 1,
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PublicId = new Guid("3414eee0-355b-4cda-acb6-567212236bce"),
+                            PublicId = new Guid("61d25ee4-e4b6-4fea-ad10-ed600f5e7fa6"),
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Value = "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn."
                         },
@@ -67,7 +67,7 @@ namespace Bogsi.Quotable.Persistence.Migrations
                         {
                             Id = 2,
                             Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PublicId = new Guid("64a140bd-bdfa-46e8-8cbf-169703626004"),
+                            PublicId = new Guid("05a5346d-680e-455c-965e-cc7a626d1950"),
                             Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Value = "That is not dead which can eternal lie, And with strange aeons even death may die."
                         });

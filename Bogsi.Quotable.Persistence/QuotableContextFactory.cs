@@ -8,30 +8,80 @@ namespace Bogsi.Quotable.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 
 /// <summary>
 /// Factory to create and update a database based upon a database context and entity configuration.
 /// </summary>
-internal sealed class QuotableContextFactory : IDesignTimeDbContextFactory<QuotableContext>
+/// <typeparam name="T">Class implementing DbContext.</typeparam>
+internal abstract class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFactory<T>
+    where T : DbContext
 {
     /// <summary>
     /// Method to create a new DbContext.
     /// </summary>
     /// <param name="args">Arguments to pass into the factory.</param>
     /// <returns>A new database context.</returns>
-    public QuotableContext CreateDbContext(string[] args)
+    public T CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
-            .AddUserSecrets<QuotableContextFactory>()
+            .AddUserSecrets<DesignTimeDbContextFactory<T>>()
             .Build();
 
         string connectionString = configuration.GetConnectionString(Constants.QuotableDb)!;
 
-        var builder = new DbContextOptionsBuilder<QuotableContext>()
-            .UseNpgsql(connectionString)
+        var builder = GetBuilder(connectionString);
+
+        var dbContext = Activator.CreateInstance(
+            typeof(T),
+            builder.Options) as T;
+
+        return dbContext!;
+    }
+
+    /// <summary>
+    /// Configure the builder for the specific contexts.
+    /// </summary>
+    /// <param name="connectionString">The connection to the quotable-db instance.</param>
+    /// <returns>Builder configured for context (particularly the migration table).</returns>
+    protected abstract DbContextOptionsBuilder<T> GetBuilder(string connectionString);
+}
+
+/// <summary>
+/// Factory to create and update QuotableContext.
+/// Add-Migration [migration-name] -Context QuotableContext -o Migrations/Quotable.
+/// </summary>
+internal sealed class QuotableContextFactory : DesignTimeDbContextFactory<QuotableContext>
+{
+    /// <inheritdoc/>
+    protected override DbContextOptionsBuilder<QuotableContext> GetBuilder(string connectionString)
+    {
+        var options = new DbContextOptionsBuilder<QuotableContext>()
+            .UseNpgsql(
+                connectionString,
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Constants.Schemas.Quotable))
             .EnableSensitiveDataLogging();
 
-        return new QuotableContext(builder.Options);
+        return options;
+    }
+}
+
+/// <summary>
+/// Factory to create and update SagaContext.
+/// Add-Migration [migration-name] -Context SagaContext -o Migrations/Saga.
+/// </summary>
+internal sealed class SagaContextFactory : DesignTimeDbContextFactory<SagaContext>
+{
+    /// <inheritdoc/>
+    protected override DbContextOptionsBuilder<SagaContext> GetBuilder(string connectionString)
+    {
+        var options = new DbContextOptionsBuilder<SagaContext>()
+            .UseNpgsql(
+                connectionString,
+                o => o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, Constants.Schemas.Saga))
+            .EnableSensitiveDataLogging();
+
+        return options;
     }
 }
