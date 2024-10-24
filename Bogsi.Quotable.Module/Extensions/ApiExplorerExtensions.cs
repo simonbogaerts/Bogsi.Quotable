@@ -4,9 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Modules.Extensions;
 
 using Asp.Versioning;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
 /// Extensions regarding api explorer and versioning.
@@ -17,7 +20,7 @@ internal static class ApiExplorerExtensions
     /// Configure and api explorer and add versioning..
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddApiExplorerWithVersioning(this WebApplicationBuilder builder)
+    internal static void AddAndConfigureApiExplorerWithVersioning(this WebApplicationBuilder builder)
     {
         builder.Services.AddApiVersioning(options =>
         {

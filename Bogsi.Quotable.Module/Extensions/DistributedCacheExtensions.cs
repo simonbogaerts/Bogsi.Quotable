@@ -1,10 +1,16 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DistributedCacheExtensions.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Modules.Extensions;
+
+using Bogsi.Quotable.Common.Enums;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using StackExchange.Redis;
 
@@ -17,19 +23,20 @@ internal static class DistributedCacheExtensions
     /// Configure and add Valkey support.
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddDistributedCache(this WebApplicationBuilder builder)
+    internal static void AddAndConfigureDistributedCache(this WebApplicationBuilder builder)
     {
-        string? connectionString = builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.Valkey);
+        ArgumentNullException.ThrowIfNull(builder);
 
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionString);
+        var cachingConfig = builder.GetOrAddValkeyConfig(ServiceCollectionOptions.Return);
 
-        builder.Services.AddStackExchangeRedisCache(options => options.Configuration = connectionString);
+        builder.Services.AddStackExchangeRedisCache(options => options.Configuration = cachingConfig.ConnectionString);
 
         if (!builder.Environment.IsEnvironment(Common.Constants.Environment.Testing))
         {
-            var options = ConfigurationOptions.Parse(connectionString);
+            var options = ConfigurationOptions.Parse(cachingConfig.ConnectionString);
 
             options.AllowAdmin = true;
+            options.AbortOnConnectFail = false;
 
             ConnectionMultiplexer cm = ConnectionMultiplexer.Connect(options);
 

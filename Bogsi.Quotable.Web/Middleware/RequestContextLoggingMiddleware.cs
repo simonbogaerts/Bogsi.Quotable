@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.Middleware;
+namespace Bogsi.Quotable.Web.Middleware;
 
 using Microsoft.Extensions.Primitives;
 
@@ -46,5 +46,23 @@ public class RequestContextLoggingMiddleware(RequestDelegate next)
         context.Request.Headers.TryGetValue(CorrelationIdHeaderName, out StringValues correlationId);
 
         return correlationId.FirstOrDefault() ?? Guid.NewGuid().ToString();
+    }
+}
+
+/// <summary>
+/// Extensions regarding context logging middleware.
+/// </summary>
+internal static class RequestContextLoggingExtensions
+{
+    /// <summary>
+    /// Use correlation id middleware.
+    /// </summary>
+    /// <param name="application">WebApplication.</param>
+    /// <returns>Web application wit added middleware.</returns>
+    public static IApplicationBuilder UseRequestContextLogging(this IApplicationBuilder application)
+    {
+        application.UseMiddleware<RequestContextLoggingMiddleware>();
+
+        return application;
     }
 }

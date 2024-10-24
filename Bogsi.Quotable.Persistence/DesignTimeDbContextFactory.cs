@@ -6,6 +6,8 @@
 
 namespace Bogsi.Quotable.Persistence;
 
+using Bogsi.Quotable.Common.Configs;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -29,7 +31,12 @@ internal abstract class DesignTimeDbContextFactory<T> : IDesignTimeDbContextFact
             .AddUserSecrets<DesignTimeDbContextFactory<T>>()
             .Build();
 
-        string connectionString = configuration.GetConnectionString(Common.Constants.Database.DatabaseNames.QuotableDb)!;
+        var connectionString = configuration
+            .GetSection(Common.Constants.AppSettingSections.QuotableDb)
+            .Get<QuotableDbConfig>()
+            ?.ConnectionString;
+
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
         var builder = GetBuilder(connectionString);
 

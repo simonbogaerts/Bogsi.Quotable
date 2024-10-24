@@ -36,16 +36,16 @@ docker compose down
 
 ## Port Mapping 
 
-| Port | Application          | 
-|------|----------------------|
-|  5341 | SEQ log ingestion   |
-|  5432 | PostgreSQL database |
-|  5672 | RabbitMQ            |
-|  6379 | Valkey caching      |
-|  8080 | Quotable web HTTP   |
-|  8081 | Quotable web HTTPS  |
-|  8082 | SEQ GUI             |
-| 15672 | RabbitMQ GUI        |
+| Port  | Application          | 
+|-------|----------------------|
+|  8080 | Quotable web HTTP    |
+|  8081 | Quotable web HTTPS   |
+|  8082 | SEQ (manage)         |
+|  8083 | RabbitMQ (Manage)    |
+|  8084 | PostgreSQL           |
+|  8085 | RabbitMQ             |
+|  8086 | Valkey               |
+|  8087 | SEQ (ingestion)      |
 
 
 ## Known Bugs 
@@ -71,7 +71,7 @@ docker compose down
 ### V1.1
 
 - [x] Switch to Mediatr, MassTransit and RabbitMq.
-- [ ] Improve/Clean-Up DI.
+- [x] Improve/Clean-Up DI.
 - [ ] Head and Options endpoints 
 - [ ] Update data model
 - [ ] Add security (bearer)

@@ -15,10 +15,14 @@ services:
       - 8080:8080
       - 8081:8081
     depends_on:
-      - database
-      - logging
-      - caching
-      - messaging
+      database:
+        condition: service_healthy
+      logging:
+        condition: service_started
+      caching:
+        condition: service_healthy
+      messaging:
+        condition: service_healthy
   
   database:
     image: postgres:17rc1-alpine3.20
@@ -29,11 +33,16 @@ services:
       POSTGRES_PASSWORD: quotable123
       POSTGRES_DB: quotable-db
     ports:
-      - 5432:5432
+      - 8084:5432
     volumes:
       - ./.container-data/db:/var/lib/postgresql/data
     networks:
       - quotable-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 15s
+      retries: 3      
 
   logging:
     image: datalust/seq:latest
@@ -42,7 +51,7 @@ services:
     environment:
       ACCEPT_EULA: Y
     ports:
-      - 5341:5341
+      - 8087:5341
       - 8082:80
     volumes:
       - ./.container-data/seq:/data
@@ -58,9 +67,14 @@ services:
       - ./.container-data/valkey/conf:/etc/valkey/valkey.conf
       - ./.container-data/valkey/data:/data
     ports:
-      - 6379:6379
+      - 8086:6379
     networks:
       - quotable-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
 
   messaging:
     image: rabbitmq:management
@@ -71,13 +85,18 @@ services:
       - ./.container-data/queue/data:/var/lib/rabbitmq
       - ./.container-data/queue/logs:/var/log/rabbitmq
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 8085:5672
+      - 8083:15672
     environment:
       RABBITMQ_DEFAULT_USER: quotable
       RABBITMQ_DEFAULT_PASS: quotable
     networks:
       - quotable-network
+    healthcheck:
+          test: rabbitmq-diagnostics -q ping
+          interval: 5s
+          timeout: 15s
+          retries: 3
 
 networks:
   quotable-network:
