@@ -30,7 +30,7 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
             .MapPut("quotes/{id:guid}", UpdateQuote)
             .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
             .WithName(Common.Constants.Endpoint.QuoteEndpoints.UpdateQuoteEndpoint)
-            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status202Accepted)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)
@@ -98,6 +98,6 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
             }
         }
 
-        return Results.NoContent();
+        return Results.Accepted();
     }
 }

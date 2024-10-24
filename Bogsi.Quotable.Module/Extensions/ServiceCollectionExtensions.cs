@@ -4,10 +4,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Modules.Extensions;
 
 using Bogsi.Quotable.Application;
-using Bogsi.Quotable.Application.Entities;
 using Bogsi.Quotable.Application.Interfaces.Repositories;
 using Bogsi.Quotable.Application.Interfaces.Utilities;
 using Bogsi.Quotable.Application.Models;
@@ -16,6 +15,7 @@ using Bogsi.Quotable.Infrastructure.Utilities;
 
 using FluentValidation;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,7 +28,7 @@ internal static class ServiceCollectionExtensions
     /// Add and configure all services.
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddServices(this WebApplicationBuilder builder)
+    internal static void AddAndConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(typeof(IApplicationMarker).Assembly);
         builder.Services.AddValidatorsFromAssembly(typeof(IApplicationMarker).Assembly);

@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogsi.Quotable.Common", "Bogsi.Quotable.Common\Bogsi.Quotable.Common.csproj", "{C26862DC-530D-4F8D-9AFE-B0B9F59468BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogsi.Quotable.Module", "Bogsi.Quotable.Module\Bogsi.Quotable.Module.csproj", "{EF7E262B-32D8-4909-B1EA-5DD0AD7DAF3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogsi.Quotable.Modules", "Bogsi.Quotable.Module\Bogsi.Quotable.Modules.csproj", "{EF7E262B-32D8-4909-B1EA-5DD0AD7DAF3E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bogsi.Quotable.Test.Architecture", "Bogsi.Quotable.Test.Architecture\Bogsi.Quotable.Test.Architecture.csproj", "{B26D18DA-F1C3-41C1-BF87-B78BA0F8A6B2}"
 EndProject

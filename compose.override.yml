@@ -3,6 +3,14 @@ name: bogsi-quotable
 services:
   web:
     environment:
-      ConnectionStrings__QuotableDb=Server: database;Port=5432;Database=quotable-db;User Id=quotable;Password=quotable123;
-      ConnectionStrings__Valkey: caching:6379
-      MessageBroker__Host: amqp://messaging:5672
+      QuotableDb__Server: database
+      QuotableDb__Port: 8084
+      QuotableDb__DatabaseName: quotable-db
+      QuotableDb__UserName: quotable
+      QuotableDb__Password: quotable123
+      Messaging__Address: messaging
+      Messaging__Port: 8085
+      Messaging__UserName: quotable
+      Messaging__Password: quotable 
+      Valkey__Address: caching
+      Valkey__Port: 8086

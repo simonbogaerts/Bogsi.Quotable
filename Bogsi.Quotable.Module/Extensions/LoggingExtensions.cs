@@ -4,7 +4,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Modules.Extensions;
+
+using Microsoft.AspNetCore.Builder;
 
 using Serilog;
 
@@ -17,7 +19,7 @@ internal static class LoggingExtensions
     /// Configure and serilog and sinks.
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddLoggingWithSerilogAndSeq(this WebApplicationBuilder builder)
+    internal static void AddAndConfigureSerilogAndSeq(this WebApplicationBuilder builder)
     {
         builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
     }

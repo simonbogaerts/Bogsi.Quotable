@@ -1,25 +1,23 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="WebApplicationExtensions.cs" company="BOGsi">
+// <copyright file="WebApplicationPipelineConfigurator.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions;
-
-using Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Web.Middleware;
 
 using Serilog;
 
 /// <summary>
 /// Configure the WebApplication and request pipeline.
 /// </summary>
-internal static class WebApplicationExtensions
+internal static class WebApplicationPipelineConfigurator
 {
     /// <summary>
     /// Configuration order and usings.
     /// </summary>
     /// <param name="application">WebApplication.</param>
-    internal static void ConfigureWebApplication(this WebApplication application)
+    internal static void ConfigureRequestPipeline(this WebApplication application)
     {
         application.UseRequestContextLogging();
         application.UseHttpsRedirection();

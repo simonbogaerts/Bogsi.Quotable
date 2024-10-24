@@ -4,15 +4,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Bogsi.Quotable.Web.Extensions;
+using Bogsi.Quotable.Modules;
+using Bogsi.Quotable.Web.Endpoints;
+using Bogsi.Quotable.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.ConfigureBuilder();
+builder.ConfigureModules();
+
+builder.ConfigureApiEndpoints();
 
 var application = builder.Build();
 
-application.ConfigureWebApplication();
+application.ConfigureRequestPipeline();
 
 await application.RunAsync().ConfigureAwait(false);
 

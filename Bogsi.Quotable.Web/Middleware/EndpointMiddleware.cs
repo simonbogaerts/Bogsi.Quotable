@@ -1,41 +1,21 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="EndPointExtensions.cs" company="BOGsi">
+// <copyright file="EndpointMiddleware.cs" company="BOGsi">
 // Copyright (c) BOGsi. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Web.Middleware;
 
 using Asp.Versioning;
 using Asp.Versioning.Builder;
 
 using Bogsi.Quotable.Web.Endpoints;
 
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
 /// <summary>
-/// Extensions regarding endpoints.
+/// Middleware regarding endpoints.
 /// </summary>
-internal static class EndPointExtensions
+internal static class EndpointMiddleware
 {
-    /// <summary>
-    /// Scan assembly endpoints.
-    /// </summary>
-    /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddApiEndpoints(this WebApplicationBuilder builder)
-    {
-        var assembly = typeof(Program).Assembly;
-
-        var serviceDescriptors = assembly
-            .DefinedTypes
-                .Where(type => !type.IsAbstract &&
-                !type.IsInterface &&
-                               type.IsAssignableTo(typeof(IApiEndpoint)))
-                .Select(type => ServiceDescriptor.Transient(typeof(IApiEndpoint), type));
-
-        builder.Services.TryAddEnumerable(serviceDescriptors);
-    }
-
     /// <summary>
     /// Add endpoints to configured version.
     /// </summary>

@@ -4,9 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Modules.Extensions;
+
+using Bogsi.Quotable.Common.Enums;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 /// <summary>
@@ -18,18 +22,22 @@ internal static class AuthExtensions
     /// Configure and add authorization and authentication.
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddAuthenticationAndAuthorization(this WebApplicationBuilder builder)
+    internal static void AddAndConfigureAuth(this WebApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        var authConfig = builder.GetOrAddAuthConfig(ServiceCollectionOptions.Return);
+
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         .AddJwtBearer(x =>
                         {
-                            x.Audience = builder.Configuration[Common.Constants.AuthenticationKeys.Audience]!;
-                            x.Authority = builder.Configuration[Common.Constants.AuthenticationKeys.Authority]!;
-                            x.MetadataAddress = builder.Configuration[Common.Constants.AuthenticationKeys.MetadataAddress]!;
+                            x.Audience = authConfig.Audience;
+                            x.Authority = authConfig.Authority;
+                            x.MetadataAddress = authConfig.MetadataAddress;
                             x.RequireHttpsMetadata = false;
                             x.TokenValidationParameters = new TokenValidationParameters
                             {
-                                ValidIssuer = builder.Configuration[Common.Constants.AuthenticationKeys.ValidIssuer]!,
+                                ValidIssuer = authConfig.ValidIssuer,
                             };
                         });
 

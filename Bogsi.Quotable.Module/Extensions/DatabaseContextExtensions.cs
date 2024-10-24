@@ -4,33 +4,41 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Modules.Extensions;
 
+using Bogsi.Quotable.Common.Enums;
 using Bogsi.Quotable.Persistence;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>
-/// Extensions regarding database connections.
+/// Test.
 /// </summary>
 internal static class DatabaseContextExtensions
 {
     /// <summary>
-    /// Configure and add DbContext.
+    /// Add and configure all database contexts.
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddQuotableDbContext(this WebApplicationBuilder builder)
+    internal static void AddAndConfigureDatabaseContexts(this WebApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        var databaseConfig = builder.GetOrAddQuotableDbConfig(ServiceCollectionOptions.Return);
+
         builder.Services.AddDbContext<QuotableContext>(options =>
             options.UseNpgsql(
-                builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.QuotableDb)!,
+                databaseConfig.ConnectionString,
                 o => o.MigrationsHistoryTable(
                     HistoryRepository.DefaultTableName,
-                    Common.Constants.Database.Schemas.Saga)));
+                    Common.Constants.Database.Schemas.Quotable)));
 
         builder.Services.AddDbContext<SagaContext>(options =>
             options.UseNpgsql(
-                builder.Configuration.GetConnectionString(Common.Constants.ConnectionStringKey.QuotableDb)!,
+                databaseConfig.ConnectionString,
                 o => o.MigrationsHistoryTable(
                     HistoryRepository.DefaultTableName,
                     Common.Constants.Database.Schemas.Saga)));

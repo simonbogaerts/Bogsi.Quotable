@@ -4,8 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Bogsi.Quotable.Web.Extensions.DetailedExtensions;
+namespace Bogsi.Quotable.Modules.Extensions;
 
+using Bogsi.Quotable.Common.Enums;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 /// <summary>
@@ -17,8 +21,12 @@ internal static class SwaggerExtensions
     /// Configure and add swagger to configured services.
     /// </summary>
     /// <param name="builder">WebApplicationBuilder during startip.</param>
-    internal static void AddSwaggerGenWithAuth(this WebApplicationBuilder builder)
+    internal static void AddAndConfigureSwaggerGenWithAuth(this WebApplicationBuilder builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        var authConfig = builder.GetOrAddAuthConfig(ServiceCollectionOptions.Return);
+
         builder.Services.AddSwaggerGen(x =>
         {
             x.CustomSchemaIds(id => id.FullName!.Replace('+', '-'));
@@ -30,7 +38,7 @@ internal static class SwaggerExtensions
                 {
                     Implicit = new OpenApiOAuthFlow
                     {
-                        AuthorizationUrl = new Uri(builder.Configuration[Common.Constants.AuthenticationKeys.AuthorizationUrl]!),
+                        AuthorizationUrl = authConfig.AuthorizationUrl,
                         Scopes = new Dictionary<string, string>
                         {
                             { Common.Constants.Security.Scopes.OpenId, Common.Constants.Security.Scopes.OpenId },
