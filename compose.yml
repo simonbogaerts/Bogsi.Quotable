@@ -7,8 +7,10 @@ services:
       dockerfile: Dockerfile
     image: bogsi-quotable-web:latest
     container_name: web
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
+    restart: on-failure
+    env_file:
+      - path: ./web.default.env
+        required: true 
     networks:
       - quotable-network
     ports:
@@ -33,7 +35,7 @@ services:
       POSTGRES_PASSWORD: quotable123
       POSTGRES_DB: quotable-db
     ports:
-      - 8084:5432
+      - 5432:5432
     volumes:
       - ./.container-data/db:/var/lib/postgresql/data
     networks:
@@ -51,7 +53,7 @@ services:
     environment:
       ACCEPT_EULA: Y
     ports:
-      - 8087:5341
+      - 5341:5341
       - 8082:80
     volumes:
       - ./.container-data/seq:/data
@@ -67,7 +69,7 @@ services:
       - ./.container-data/valkey/conf:/etc/valkey/valkey.conf
       - ./.container-data/valkey/data:/data
     ports:
-      - 8086:6379
+      - 6379:6379
     networks:
       - quotable-network
     healthcheck:
@@ -85,18 +87,18 @@ services:
       - ./.container-data/queue/data:/var/lib/rabbitmq
       - ./.container-data/queue/logs:/var/log/rabbitmq
     ports:
-      - 8085:5672
-      - 8083:15672
+      - 5672:5672
+      - 15672:15672
     environment:
       RABBITMQ_DEFAULT_USER: quotable
       RABBITMQ_DEFAULT_PASS: quotable
     networks:
       - quotable-network
     healthcheck:
-          test: rabbitmq-diagnostics -q ping
-          interval: 5s
-          timeout: 15s
-          retries: 3
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 15s
+      retries: 3
 
 networks:
   quotable-network:

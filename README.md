@@ -6,7 +6,7 @@ _adjective._
 
 ## What is Quotable?
 
-A massively, over-engineered, best-practice-filled-solution using dotnet. It's a CRUD interface for quotes and their respectable origins, nothing more, nothing less. 
+A massively, over-engineered, try-as-I-go-along project using dotnet. It's a CRUD interface for quotes and their respectable origins, nothing more, nothing less. 
 
 It's a personal experiment where I take a deep dive in a lot of stuff I haven't gotten the chance to use a lot in my professional career. I'll be taking a deeper look at Docker, Valkey, Serilog, Seq, Mediatr, MassTransit, RabbitMQ, SonarQube, Keycloak, Test Containers and integration testing in general, AutoMapper, FluentValidation, FluentAssertions, and a couple of design patterns like Saga, Decorator, Result Monad, Flyweight, Builder, Request-Response, etc...
 
@@ -36,16 +36,16 @@ docker compose down
 
 ## Port Mapping 
 
-| Port  | Application          | 
-|-------|----------------------|
-|  8080 | Quotable web HTTP    |
-|  8081 | Quotable web HTTPS   |
-|  8082 | SEQ (manage)         |
-|  8083 | RabbitMQ (Manage)    |
-|  8084 | PostgreSQL           |
-|  8085 | RabbitMQ             |
-|  8086 | Valkey               |
-|  8087 | SEQ (ingestion)      |
+| Port | Application          | 
+|------|----------------------|
+|  5341 | SEQ log ingestion   |
+|  5432 | PostgreSQL database |
+|  5672 | RabbitMQ            |
+|  6379 | Valkey caching      |
+|  8080 | Quotable web HTTP   |
+|  8081 | Quotable web HTTPS  |
+|  8082 | SEQ GUI             |
+| 15672 | RabbitMQ GUI        |
 
 
 ## Known Bugs 
