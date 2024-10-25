@@ -28,8 +28,8 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
     {
         endpoints
             .MapPost("quotes", CreateQuote)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.CreateQuoteEndpoint)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.CreateQuoteEndpoint)
             .Produces(StatusCodes.Status202Accepted)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
@@ -91,7 +91,7 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
         }
 
         return Results.Accepted(
-            Constants.Endpoints.QuoteEndpoints.GetQuoteByIdEndpoint,
+            Common.Constants.Endpoint.QuoteEndpoints.GetQuoteByIdEndpoint,
             result.Value);
     }
 }

@@ -35,7 +35,7 @@ public sealed class QuotableContext(DbContextOptions<QuotableContext> options)
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
 
-        modelBuilder.HasDefaultSchema(Constants.Schemas.Quotable);
+        modelBuilder.HasDefaultSchema(Common.Constants.Database.Schemas.Quotable);
 
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(IPersistenceMarker).Assembly,

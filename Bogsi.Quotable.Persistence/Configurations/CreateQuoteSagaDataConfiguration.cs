@@ -22,7 +22,9 @@ internal sealed record CreateQuoteSagaDataConfiguration : IEntityTypeConfigurati
     /// <param name="builder">Context builder.</param>
     public void Configure(EntityTypeBuilder<CreateQuoteSagaData> builder)
     {
-        builder.ToTable(Constants.Tables.CreateQuoteSagaData, Constants.Schemas.Saga);
+        builder.ToTable(
+            Common.Constants.Database.Tables.CreateQuoteSagaData,
+            Common.Constants.Database.Schemas.Saga);
 
         builder
             .HasKey(x => x.CorrelationId);

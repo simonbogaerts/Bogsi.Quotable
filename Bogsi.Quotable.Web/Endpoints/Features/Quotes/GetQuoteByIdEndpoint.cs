@@ -25,8 +25,8 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
     {
         endpoints
             .MapGet("quotes/{id:guid}", GetQuoteById)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.GetQuoteByIdEndpoint)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.GetQuoteByIdEndpoint)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)

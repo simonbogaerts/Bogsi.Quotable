@@ -6,7 +6,7 @@ _adjective._
 
 ## What is Quotable?
 
-A massively, over-engineered, best-practice-filled-solution using dotnet. It's a CRUD interface for quotes and their respectable origins, nothing more, nothing less. 
+A massively, over-engineered, try-as-I-go-along project using dotnet. It's a CRUD interface for quotes and their respectable origins, nothing more, nothing less. 
 
 It's a personal experiment where I take a deep dive in a lot of stuff I haven't gotten the chance to use a lot in my professional career. I'll be taking a deeper look at Docker, Valkey, Serilog, Seq, Mediatr, MassTransit, RabbitMQ, SonarQube, Keycloak, Test Containers and integration testing in general, AutoMapper, FluentValidation, FluentAssertions, and a couple of design patterns like Saga, Decorator, Result Monad, Flyweight, Builder, Request-Response, etc...
 
@@ -71,7 +71,7 @@ docker compose down
 ### V1.1
 
 - [x] Switch to Mediatr, MassTransit and RabbitMq.
-- [ ] Improve/Clean-Up DI.
+- [x] Improve/Clean-Up DI.
 - [ ] Head and Options endpoints 
 - [ ] Update data model
 - [ ] Add security (bearer)

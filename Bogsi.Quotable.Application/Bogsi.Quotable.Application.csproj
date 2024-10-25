@@ -20,4 +20,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bogsi.Quotable.Common\Bogsi.Quotable.Common.csproj" />
+  </ItemGroup>
+
 </Project>

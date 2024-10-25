@@ -25,8 +25,8 @@ public sealed class GetQuotesEndpoint : IApiEndpoint
     {
         endpoints
             .MapGet("quotes", GetQuotes)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.GetQuotesEndpoint)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.GetQuotesEndpoint)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status500InternalServerError)

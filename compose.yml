@@ -7,18 +7,24 @@ services:
       dockerfile: Dockerfile
     image: bogsi-quotable-web:latest
     container_name: web
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
+    restart: on-failure
+    env_file:
+      - path: ./web.default.env
+        required: true 
     networks:
       - quotable-network
     ports:
       - 8080:8080
       - 8081:8081
     depends_on:
-      - database
-      - logging
-      - caching
-      - messaging
+      database:
+        condition: service_healthy
+      logging:
+        condition: service_started
+      caching:
+        condition: service_healthy
+      messaging:
+        condition: service_healthy
   
   database:
     image: postgres:17rc1-alpine3.20
@@ -34,6 +40,11 @@ services:
       - ./.container-data/db:/var/lib/postgresql/data
     networks:
       - quotable-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 15s
+      retries: 3      
 
   logging:
     image: datalust/seq:latest
@@ -61,6 +72,11 @@ services:
       - 6379:6379
     networks:
       - quotable-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
 
   messaging:
     image: rabbitmq:management
@@ -78,6 +94,11 @@ services:
       RABBITMQ_DEFAULT_PASS: quotable
     networks:
       - quotable-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 15s
+      retries: 3
 
 networks:
   quotable-network:
