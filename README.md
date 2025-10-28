@@ -50,39 +50,7 @@ docker compose down
 
 ## Known Bugs 
 
-* Unit Tests not working anymore. I'm in the midst of migrating from using self made requests to mediatr and mass transit, after the migration the tests will be overhauled.
-
-
-## Roadmap
-
-### V1.0
-
-- [x] Setup project base and add Docker support.
-- [x] Add endpoint discovery through reflection.
-- [x] Setup Entity Framework and create DbContext. 
-- [x] CRUD functionality for base Quote model. 
-- [x] Implement Result monad pattern. 
-- [x] Integration tests with Test Containers. 
-- [x] Add logging (Serilog) and SEQ.
-- [x] Add static code analyzers and setup SonarQube. 
-- [x] Use distributed Cashing (Valkey)
-- [x] Clean-Up for release V1.0. 
-
-### V1.1
-
-- [x] Switch to Mediatr, MassTransit and RabbitMq.
-- [x] Improve/Clean-Up DI.
-- [ ] Head and Options endpoints 
-- [ ] Update data model
-- [ ] Add security (bearer)
-- [ ] Clean-Up for release V1.1. 
-
-### V1.2.
-
-After dotnet 9.
-
-- [ ] Switch Swagger to Scalar.
-- [ ] TBD.
+* Unit Tests not working anymore. I'm in the midst of migrating from using self made requests to mediatr and mass transit, might fix this one day.
 
 
 ## Code Quality
