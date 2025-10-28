@@ -26,7 +26,7 @@ public interface IReadonlyRepository<T>
     /// <param name="request">The request parameters.</param>
     /// <param name="cancellationToken">Cancellation token used during async computing.</param>
     /// <returns>Result object of Cursor response of type T and QuotableError.</returns>
-    Task<Result<CursorResponse<T>, QuotableError>> GetAsync(GetQuotesHandlerRequest request, CancellationToken cancellationToken);
+    Task<Result<CursorResponse<T>, QuotableError>> GetAsync(GetQuotesQuery request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Gets a single item matching the provided identifier.

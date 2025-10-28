@@ -24,8 +24,8 @@ public readonly struct GetQuotesParameters
     /// </summary>
     public GetQuotesParameters()
     {
-        Cursor = Constants.Cursor.Default;
-        Size = Constants.Size.Default;
+        Cursor = Common.Constants.Properties.Cursor.Default;
+        Size = Common.Constants.Properties.Size.Default;
     }
 
     #region Pagination
@@ -33,13 +33,13 @@ public readonly struct GetQuotesParameters
     /// <summary>
     /// Gets the Cursor of the GetQuotesParameters model.
     /// </summary>
-    [DefaultValue(Constants.Cursor.Default)]
+    [DefaultValue(Common.Constants.Properties.Cursor.Default)]
     public int? Cursor { get; init; }
 
     /// <summary>
     /// Gets the Size of the GetQuotesParameters model.
     /// </summary>
-    [DefaultValue(Constants.Size.Default)]
+    [DefaultValue(Common.Constants.Properties.Size.Default)]
     public int? Size { get; init; }
 
     #endregion

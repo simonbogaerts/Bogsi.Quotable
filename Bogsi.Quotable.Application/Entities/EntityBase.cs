@@ -13,14 +13,14 @@ namespace Bogsi.Quotable.Application.Entities;
 public interface IAuditableEntity
 {
     /// <summary>
-    /// Gets Created of the IAuditableEntity model.
+    /// Gets or sets Created of the IAuditableEntity model.
     /// </summary>
-    public DateTime Created { get; init; }
+    public DateTime Created { get; set; }
 
     /// <summary>
-    /// Gets Updated of the IAuditableEntity model.
+    /// Gets or sets Updated of the IAuditableEntity model.
     /// </summary>
-    public DateTime Updated { get; init; }
+    public DateTime Updated { get; set; }
 }
 
 /// <summary>
@@ -41,8 +41,8 @@ public abstract record EntityBase : IAuditableEntity
     required public Guid PublicId { get; init; }
 
     /// <inheritdoc/>
-    public DateTime Created { get; init; }
+    public DateTime Created { get; set; }
 
     /// <inheritdoc/>
-    public DateTime Updated { get; init; }
+    public DateTime Updated { get; set; }
 }

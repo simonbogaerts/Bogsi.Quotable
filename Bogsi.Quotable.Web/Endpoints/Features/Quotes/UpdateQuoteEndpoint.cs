@@ -14,6 +14,8 @@ using Bogsi.Quotable.Application.Handlers.Quotes;
 
 using FluentValidation;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -26,9 +28,9 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
     {
         endpoints
             .MapPut("quotes/{id:guid}", UpdateQuote)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.UpdateQuoteEndpoint)
-            .Produces(StatusCodes.Status204NoContent)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.UpdateQuoteEndpoint)
+            .Produces(StatusCodes.Status202Accepted)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)
@@ -41,7 +43,7 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
     /// </summary>
     /// <param name="id">Public id of quote to delete.</param>
     /// <param name="request">Incoming request body.</param>
-    /// <param name="handler">Handler for the busines logic.</param>
+    /// <param name="mediator">Handler for the busines logic.</param>
     /// <param name="validator">Validator for the incoming request.</param>
     /// <param name="mapper">A configured instance of AutoMapper.</param>
     /// <param name="logger">An instance of a Serilog logger.</param>
@@ -50,8 +52,8 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
     internal static async Task<IResult> UpdateQuote(
         [FromRoute] Guid id,
         [FromBody] UpdateQuoteRequest request,
-        [FromServices] IUpdateQuoteHandler handler,
-        [FromServices] IValidator<UpdateQuoteHandlerRequest> validator,
+        [FromServices] IMediator mediator,
+        [FromServices] IValidator<UpdateQuoteCommand> validator,
         [FromServices] IMapper mapper,
         [FromServices] ILogger<UpdateQuoteEndpoint> logger,
         CancellationToken cancellationToken)
@@ -64,7 +66,7 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] mapping endpoint request to handler request", nameof(UpdateQuoteEndpoint));
 
-        var handlerRequest = mapper.Map<UpdateQuoteRequest, UpdateQuoteHandlerRequest>(request, opt => opt.Items["Id"] = id);
+        var handlerRequest = mapper.Map<UpdateQuoteRequest, UpdateQuoteCommand>(request, opt => opt.Items["Id"] = id);
 
         logger.LogInformation("[{Source}] validating handler request", nameof(UpdateQuoteEndpoint));
 
@@ -79,7 +81,7 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] executing handler", nameof(UpdateQuoteEndpoint));
 
-        var result = await handler.HandleAsync(handlerRequest, cancellationToken).ConfigureAwait(false);
+        var result = await mediator.Send(handlerRequest, cancellationToken).ConfigureAwait(false);
 
         if (result.IsFailure)
         {
@@ -96,6 +98,6 @@ public sealed class UpdateQuoteEndpoint : IApiEndpoint
             }
         }
 
-        return Results.NoContent();
+        return Results.Accepted();
     }
 }

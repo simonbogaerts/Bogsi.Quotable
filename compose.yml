@@ -1,22 +1,30 @@
 name: bogsi-quotable
 
 services:
-  aspnet-backend:
+  web:
     build: 
       context: .
       dockerfile: Dockerfile
-    image: bogsi-quotable-aspnet-backend:latest
-    container_name: aspnet-backend
-    environment:
-      ASPNETCORE_ENVIRONMENT: Production
+    image: bogsi-quotable-web:latest
+    container_name: web
+    restart: on-failure
+    env_file:
+      - path: ./web.default.env
+        required: true 
     networks:
       - quotable-network
     ports:
       - 8080:8080
       - 8081:8081
     depends_on:
-      - database
-      - logging-seq
+      database:
+        condition: service_healthy
+      logging:
+        condition: service_started
+      caching:
+        condition: service_healthy
+      messaging:
+        condition: service_healthy
   
   database:
     image: postgres:17rc1-alpine3.20
@@ -32,10 +40,15 @@ services:
       - ./.container-data/db:/var/lib/postgresql/data
     networks:
       - quotable-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 15s
+      retries: 3      
 
-  logging-seq:
+  logging:
     image: datalust/seq:latest
-    container_name: logging-seq 
+    container_name: logging 
     restart: always
     environment:
       ACCEPT_EULA: Y
@@ -47,9 +60,9 @@ services:
     networks:
       - quotable-network
 
-  caching-valkey:
+  caching:
     image: valkey/valkey:8.0.1-alpine
-    container_name: caching-valkey 
+    container_name: caching 
     restart: always
     command: valkey-server /etc/valkey/valkey.conf --save 60 1 --loglevel warning
     volumes:
@@ -59,6 +72,33 @@ services:
       - 6379:6379
     networks:
       - quotable-network
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
+  messaging:
+    image: rabbitmq:management
+    container_name: messaging
+    hostname: messaging
+    restart: always
+    volumes:
+      - ./.container-data/queue/data:/var/lib/rabbitmq
+      - ./.container-data/queue/logs:/var/log/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: quotable
+      RABBITMQ_DEFAULT_PASS: quotable
+    networks:
+      - quotable-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 15s
+      retries: 3
 
 networks:
   quotable-network:

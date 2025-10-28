@@ -18,7 +18,7 @@ internal class FlushCacheEndpoint : IApiEndpoint
     {
         endpoints
             .MapGet("utilities/flush-cache", FlushCache)
-            .WithTags(Constants.Endpoints.Utilities)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Utilities)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status500InternalServerError)
             .MapToApiVersion(1)

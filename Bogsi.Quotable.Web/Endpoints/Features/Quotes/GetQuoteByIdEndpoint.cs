@@ -8,9 +8,10 @@ namespace Bogsi.Quotable.Web.Endpoints.Features.Quotes;
 
 using AutoMapper;
 
-using Bogsi.Quotable.Application.Contracts.Quotes;
 using Bogsi.Quotable.Application.Errors;
 using Bogsi.Quotable.Application.Handlers.Quotes;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,8 +25,8 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
     {
         endpoints
             .MapGet("quotes/{id:guid}", GetQuoteById)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.GetQuoteByIdEndpoint)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.GetQuoteByIdEndpoint)
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status401Unauthorized)
@@ -37,14 +38,14 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
     /// Get a quote by it's public id.
     /// </summary>
     /// <param name="id">Public id of quote to delete.</param>
-    /// <param name="handler">Handler for the busines logic.</param>
+    /// <param name="mediator">Handler for the busines logic.</param>
     /// <param name="mapper">A configured instance of AutoMapper.</param>
     /// <param name="logger">An instance of a Serilog logger.</param>
     /// <param name="cancellationToken">Cancellation token used during async computing.</param>
     /// <returns>The quote or a status code indicating failure.</returns>
     internal static async Task<IResult> GetQuoteById(
         [FromRoute] Guid id,
-        [FromServices] IGetQuoteByIdHandler handler,
+        [FromServices] IMediator mediator,
         [FromServices] IMapper mapper,
         [FromServices] ILogger<GetQuoteByIdEndpoint> logger,
         CancellationToken cancellationToken)
@@ -57,14 +58,14 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] mapping endpoint request to handler request", nameof(GetQuoteByIdEndpoint));
 
-        GetQuoteByIdHandlerRequest handlerRequest = new ()
+        GetQuoteByIdQuery handlerRequest = new ()
         {
             PublicId = id,
         };
 
         logger.LogInformation("[{Source}] executing handler", nameof(GetQuoteByIdEndpoint));
 
-        var result = await handler.HandleAsync(handlerRequest, cancellationToken).ConfigureAwait(false);
+        var result = await mediator.Send(handlerRequest, cancellationToken).ConfigureAwait(false);
 
         if (result.IsFailure)
         {
@@ -78,7 +79,7 @@ public sealed class GetQuoteByIdEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] mapping handler response to endpoint response", nameof(GetQuoteByIdEndpoint));
 
-        var response = mapper.Map<GetQuoteByIdHandlerResponse, GetQuoteByIdResponse>(result.Value);
+        var response = mapper.Map<Application.Handlers.Quotes.GetQuoteByIdResponse, Application.Contracts.Quotes.GetQuoteByIdResponse>(result.Value);
 
         return Results.Ok(response);
     }

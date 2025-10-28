@@ -14,6 +14,8 @@ using Bogsi.Quotable.Application.Handlers.Quotes;
 
 using FluentValidation;
 
+using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -26,9 +28,9 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
     {
         endpoints
             .MapPost("quotes", CreateQuote)
-            .WithTags(Constants.Endpoints.Quotes)
-            .WithName(Constants.Endpoints.QuoteEndpoints.CreateQuoteEndpoint)
-            .Produces(StatusCodes.Status201Created)
+            .WithTags(Common.Constants.Endpoint.EndpointGroups.Quotes)
+            .WithName(Common.Constants.Endpoint.QuoteEndpoints.CreateQuoteEndpoint)
+            .Produces(StatusCodes.Status202Accepted)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status409Conflict)
@@ -40,7 +42,7 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
     /// Endpoint logic.
     /// </summary>
     /// <param name="request">Incoming request body.</param>
-    /// <param name="handler">Handler for the busines logic.</param>
+    /// <param name="mediator">Handler for the busines logic.</param>
     /// <param name="validator">Validator for the incoming request.</param>
     /// <param name="mapper">A configured instance of AutoMapper.</param>
     /// <param name="logger">An instance of a Serilog logger.</param>
@@ -48,8 +50,8 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
     /// <returns>Newly created quote.</returns>
     internal static async Task<IResult> CreateQuote(
         [FromBody] CreateQuoteRequest request,
-        [FromServices] ICreateQuoteHandler handler,
-        [FromServices] IValidator<CreateQuoteHandlerRequest> validator,
+        [FromServices] IMediator mediator,
+        [FromServices] IValidator<CreateQuoteCommand> validator,
         [FromServices] IMapper mapper,
         [FromServices] ILogger<CreateQuoteEndpoint> logger,
         CancellationToken cancellationToken)
@@ -61,7 +63,7 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] mapping endpoint request to handler request", nameof(CreateQuoteEndpoint));
 
-        var handlerRequest = mapper.Map<CreateQuoteRequest, CreateQuoteHandlerRequest>(request);
+        var handlerRequest = mapper.Map<CreateQuoteRequest, CreateQuoteCommand>(request);
 
         logger.LogInformation("[{Source}] validating handler request", nameof(CreateQuoteEndpoint));
 
@@ -76,7 +78,7 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
 
         logger.LogInformation("[{Source}] executing handler", nameof(CreateQuoteEndpoint));
 
-        var result = await handler.HandleAsync(handlerRequest, cancellationToken).ConfigureAwait(false);
+        var result = await mediator.Send(handlerRequest, cancellationToken).ConfigureAwait(false);
 
         if (result.IsFailure)
         {
@@ -88,13 +90,8 @@ public sealed class CreateQuoteEndpoint : IApiEndpoint
             }
         }
 
-        logger.LogInformation("[{Source}] mapping handler response to endpoint response", nameof(CreateQuoteEndpoint));
-
-        var response = mapper.Map<CreateQuoteHandlerResponse, CreateQuoteResponse>(result.Value);
-
-        return Results.CreatedAtRoute(
-            Constants.Endpoints.QuoteEndpoints.GetQuoteByIdEndpoint,
-            new { id = response.PublicId },
-            response);
+        return Results.Accepted(
+            Common.Constants.Endpoint.QuoteEndpoints.GetQuoteByIdEndpoint,
+            result.Value);
     }
 }
